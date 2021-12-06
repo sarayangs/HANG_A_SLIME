@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:keep="@string/gcm_defaultSenderId,@string/google_storage_bucket,@string/project_id,@string/google_api_key,@string/google_crash_reporting_api_key,@string/google_app_id,@string/default_web_client_id">
+  <string name="gcm_defaultSenderId" translatable="false">59182407043</string>
+  <string name="google_storage_bucket" translatable="false">hangaslime.appspot.com</string>
+  <string name="project_id" translatable="false">hangaslime</string>
+  <string name="google_api_key" translatable="false">AIzaSyCYaSxSTXfIIHkkGrsyiZhO5RVp5-0qr8E</string>
+  <string name="google_crash_reporting_api_key" translatable="false">AIzaSyCYaSxSTXfIIHkkGrsyiZhO5RVp5-0qr8E</string>
+  <string name="google_app_id" translatable="false">1:59182407043:android:2c577e9ef37991d9782ab6</string>
+  <string name="default_web_client_id" translatable="false">59182407043-6163do9a83agus5m8i5655i7fmgbt9fj.apps.googleusercontent.com</string>
+</resources>
