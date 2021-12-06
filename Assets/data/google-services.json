@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "59182407043",
+    "firebase_url": "https://hangaslime-default-rtdb.europe-west1.firebasedatabase.app",
     "project_id": "hangaslime",
     "storage_bucket": "hangaslime.appspot.com"
   },
