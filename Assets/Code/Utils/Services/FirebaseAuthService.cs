@@ -14,8 +14,15 @@ public class FirebaseAuthService
         return auth.CurrentUser != null;
     }
 
+    public string GetUserId()
+    {
+        return auth.CurrentUser.UserId;
+    }
+
     public string GetNewUserId()
     {
+        string userId = string.Empty;
+        
         auth.SignInAnonymouslyAsync().ContinueWith(task => {
             if (task.IsCanceled)
             {
@@ -24,8 +31,11 @@ public class FirebaseAuthService
             if (task.IsFaulted) {
                 throw new Exception("SignInAnonymouslyAsync encountered an error: " + task.Exception);
             }
+
+            userId = auth.CurrentUser.UserId;
+
         });
         
-        return auth.CurrentUser.UserId;
+        return userId;
     }
 }

@@ -16,7 +16,12 @@ public class LoginUseCase : ILogin
         
         if (firebaseAuthService.CheckExistingUser())
         {
-            Debug.Log("Existing User");
+            var userId = firebaseAuthService.GetUserId();
+            Debug.Log($"Existing User: {userId}");
+            
+            var firebaseFirestoreService = ServiceLocator.Instance.GetService<FirebaseFirestoreService>();
+            firebaseFirestoreService.GetData(userId);
+            
         }
         else
         {

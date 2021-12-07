@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Firebase.Firestore;
 using Firebase.Extensions;
+using UnityEngine;
 
 public class FirebaseFirestoreService
 {
@@ -11,28 +12,30 @@ public class FirebaseFirestoreService
           db = FirebaseFirestore.DefaultInstance;
      }
 
-     public void GetData()
+     public User GetData(string userId)
      {
+          User user = new User();
+          
           CollectionReference usersRef = db.Collection("users");
           usersRef.GetSnapshotAsync().ContinueWithOnMainThread(task =>
           {
                QuerySnapshot snapshot = task.Result;
                foreach (DocumentSnapshot document in snapshot.Documents)
                {
-                    Dictionary<string, object> documentDictionary = document.ToDictionary();
-                    
-                    if (documentDictionary.ContainsKey("Middle"))
+                    if (document.Id == userId)
                     {
+                         user = document.ConvertTo<User>();
                     }
-
                }
           });
+
+          return user;
      }
      
      public void AddToDatabase(User newUser)
      {
           Firebase.Auth.FirebaseAuth auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
-          DocumentReference docRef = db.Collection("users").Document(auth.CurrentUser.UserId);
+          DocumentReference docRef = db.Collection("users").Document(newUser.Id);
           docRef.SetAsync(newUser);
      }
 }
