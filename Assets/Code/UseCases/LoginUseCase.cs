@@ -25,16 +25,12 @@ public class LoginUseCase : ILogin
         }
         else
         {
-            Debug.Log("New User");
-            string userId = firebaseAuthService.GetNewUserId();
+            firebaseAuthService.LoginNewUser();
+            string userId = firebaseAuthService.GetUserId();
+            Debug.Log($"New User: {userId}");
             
             var firebaseFirestoreService = ServiceLocator.Instance.GetService<FirebaseFirestoreService>();
             firebaseFirestoreService.AddToDatabase(new User(userId, "Sara"));
         }
-        
-        
-        
-
-
     }
 }

@@ -19,11 +19,9 @@ public class FirebaseAuthService
         return auth.CurrentUser.UserId;
     }
 
-    public string GetNewUserId()
+    public void LoginNewUser()
     {
-        string userId = string.Empty;
-        
-        auth.SignInAnonymouslyAsync().ContinueWith(task => {
+       auth.SignInAnonymouslyAsync().ContinueWith(task => {
             if (task.IsCanceled)
             {
                 throw new Exception("SignInAnonymouslyAsync was canceled.");
@@ -31,11 +29,6 @@ public class FirebaseAuthService
             if (task.IsFaulted) {
                 throw new Exception("SignInAnonymouslyAsync encountered an error: " + task.Exception);
             }
-
-            userId = auth.CurrentUser.UserId;
-
         });
-        
-        return userId;
     }
 }
