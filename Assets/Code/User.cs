@@ -8,6 +8,8 @@ public class User
     [FirestoreProperty]
     public string Name { get; set; }
 
+    public int Score;
+
     public User()
     {
     }
@@ -16,5 +18,11 @@ public class User
     {
         Id = id;
         Name = name;
+        Score = 0;
+    }
+
+    public void UpdateScore(int score)
+    {
+        Score = score;
     }
 }

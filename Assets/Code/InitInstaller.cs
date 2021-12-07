@@ -12,13 +12,14 @@ public class InitInstaller : MonoBehaviour
         var firebaseFirestore = new FirebaseFirestoreService();
         ServiceLocator.Instance.RegisterService<FirebaseFirestoreService>(firebaseFirestore);
         
+        var eventDispatcher = new EventDispatcherService();
+        ServiceLocator.Instance.RegisterService<IEventDispatcherService>(eventDispatcher);
         
         var initViewModel = new InitViewModel();
         _initView.Setup(initViewModel);
         
-        var eventDispatcher = new EventDispatcherService();
         
-        var loginUseCase = new LoginUseCase(eventDispatcher);
+        var loginUseCase = new LoginUseCase();
 
         new InitController(initViewModel, loginUseCase);
     }

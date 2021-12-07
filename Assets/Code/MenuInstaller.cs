@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 
 public class MenuInstaller : MonoBehaviour
 {
@@ -10,20 +11,35 @@ public class MenuInstaller : MonoBehaviour
     [SerializeField] private HomeView _homeView;
     [SerializeField] private ScoreView _scoreView;
     [SerializeField] private SettingsView _settingsView;
+    [SerializeField] private ChangeNameView _changeNameView;
 
 
     private void Awake()
     {
         var buttonsViewModel = new ButtonsViewModel();
-        var homeViewModel = new HomeViewModel();
-        var scoreViewModel = new ScoreViewModel();
-        var settingsViewModel = new SettingsViewModel();
+        _buttonView.Setup(buttonsViewModel);
 
-        _buttonView.SetViewModel(buttonsViewModel);
-        _homeView.SetViewModel(homeViewModel);
-        _scoreView.SetViewModel(scoreViewModel);
-        _settingsView.SetViewModel(settingsViewModel);
+        var homeViewModel = new HomeViewModel();
+        _homeView.Setup(homeViewModel);
+
+        var scoreViewModel = new ScoreViewModel();
+        _scoreView.Setup(scoreViewModel);
+
+        var settingsViewModel = new SettingsViewModel();
+        _settingsView.Setup(settingsViewModel);
+
+        var changeNameViewModel = new ChangeNameViewModel();
+        _changeNameView.Setup(changeNameViewModel);
+        
+        var changeSceneUseCase = new ChangeSceneUseCase();
+        var getUserDataUseCase = new GetUserDataUseCase();
+        var udpateUserDataUseCase = new UpdateUserDataUseCase();
+
+        new HomePresenter(homeViewModel);
+        new ChangeNamePresenter(changeNameViewModel);
 
         new ButtonsController(buttonsViewModel,homeViewModel,scoreViewModel,settingsViewModel);
+        new HomeController(homeViewModel, changeNameViewModel, changeSceneUseCase, getUserDataUseCase);
+        new ChangeNameController(changeNameViewModel, udpateUserDataUseCase);
     }
 }

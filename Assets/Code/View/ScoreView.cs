@@ -5,7 +5,7 @@ using DG.Tweening;
 public class ScoreView : MonoBehaviour
 {
     private ScoreViewModel _viewModel;
-    public void SetViewModel(ScoreViewModel scoreViewModel)
+    public void Setup(ScoreViewModel scoreViewModel)
     {
         _viewModel = scoreViewModel;
         _viewModel.IsVisible.Subscribe((isVisible) =>

@@ -1,4 +1,6 @@
-public interface ILogin
+using System.Threading.Tasks;
+
+ public interface ILogin
 {
-    void Login();
+    Task Login();
 }

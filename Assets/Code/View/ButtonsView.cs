@@ -11,7 +11,7 @@ public class ButtonsView : MonoBehaviour
 
     private ButtonsViewModel _buttonsViewModel;
 
-    public void SetViewModel(ButtonsViewModel buttonsViewModel)
+    public void Setup(ButtonsViewModel buttonsViewModel)
     {
         _buttonsViewModel = buttonsViewModel;
 

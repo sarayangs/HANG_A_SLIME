@@ -5,7 +5,7 @@ using DG.Tweening;
 public class SettingsView : MonoBehaviour
 {
     private SettingsViewModel _viewModel;
-    public void SetViewModel(SettingsViewModel settingsViewModel)
+    public void Setup(SettingsViewModel settingsViewModel)
     {
         _viewModel = settingsViewModel;
         

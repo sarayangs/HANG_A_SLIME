@@ -1,18 +1,31 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using UniRx;
 
-public class HomeController : MonoBehaviour
+public class HomeController
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    private readonly HomeViewModel _viewModel;
+    private readonly ChangeNameViewModel _changeNameViewModel;
+    
+    private readonly IChangeScene _changeSceneUseCase;
+    private readonly IGetUserData _getUserDataUseCase;
 
-    // Update is called once per frame
-    void Update()
+    public HomeController(HomeViewModel viewModel,ChangeNameViewModel changeNameViewModel, IChangeScene changeSceneUsecase, IGetUserData getUserDataUseCase)
     {
+        _viewModel = viewModel;
+        _changeNameViewModel = changeNameViewModel;
+        _changeSceneUseCase = changeSceneUsecase;
+        _getUserDataUseCase = getUserDataUseCase;
+
+        _viewModel.PlayButtonPressed
+            .Subscribe((_) =>
+            {
+                _changeSceneUseCase.ChangeSceneTo("Play");
+            });
+
+        _viewModel.ChangeNameButtonPressed.Subscribe((_) =>
+        {
+            _changeNameViewModel.IsVisible.Value = true;
+        });
         
+        _getUserDataUseCase.GetUserData();
     }
 }

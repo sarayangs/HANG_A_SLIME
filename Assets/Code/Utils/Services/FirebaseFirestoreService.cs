@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using Firebase.Firestore;
+﻿using Firebase.Firestore;
 using Firebase.Extensions;
-using UnityEngine;
 
 public class FirebaseFirestoreService
 {
@@ -12,10 +10,8 @@ public class FirebaseFirestoreService
           db = FirebaseFirestore.DefaultInstance;
      }
 
-     public User GetData(string userId)
+     public void GetData(string userId)
      {
-          User user = new User();
-          
           CollectionReference usersRef = db.Collection("users");
           usersRef.GetSnapshotAsync().ContinueWithOnMainThread(task =>
           {
@@ -24,12 +20,13 @@ public class FirebaseFirestoreService
                {
                     if (document.Id == userId)
                     {
-                         user = document.ConvertTo<User>();
+                         var user = document.ConvertTo<User>();
+                         
+                         var eventDispatcherService = ServiceLocator.Instance.GetService<IEventDispatcherService>();
+                         eventDispatcherService.Dispatch<User>(user);
                     }
                }
           });
-
-          return user;
      }
      
      public void AddToDatabase(User newUser)
