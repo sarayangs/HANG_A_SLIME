@@ -2,7 +2,7 @@
 
 public class GetUserDataUseCase : IGetUserData
 {
-    public async void GetUserData()
+    public void GetUserData()
     {
         var authService = ServiceLocator.Instance.GetService<FirebaseAuthService>();
         string userId = authService.GetUserId();

@@ -11,26 +11,28 @@ public class LoginUseCase : ILogin
         
         var firebaseAuthService = ServiceLocator.Instance.GetService<FirebaseAuthService>();
         
-        if (firebaseAuthService.CheckExistingUser())
+       if (firebaseAuthService.CheckExistingUser())
         {
             var userId = firebaseAuthService.GetUserId();
             Debug.Log($"Existing User: {userId}");
             
-            /*var firebaseFirestoreService = ServiceLocator.Instance.GetService<FirebaseFirestoreService>();
-            firebaseFirestoreService.GetData(userId);*/
+           User user = new User(userId, "Sara");
             
+            var firebaseDatabaseService = ServiceLocator.Instance.GetService<FirebaseDatabaseService>();
+            firebaseDatabaseService.AddData(user.Score);
         }
         else
         {
             firebaseAuthService.LoginNewUser();
             string userId = firebaseAuthService.GetUserId();
             Debug.Log($"New User: {userId}");
+
+            User user = new User(userId, "Sara");
             
             var firebaseFirestoreService = ServiceLocator.Instance.GetService<FirebaseFirestoreService>();
-            firebaseFirestoreService.AddToDatabase(new User(userId, "Sara"));
+            firebaseFirestoreService.AddToDatabase(user);
+           
         }
-        
         SceneManager.LoadScene("Menu"); //TEMP!!!!!!
-        
     }
 }

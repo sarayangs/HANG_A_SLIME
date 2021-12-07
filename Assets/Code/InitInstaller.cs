@@ -11,6 +11,9 @@ public class InitInstaller : MonoBehaviour
         
         var firebaseFirestore = new FirebaseFirestoreService();
         ServiceLocator.Instance.RegisterService<FirebaseFirestoreService>(firebaseFirestore);
+
+        var firebaseDatabase = new FirebaseDatabaseService();
+        ServiceLocator.Instance.RegisterService<FirebaseDatabaseService>(firebaseDatabase);
         
         var eventDispatcher = new EventDispatcherService();
         ServiceLocator.Instance.RegisterService<IEventDispatcherService>(eventDispatcher);

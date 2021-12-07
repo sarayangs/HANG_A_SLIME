@@ -1,4 +1,5 @@
-﻿using Firebase.Firestore;
+﻿using System.Threading.Tasks;
+using Firebase.Firestore;
 using Firebase.Extensions;
 
 public class FirebaseFirestoreService
@@ -9,7 +10,6 @@ public class FirebaseFirestoreService
      {
           db = FirebaseFirestore.DefaultInstance;
      }
-
      public void GetData(string userId)
      {
           CollectionReference usersRef = db.Collection("users");
