@@ -2,17 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ScoreController : MonoBehaviour
+public class ScoreController
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    private readonly ScoreViewModel _viewModel;
 
-    // Update is called once per frame
-    void Update()
+    public ScoreController(ScoreViewModel viewModel)
     {
-        
+        _viewModel = viewModel;
+
     }
 }

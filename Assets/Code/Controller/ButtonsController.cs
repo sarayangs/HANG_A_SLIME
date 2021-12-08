@@ -3,10 +3,13 @@ using UniRx;
 public class ButtonsController
 {
     public readonly ButtonsViewModel _buttonViewModel;
+    private readonly IRankingManager _rankingManagerUseCase;
 
-    public ButtonsController(ButtonsViewModel buttonsViewModel, HomeViewModel homeViewModel, ScoreViewModel scoreViewModel, SettingsViewModel settingsViewModel)
+    public ButtonsController(ButtonsViewModel buttonsViewModel, HomeViewModel homeViewModel, ScoreViewModel scoreViewModel, SettingsViewModel settingsViewModel, 
+        IRankingManager rankingManagerUseCase)
     {
         _buttonViewModel = buttonsViewModel;
+        _rankingManagerUseCase = rankingManagerUseCase;
 
         _buttonViewModel.HomeButtonPressed
             .Subscribe(
@@ -33,6 +36,8 @@ public class ButtonsController
                 _buttonViewModel.HomeIsPressed.Value = false;
                 _buttonViewModel.ScoreIsPressed.Value = true;
                 _buttonViewModel.SettingsIsPressed.Value = false;
+                
+                _rankingManagerUseCase.GetAllData();
 
             });
 

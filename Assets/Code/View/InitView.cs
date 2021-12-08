@@ -6,7 +6,5 @@ public class InitView : MonoBehaviour
     public void Setup(InitViewModel viewModel)
     {
         _viewModel = viewModel;
-        
-        
     }
 }

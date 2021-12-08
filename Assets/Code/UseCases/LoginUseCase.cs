@@ -19,7 +19,7 @@ public class LoginUseCase : ILogin
            User user = new User(userId, "Sara");
             
             var firebaseDatabaseService = ServiceLocator.Instance.GetService<FirebaseDatabaseService>();
-            firebaseDatabaseService.AddData(user.Score);
+            firebaseDatabaseService.AddData(user.Score, user.Name);
         }
         else
         {

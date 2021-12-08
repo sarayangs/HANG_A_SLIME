@@ -4025,6 +4025,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 513bd85d1eccd6d4791a691abcee7270, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _scoreItemViewPrefab: {fileID: 1645537048451801586, guid: ffcd2f8250dffc44eb240c766279b229, type: 3}
+  _scoreItemContainer: {fileID: 551652080}
 --- !u!1 &2087582126
 GameObject:
   m_ObjectHideFlags: 0

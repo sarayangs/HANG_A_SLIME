@@ -10,7 +10,7 @@ public class FirebaseFirestoreService
      {
           db = FirebaseFirestore.DefaultInstance;
      }
-     public void GetData(string userId)
+     public void GetName(string userId)
      {
           CollectionReference usersRef = db.Collection("users");
           usersRef.GetSnapshotAsync().ContinueWithOnMainThread(task =>
@@ -28,7 +28,6 @@ public class FirebaseFirestoreService
                }
           });
      }
-     
      public void AddToDatabase(User newUser)
      {
           Firebase.Auth.FirebaseAuth auth = Firebase.Auth.FirebaseAuth.DefaultInstance;

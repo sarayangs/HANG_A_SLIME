@@ -34,12 +34,15 @@ public class MenuInstaller : MonoBehaviour
         var changeSceneUseCase = new ChangeSceneUseCase();
         var getUserDataUseCase = new GetUserDataUseCase();
         var udpateUserDataUseCase = new UpdateUserDataUseCase();
+        var rankingManagerUseCase = new RankingManagerUseCase();
 
         new HomePresenter(homeViewModel);
+        new ScorePresenter(scoreViewModel);
         new ChangeNamePresenter(changeNameViewModel);
 
-        new ButtonsController(buttonsViewModel,homeViewModel,scoreViewModel,settingsViewModel);
+        new ButtonsController(buttonsViewModel,homeViewModel,scoreViewModel,settingsViewModel, rankingManagerUseCase);
         new HomeController(homeViewModel, changeNameViewModel, changeSceneUseCase, getUserDataUseCase);
+        new ScoreController(scoreViewModel);
         new ChangeNameController(changeNameViewModel, udpateUserDataUseCase);
     }
 }

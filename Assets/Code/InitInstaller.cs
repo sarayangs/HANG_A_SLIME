@@ -21,9 +21,9 @@ public class InitInstaller : MonoBehaviour
         var initViewModel = new InitViewModel();
         _initView.Setup(initViewModel);
         
-        
         var loginUseCase = new LoginUseCase();
+        var changeSceneUseCase = new ChangeSceneUseCase();
 
-        new InitController(initViewModel, loginUseCase);
+        new InitController(initViewModel, loginUseCase, changeSceneUseCase);
     }
 }

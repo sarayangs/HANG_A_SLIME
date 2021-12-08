@@ -8,6 +8,6 @@ public class GetUserDataUseCase : IGetUserData
         string userId = authService.GetUserId();
         
         var firestoreService = ServiceLocator.Instance.GetService<FirebaseFirestoreService>();
-        firestoreService.GetData(userId);
+        firestoreService.GetName(userId);
     }
 }
