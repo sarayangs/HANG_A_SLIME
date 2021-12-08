@@ -1,18 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
+using UniRx;
 using UnityEngine;
 
 public class SettingsController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    private SettingsViewModel _viewModel;
+    private LoginPanelViewModel _loginPanelViewModel;
 
-    // Update is called once per frame
-    void Update()
+    public SettingsController(SettingsViewModel viewModel,LoginPanelViewModel loginPanelViewModel)
     {
-        
+        _viewModel = viewModel;
+        _loginPanelViewModel = loginPanelViewModel;
+
+        _viewModel.LoginButtonPressed.Subscribe((_) =>
+        {
+            _loginPanelViewModel.IsVisible.Value = true;
+        });
     }
 }

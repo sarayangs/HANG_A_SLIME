@@ -54,10 +54,10 @@ public class FirebaseFirestoreService
                }
           });
      }
-     public void AddToDatabase(User newUser)
+     public void AddToDatabase(User User)
      {
           Firebase.Auth.FirebaseAuth auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
-          DocumentReference docRef = db.Collection("users").Document(newUser.Id);
-          docRef.SetAsync(newUser);
+          DocumentReference docRef = db.Collection("users").Document(User.Id);
+          docRef.SetAsync(User);
      }
 }

@@ -1,9 +1,16 @@
 using UnityEngine;
+using UnityEngine.UI;
 using UniRx;
 using DG.Tweening;
 
 public class SettingsView : View
 {
+    [SerializeField] private Button _loginButton;
+    [SerializeField] private Button _registerButton;
+
+    [SerializeField] private Toggle _notificationsToggle;
+    [SerializeField] private Toggle _audioToggle;
+
     private SettingsViewModel _viewModel;
     public void Setup(SettingsViewModel settingsViewModel)
     {

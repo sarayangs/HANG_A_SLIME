@@ -14,6 +14,11 @@ public class InitInstaller : MonoBehaviour
 
         var firebaseDatabase = new FirebaseDatabaseService();
         ServiceLocator.Instance.RegisterService<FirebaseDatabaseService>(firebaseDatabase);
+
+        var firebaseMessaging = new FirebaseMessagingService();
+        ServiceLocator.Instance.RegisterService<FirebaseMessagingService>(firebaseMessaging);
+        
+        firebaseMessaging.Init();
         
         var eventDispatcher = new EventDispatcherService();
         ServiceLocator.Instance.RegisterService<IEventDispatcherService>(eventDispatcher);
@@ -25,7 +30,6 @@ public class InitInstaller : MonoBehaviour
         var changeSceneUseCase = new ChangeSceneUseCase();
 
         new InitPresenter(initViewModel);
-        
         new InitController(initViewModel, loginUseCase, changeSceneUseCase);
     }
 }

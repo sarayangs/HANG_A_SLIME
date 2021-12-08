@@ -12,6 +12,8 @@ public class MenuInstaller : MonoBehaviour
     [SerializeField] private ScoreView _scoreView;
     [SerializeField] private SettingsView _settingsView;
     [SerializeField] private ChangeNameView _changeNameView;
+    [SerializeField] private LoginPanelView _loginPanelView;
+    [SerializeField] private RegisterPanelView _registerPanelView;
 
 
     private void Awake()
@@ -30,6 +32,12 @@ public class MenuInstaller : MonoBehaviour
 
         var changeNameViewModel = new ChangeNameViewModel();
         _changeNameView.Setup(changeNameViewModel);
+
+        var loginPanelViewModel = new LoginPanelViewModel();
+        _loginPanelView.Setup(loginPanelViewModel);
+
+        var registerPanelViewModel = new RegisterPanelViewModel();
+        _registerPanelView.Setup(registerPanelViewModel);
         
         var changeSceneUseCase = new ChangeSceneUseCase();
         var getUserDataUseCase = new GetUserDataUseCase();
@@ -39,10 +47,14 @@ public class MenuInstaller : MonoBehaviour
         new HomePresenter(homeViewModel);
         new ScorePresenter(scoreViewModel);
         new ChangeNamePresenter(changeNameViewModel);
+        new LoginPanelPresenter(loginPanelViewModel);
+        new RegisterPanelPresenter(registerPanelViewModel);
 
         new ButtonsController(buttonsViewModel,homeViewModel,scoreViewModel,settingsViewModel, rankingManagerUseCase);
         new HomeController(homeViewModel, changeNameViewModel, changeSceneUseCase, getUserDataUseCase);
         new ScoreController(scoreViewModel);
         new ChangeNameController(changeNameViewModel, udpateUserDataUseCase);
+        new LoginPanelController(loginPanelViewModel);
+        new RegisterPanelController(registerPanelViewModel);
     }
 }
