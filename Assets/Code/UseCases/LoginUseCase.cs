@@ -5,34 +5,41 @@ using UnityEngine.SceneManagement;
 
 public class LoginUseCase : ILogin
 {
-    public async Task Login()
+    public void CheckExistingUser()
+    {
+        var firebaseAuthService = ServiceLocator.Instance.GetService<FirebaseAuthService>();
+        var firebaseFirestoreService = ServiceLocator.Instance.GetService<FirebaseFirestoreService>();
+        firebaseFirestoreService.CheckExistingUser(firebaseAuthService.GetUserId());
+    }
+
+    public async Task LoginNewUser()
     {
         await Task.Delay(TimeSpan.FromSeconds(2));
         
         var firebaseAuthService = ServiceLocator.Instance.GetService<FirebaseAuthService>();
-        
-       if (firebaseAuthService.CheckExistingUser())
-        {
-            var userId = firebaseAuthService.GetUserId();
-            Debug.Log($"Existing User: {userId}");
-            
-           User user = new User(userId, "Sara");
-            
-            var firebaseDatabaseService = ServiceLocator.Instance.GetService<FirebaseDatabaseService>();
-            firebaseDatabaseService.AddData(user.Score, user.Name);
-        }
-        else
-        {
-            firebaseAuthService.LoginNewUser();
-            string userId = firebaseAuthService.GetUserId();
-            Debug.Log($"New User: {userId}");
+        var firebaseFirestoreService = ServiceLocator.Instance.GetService<FirebaseFirestoreService>();
+        var firebaseDatabaseService = ServiceLocator.Instance.GetService<FirebaseDatabaseService>();
 
-            User user = new User(userId, "Sara");
+        firebaseAuthService.Login();
+        
+        string userId = firebaseAuthService.GetUserId();
+        Debug.Log($"New User: {userId}");
+
+        User user = new User(userId, "Sara");
             
-            var firebaseFirestoreService = ServiceLocator.Instance.GetService<FirebaseFirestoreService>();
-            firebaseFirestoreService.AddToDatabase(user);
-           
-        }
+        firebaseFirestoreService.AddToDatabase(user);
+        firebaseDatabaseService.AddData(user.Score, user.Name);
+        
         SceneManager.LoadScene("Menu"); //TEMP!!!!!!
+    }
+
+    public async Task LoginExistingUser()
+    {
+        await Task.Delay(TimeSpan.FromSeconds(2));
+
+        Debug.Log("Ya existe");
+        
+        SceneManager.LoadScene("Menu"); //TEMP!!!!!!
+
     }
 }

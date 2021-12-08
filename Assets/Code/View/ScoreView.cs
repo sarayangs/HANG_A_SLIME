@@ -1,15 +1,16 @@
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UniRx;
 using DG.Tweening;
 
-public class ScoreView : MonoBehaviour
+public class ScoreView : View
 {
     [SerializeField] private ScoreItemView _scoreItemViewPrefab;
     [SerializeField] private RectTransform _scoreItemContainer;
 
     private List<ScoreItemView> _instantiatedScoreItems;
-
+    
     private ScoreViewModel _viewModel;
     public void Setup(ScoreViewModel scoreViewModel)
     {
@@ -28,14 +29,14 @@ public class ScoreView : MonoBehaviour
                 {
                     gameObject.GetComponent<RectTransform>().DOLocalMoveX(-transform.parent.gameObject.GetComponent<RectTransform>().rect.width, 0.5f).OnComplete(() => { gameObject.SetActive(isVisible); });
                 }
-            });
+            }).AddTo(_disposables);
 
         _viewModel
             .Scores
             .ObserveAdd()
-            .Subscribe(InstantiateScorePrefab);
+            .Subscribe(InstantiateScorePrefab)
+            .AddTo(_disposables);
     }
-
     private void InstantiateScorePrefab(CollectionAddEvent<ScoreItemViewModel> scoreItemEntity)
     {
         var scoreItemView = Instantiate(_scoreItemViewPrefab, _scoreItemContainer);

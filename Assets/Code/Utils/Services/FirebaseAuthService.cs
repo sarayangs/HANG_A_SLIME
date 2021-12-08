@@ -1,4 +1,6 @@
 using System;
+using UnityEngine;
+
 public class FirebaseAuthService
 {
     private readonly Firebase.Auth.FirebaseAuth _auth;
@@ -18,7 +20,7 @@ public class FirebaseAuthService
         return _auth.CurrentUser.UserId;
     }
 
-    public void LoginNewUser()
+    public void Login()
     {
        _auth.SignInAnonymouslyAsync().ContinueWith(task => {
             if (task.IsCanceled)

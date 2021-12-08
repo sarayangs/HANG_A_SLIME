@@ -24,6 +24,8 @@ public class InitInstaller : MonoBehaviour
         var loginUseCase = new LoginUseCase();
         var changeSceneUseCase = new ChangeSceneUseCase();
 
+        new InitPresenter(initViewModel);
+        
         new InitController(initViewModel, loginUseCase, changeSceneUseCase);
     }
 }

@@ -3,7 +3,7 @@ using UnityEngine;
 using UniRx;
 using DG.Tweening;
 
-public class ButtonsView : MonoBehaviour
+public class ButtonsView : View
 {
     [SerializeField] private Button _homeButton;
     [SerializeField] private Button _scoreButton;
@@ -33,17 +33,17 @@ public class ButtonsView : MonoBehaviour
         _buttonsViewModel.HomeIsPressed.Subscribe((isPressed) =>
         {
            DOColorOnButtons(_homeButton, isPressed);
-        });
+        }).AddTo(_disposables);
         
         _buttonsViewModel.ScoreIsPressed.Subscribe((isPressed) =>
         {
             DOColorOnButtons(_scoreButton, isPressed);
-        });
+        }).AddTo(_disposables);
         
         _buttonsViewModel.SettingsIsPressed.Subscribe((isPressed) =>
         {
             DOColorOnButtons(_settingsButton, isPressed);
-        });
+        }).AddTo(_disposables);
     }
 
     private void DOColorOnButtons(Button button, bool isPressed)

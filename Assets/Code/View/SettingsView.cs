@@ -2,7 +2,7 @@ using UnityEngine;
 using UniRx;
 using DG.Tweening;
 
-public class SettingsView : MonoBehaviour
+public class SettingsView : View
 {
     private SettingsViewModel _viewModel;
     public void Setup(SettingsViewModel settingsViewModel)
@@ -21,6 +21,6 @@ public class SettingsView : MonoBehaviour
                 {
                     gameObject.GetComponent<RectTransform>().DOLocalMoveX(-transform.parent.gameObject.GetComponent<RectTransform>().rect.width, 0.5f).OnComplete(() => { gameObject.SetActive(isVisible); });
                 }
-            });
+            }).AddTo(_disposables);
     }
 }

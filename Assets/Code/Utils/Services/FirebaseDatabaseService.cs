@@ -54,7 +54,6 @@ public class FirebaseDatabaseService
                                                 var rankingEntry = new RankingEntry(counter.ToString(),
                                                         userInfo[0], userInfo[1], userInfo[2]);
                                                  
-                                                Debug.Log("hi");
                                                 eventDispatcherService.Dispatch<RankingEntry>(rankingEntry);
                                                 counter++;
                                         }

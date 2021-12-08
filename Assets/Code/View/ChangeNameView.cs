@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UniRx;
 
-public class ChangeNameView : MonoBehaviour
+public class ChangeNameView : View
 {
     [SerializeField] private Button _saveButton;
     [SerializeField] private TMP_InputField _newName;
@@ -16,7 +16,7 @@ public class ChangeNameView : MonoBehaviour
         _viewModel.IsVisible.Subscribe(isVisible =>
         {
             gameObject.SetActive(isVisible);
-        });
+        }).AddTo(_disposables);
         
         _saveButton.onClick.AddListener(() =>
         {

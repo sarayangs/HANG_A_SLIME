@@ -4,7 +4,7 @@ using TMPro;
 using UniRx;
 using DG.Tweening;
 
-public class HomeView : MonoBehaviour
+public class HomeView : View
 {
     [SerializeField] private Button _playButton;
     [SerializeField] private Button _changeNameButton;
@@ -28,7 +28,7 @@ public class HomeView : MonoBehaviour
                 {
                     gameObject.GetComponent<RectTransform>().DOLocalMoveX(-transform.parent.gameObject.GetComponent<RectTransform>().rect.width, 0.5f).OnComplete(() => { gameObject.SetActive(isVisible); });
                 }
-            });
+            }).AddTo(_disposables);
         
         _playButton.onClick.AddListener(() =>
         {
@@ -43,6 +43,6 @@ public class HomeView : MonoBehaviour
         _viewModel.Name.Subscribe(name =>
         {
             _name.SetText(name);
-        });
+        }).AddTo(_disposables);
     }
 }

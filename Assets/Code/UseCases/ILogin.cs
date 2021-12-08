@@ -1,6 +1,8 @@
 using System.Threading.Tasks;
 
  public interface ILogin
-{
-    Task Login();
-}
+ {
+     void CheckExistingUser();
+    Task LoginNewUser();
+    Task LoginExistingUser();
+ }
