@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 
@@ -18,6 +19,7 @@ public class MenuInstaller : MonoBehaviour
 
     private void Awake()
     {
+        //VIEWMODELS AND VIEW SETUPS-------------------------------------------------------------
         var buttonsViewModel = new ButtonsViewModel();
         _buttonView.Setup(buttonsViewModel);
 
@@ -38,20 +40,29 @@ public class MenuInstaller : MonoBehaviour
 
         var registerPanelViewModel = new RegisterPanelViewModel();
         _registerPanelView.Setup(registerPanelViewModel);
+
         
-        var changeSceneUseCase = new ChangeSceneUseCase();
-        var getUserDataUseCase = new GetUserDataUseCase();
+        //GET SERVICES FROM SERVICE LOCATOR-------------------------------------------------------------
+        var sceneHandler = ServiceLocator.Instance.GetService<UnitySceneHandler>();
+        var userRepository =  ServiceLocator.Instance.GetService<UserRepository>();
+        var eventDispatcherService = ServiceLocator.Instance.GetService<IEventDispatcherService>();
+        
+        //USE CASES-------------------------------------------------------------------------------------
+        var changeSceneUseCase = new ChangeSceneUseCase(sceneHandler);
+        var getUserFromRepositoryUseCase = new GetUserFromRepositoryUseCase(userRepository, eventDispatcherService);
         var udpateUserDataUseCase = new UpdateUserDataUseCase();
         var rankingManagerUseCase = new RankingManagerUseCase();
 
+        //PRESENTERS-------------------------------------------------------------------------------------
         new HomePresenter(homeViewModel);
         new ScorePresenter(scoreViewModel);
         new ChangeNamePresenter(changeNameViewModel);
         new LoginPanelPresenter(loginPanelViewModel);
         new RegisterPanelPresenter(registerPanelViewModel);
 
+        //CONTROLLERS-------------------------------------------------------------------------------------
         new ButtonsController(buttonsViewModel,homeViewModel,scoreViewModel,settingsViewModel, rankingManagerUseCase);
-        new HomeController(homeViewModel, changeNameViewModel, changeSceneUseCase, getUserDataUseCase);
+        new HomeController(homeViewModel, changeNameViewModel, changeSceneUseCase, getUserFromRepositoryUseCase);
         new ScoreController(scoreViewModel);
         new ChangeNameController(changeNameViewModel, udpateUserDataUseCase);
         new LoginPanelController(loginPanelViewModel);

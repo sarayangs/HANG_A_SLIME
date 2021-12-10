@@ -1,42 +1,32 @@
 using System;
+using System.Threading.Tasks;
 using System.Collections.Generic;
+using Firebase.Auth;
 using UnityEngine;
 
-public class FirebaseAuthService
+public class FirebaseAuthService : IAuthenticationService
 {
     private readonly Firebase.Auth.FirebaseAuth _auth;
-
+    public string UserId { get; set; }
     public FirebaseAuthService()
     {
         _auth =  Firebase.Auth.FirebaseAuth.DefaultInstance;
     }
-
-    public bool CheckExistingUser()
+    public async Task<string> Login()
     {
-        return _auth.CurrentUser != null;
+        var user = await _auth.SignInAnonymouslyAsync();
+        
+        if (user != null)
+        {
+            UserId = user.UserId;
+            return UserId;
+        }
+        throw new Exception("SignInAnonymouslyAsync error.");
     }
 
-    public string GetUserId()
+    /*public void CreateEmailAndPassword(KeyValuePair<string, string> info)
     {
-        return _auth.CurrentUser.UserId;
-    }
-
-    public void Login()
-    {
-       _auth.SignInAnonymouslyAsync().ContinueWith(task => {
-            if (task.IsCanceled)
-            {
-                throw new Exception("SignInAnonymouslyAsync was canceled.");
-            }
-            if (task.IsFaulted) {
-                throw new Exception("SignInAnonymouslyAsync encountered an error: " + task.Exception);
-            }
-       });
-    }
-
-    public void CreateEmailAndPassword(KeyValuePair<string, string> info)
-    {
-        _auth.CreateUserWithEmailAndPasswordAsync(info.Key, info.Value).ContinueWith(task => {
+        _auth.CreateUserWithEmailAndPasswordAsync(info.Key, info.Value).ContinueWithOnMainThread(task => {
             if (task.IsCanceled) {
                 Debug.LogError("CreateUserWithEmailAndPasswordAsync was canceled.");
                 return;
@@ -53,5 +43,5 @@ public class FirebaseAuthService
             
             
         });
-    }
+    }*/
 }

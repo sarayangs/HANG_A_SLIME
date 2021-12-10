@@ -1,7 +1,7 @@
 ﻿using Firebase.Firestore;
 
 [FirestoreData]
-public class User
+public class User : IUserData
 {
     [FirestoreDocumentId]
     public string Id { get; set; }

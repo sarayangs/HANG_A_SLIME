@@ -9,11 +9,11 @@ public class HomePresenter
                 _viewModel = viewModel;
 
                 var eventDispatcher = ServiceLocator.Instance.GetService<IEventDispatcherService>();
-                eventDispatcher.Subscribe<User>(ChangeName);
+                eventDispatcher.Subscribe<string>(ChangeName);
         }
 
-        private void ChangeName(User data)
+        private void ChangeName(string name)
         {
-                _viewModel.Name.Value = data.Name;
+                _viewModel.Name.Value = name;
         }
 }

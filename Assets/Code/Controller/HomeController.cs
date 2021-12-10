@@ -5,15 +5,15 @@ public class HomeController
     private readonly HomeViewModel _viewModel;
     private readonly ChangeNameViewModel _changeNameViewModel;
     
-    private readonly IChangeScene _changeSceneUseCase;
-    private readonly IGetUserData _getUserDataUseCase;
+    private readonly ISceneHandler _changeSceneUseCase;
+    private readonly IGetUserFromRepository _getUserFromRepositoryUseCase;
 
-    public HomeController(HomeViewModel viewModel,ChangeNameViewModel changeNameViewModel, IChangeScene changeSceneUsecase, IGetUserData getUserDataUseCase)
+    public HomeController(HomeViewModel viewModel,ChangeNameViewModel changeNameViewModel, ISceneHandler changeSceneUsecase, IGetUserFromRepository getUserFromRepositoryUseCase)
     {
         _viewModel = viewModel;
         _changeNameViewModel = changeNameViewModel;
         _changeSceneUseCase = changeSceneUsecase;
-        _getUserDataUseCase = getUserDataUseCase;
+        _getUserFromRepositoryUseCase = getUserFromRepositoryUseCase;
 
         _viewModel.PlayButtonPressed
             .Subscribe((_) =>
@@ -26,6 +26,6 @@ public class HomeController
             _changeNameViewModel.IsVisible.Value = true;
         });
         
-        _getUserDataUseCase.GetUserData();
+        _getUserFromRepositoryUseCase.GetUser();
     }
 }

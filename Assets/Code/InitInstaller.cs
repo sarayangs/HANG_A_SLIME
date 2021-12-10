@@ -1,35 +1,58 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class InitInstaller : MonoBehaviour
 {
-    [SerializeField] private InitView _initView;
+    private readonly List<IDisposable> _disposables = new List<IDisposable>();
+    private LoadInitDataUseCase _loadInitDataUseCase;
+
     private void Awake()
     {
         var firebaseAuth = new FirebaseAuthService();
-        ServiceLocator.Instance.RegisterService<FirebaseAuthService>(firebaseAuth);
-        
         var firebaseFirestore = new FirebaseFirestoreService();
-        ServiceLocator.Instance.RegisterService<FirebaseFirestoreService>(firebaseFirestore);
-
         var firebaseDatabase = new FirebaseDatabaseService();
-        ServiceLocator.Instance.RegisterService<FirebaseDatabaseService>(firebaseDatabase);
-
         var firebaseMessaging = new FirebaseMessagingService();
-        ServiceLocator.Instance.RegisterService<FirebaseMessagingService>(firebaseMessaging);
         
-        firebaseMessaging.Init();
+        var sceneHandler = new UnitySceneHandler();
+        var userRepository = new UserRepository();
         
         var eventDispatcher = new EventDispatcherService();
-        ServiceLocator.Instance.RegisterService<IEventDispatcherService>(eventDispatcher);
-        
-        var initViewModel = new InitViewModel();
-        _initView.Setup(initViewModel);
-        
-        var loginUseCase = new LoginUseCase();
-        var changeSceneUseCase = new ChangeSceneUseCase();
 
-        new InitPresenter(initViewModel);
-        new InitController(initViewModel, loginUseCase, changeSceneUseCase);
+
+        //FIREBASE
+        ServiceLocator.Instance.RegisterService<FirebaseAuthService>(firebaseAuth);
+        ServiceLocator.Instance.RegisterService<FirebaseFirestoreService>(firebaseFirestore);
+        ServiceLocator.Instance.RegisterService<FirebaseDatabaseService>(firebaseDatabase);
+        ServiceLocator.Instance.RegisterService<FirebaseMessagingService>(firebaseMessaging);
+        
+        ServiceLocator.Instance.RegisterService<UnitySceneHandler>(sceneHandler);
+        ServiceLocator.Instance.RegisterService<UserRepository>(userRepository);
+        
+        ServiceLocator.Instance.RegisterService<IEventDispatcherService>(eventDispatcher);
+
+        
+        //firebaseMessaging.Init();
+        
+        
+        var authenticateUseCase = new AuthenticateUseCase(firebaseAuth);
+        var changeSceneUseCase = new ChangeSceneUseCase(sceneHandler);
+        var initNewUserUseCase = new InitNewUserUseCase(firebaseFirestore, firebaseAuth, userRepository);
+        var loadUserDataUseCase = new LoadUserDataUseCase(initNewUserUseCase, userRepository, firebaseFirestore, firebaseAuth);
+        
+        //USECASE
+        _loadInitDataUseCase = new LoadInitDataUseCase(changeSceneUseCase, authenticateUseCase, loadUserDataUseCase);
+    }
+
+    private void Start()
+    {
+        _loadInitDataUseCase.Init();
+    }
+    private void OnDestroy()
+    {
+        foreach (var disposable in _disposables)
+        {
+            disposable.Dispose();
+        }
     }
 }

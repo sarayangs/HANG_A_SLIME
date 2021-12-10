@@ -3,16 +3,27 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class LoginUseCase : ILogin
+public class AuthenticateUseCase : IAuthenticator
 {
-    public void CheckExistingUser()
+    private readonly IAuthenticationService _authenticationService;
+    
+    public AuthenticateUseCase(IAuthenticationService authenticationService)
+    {
+        _authenticationService = authenticationService;
+    }
+    
+    public async Task Authenticate()
+    {
+        var userId = await _authenticationService.Login();
+    }
+    /*public void CheckExistingUser()
     {
         var firebaseAuthService = ServiceLocator.Instance.GetService<FirebaseAuthService>();
         var firebaseFirestoreService = ServiceLocator.Instance.GetService<FirebaseFirestoreService>();
         firebaseFirestoreService.CheckExistingUser(firebaseAuthService.GetUserId());
-    }
+    }*/
 
-    public async Task LoginNewUser()
+    /*public async Task LoginNewUser()
     {
         await Task.Delay(TimeSpan.FromSeconds(2));
         
@@ -31,9 +42,9 @@ public class LoginUseCase : ILogin
         firebaseDatabaseService.AddData(user.Score, user.Name);
         
         SceneManager.LoadScene("Menu"); //TEMP!!!!!!
-    }
+    }*/
 
-    public async Task LoginExistingUser()
+   /* public async Task LoginExistingUser()
     {
         await Task.Delay(TimeSpan.FromSeconds(2));
 
@@ -41,5 +52,6 @@ public class LoginUseCase : ILogin
         
         SceneManager.LoadScene("Menu"); //TEMP!!!!!!
 
-    }
+    }*/
+
 }
