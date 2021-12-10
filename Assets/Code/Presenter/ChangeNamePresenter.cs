@@ -7,7 +7,7 @@
                 _viewModel = viewModel;
                 
                 var eventDispatcher = ServiceLocator.Instance.GetService<IEventDispatcherService>();
-                eventDispatcher.Subscribe<User>((data) =>
+                eventDispatcher.Subscribe<string>((data) =>
                 {
                         _viewModel.IsVisible.Value = false;
                 });

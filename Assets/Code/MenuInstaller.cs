@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Xml.Serialization;
+using Firebase.Auth;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 
@@ -43,14 +44,16 @@ public class MenuInstaller : MonoBehaviour
 
         
         //GET SERVICES FROM SERVICE LOCATOR-------------------------------------------------------------
+        var firebaseAuth = ServiceLocator.Instance.GetService<FirebaseAuthService>();
+        var firebaseFirestore = ServiceLocator.Instance.GetService<FirebaseFirestoreService>();
         var sceneHandler = ServiceLocator.Instance.GetService<UnitySceneHandler>();
-        var userRepository =  ServiceLocator.Instance.GetService<UserRepository>();
+        var userRepository = ServiceLocator.Instance.GetService<UserRepository>();
         var eventDispatcherService = ServiceLocator.Instance.GetService<IEventDispatcherService>();
         
         //USE CASES-------------------------------------------------------------------------------------
         var changeSceneUseCase = new ChangeSceneUseCase(sceneHandler);
         var getUserFromRepositoryUseCase = new GetUserFromRepositoryUseCase(userRepository, eventDispatcherService);
-        var udpateUserDataUseCase = new UpdateUserDataUseCase();
+        var udpateUserDataUseCase = new UpdateUserDataUseCase(firebaseAuth, firebaseFirestore, eventDispatcherService, userRepository);
         var rankingManagerUseCase = new RankingManagerUseCase();
 
         //PRESENTERS-------------------------------------------------------------------------------------
