@@ -54,7 +54,11 @@ public class FirebaseAuthService : IAuthenticationService
         
         if (user != null) {
             Debug.Log($"user registered: {info.Key}, {info.Value}");
-            var userEntity = new UserEntity(info.Key, info.Value);
+            
+            var userEntity = new UserEntity(UserId, string.Empty);
+            
+            userEntity.Email = info.Key;
+            userEntity.Password = info.Value;
             
             return userEntity;
         }

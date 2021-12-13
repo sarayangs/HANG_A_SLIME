@@ -7,9 +7,10 @@
         _viewModel = viewModel;
                 
         var eventDispatcher = ServiceLocator.Instance.GetService<IEventDispatcherService>();
-        eventDispatcher.Subscribe<UserDto>((data) =>
+        
+        eventDispatcher.Subscribe<bool>((data) =>
         {
-            _viewModel.IsVisible.Value = false;
+            _viewModel.IsVisible.Value = data;
         });
                 
     }

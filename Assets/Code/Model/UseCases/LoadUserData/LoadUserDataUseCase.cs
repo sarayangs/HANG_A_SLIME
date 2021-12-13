@@ -1,17 +1,19 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class LoadUserDataUseCase : ILoadUserData
 {
     private readonly IUserInitializer _userInitializer;
-    private readonly IAccessUserData _accesUserData;
+    private readonly IAccessUserData _userRepository;
     private readonly IDatabaseService _databaseService;
     private readonly IAuthenticationService _authService;
 
-    public LoadUserDataUseCase(IUserInitializer userInitializer, IAccessUserData accessUserData, IDatabaseService databaseService, IAuthenticationService authService)
+
+    public LoadUserDataUseCase(IUserInitializer userInitializer, IAccessUserData userRepository, IDatabaseService databaseService, IAuthenticationService authService)
     {
         _userInitializer = userInitializer;
-        _accesUserData = accessUserData;
+        _userRepository = userRepository;
         _databaseService = databaseService;
         _authService = authService;
     }
@@ -23,9 +25,24 @@ public class LoadUserDataUseCase : ILoadUserData
 
         if (existUser)
         {
-            Debug.Log($"user exists: {userId}");
+            IReadOnlyList<UserEntity> registeredUsers = _userRepository.GetAll();
+
+            if (registeredUsers != null)
+            {
+                foreach (var user in registeredUsers)
+                {
+                    if (user.UserId == userId)
+                    {
+                        Debug.Log($"Registered user: {user.Email}");
+                        _userRepository.SetLocalUser(user);
+                        return;
+                    }
+                }
+            }
+
+            Debug.Log($"Anonymous user exists: {userId}");
             var userData = await _databaseService.Load<UserDto>("users", userId);
-            _accesUserData.SetLocalUser(new UserEntity(userData.Id, userData.Name));
+            _userRepository.SetLocalUser(new UserEntity(userData.Id, userData.Name));
 
             return;
         }

@@ -55,7 +55,7 @@ public class MenuInstaller : MonoBehaviour
         var getUserFromRepositoryUseCase = new GetUserFromRepositoryUseCase(userRepository, eventDispatcherService);
         var udpateUserDataUseCase = new UpdateUserDataUseCase(firebaseAuth, firebaseFirestore, eventDispatcherService, userRepository);
         var rankingManagerUseCase = new RankingManagerUseCase();
-        var registerUserUseCase = new RegisterUserUseCase(firebaseAuth);
+        var registerUserUseCase = new RegisterUserUseCase(firebaseAuth, userRepository, eventDispatcherService);
 
         //PRESENTERS-------------------------------------------------------------------------------------
         new HomePresenter(homeViewModel);

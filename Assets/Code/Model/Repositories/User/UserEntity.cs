@@ -4,7 +4,7 @@
 public class UserEntity : IUserData
 {
     public readonly string UserId;
-    public string Name { get; private set; }
+    public string Name { get; set; }
     public string Email { get; set; }
     public string Password { get; set; }
 

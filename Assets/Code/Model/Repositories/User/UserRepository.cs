@@ -26,6 +26,7 @@ public class UserRepository : IAccessUserData
     {
         _users.Add(userEntity);
         SaveUsersOnPlayerPrefs();
+        
         SetLocalUser(userEntity);
     }
 
@@ -35,6 +36,9 @@ public class UserRepository : IAccessUserData
         var usersJson = PlayerPrefs.GetString(_userKey, JsonUtility.ToJson(defaultValue));
         var users = JsonUtility.FromJson<UsersDtos>(usersJson);
 
+        if (users.RegisteredUsers == null)
+            return null;
+        
         foreach (var userDto in users.RegisteredUsers)
         {
             var userEntity = new UserEntity(userDto.Id, userDto.Name);
