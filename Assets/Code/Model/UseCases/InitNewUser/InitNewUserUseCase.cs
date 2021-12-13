@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class InitNewUserUseCase : IUserInitializer
@@ -18,12 +19,12 @@ public class InitNewUserUseCase : IUserInitializer
     public async Task Init()
     {
         var userId = _authenticationService.UserId;
-        var name = "Random";
-
-        var userEntity = new UserEntity(userId, name);
+        var randomName = new RandomName();
+        
+        var userEntity = new UserEntity(userId, randomName.Name);
         _accessUserData.SetLocalUser(userEntity);
 
-        var user = new User(userId, name);
+        var user = new User(userId, randomName.Name);
         Debug.Log($"New user: {userId}");
         await _databaseService.Save(user, "users", userId);
     }
