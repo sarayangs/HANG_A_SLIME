@@ -55,6 +55,7 @@ public class MenuInstaller : MonoBehaviour
         var getUserFromRepositoryUseCase = new GetUserFromRepositoryUseCase(userRepository, eventDispatcherService);
         var udpateUserDataUseCase = new UpdateUserDataUseCase(firebaseAuth, firebaseFirestore, eventDispatcherService, userRepository);
         var rankingManagerUseCase = new RankingManagerUseCase();
+        var registerUserUseCase = new RegisterUserUseCase(firebaseAuth);
 
         //PRESENTERS-------------------------------------------------------------------------------------
         new HomePresenter(homeViewModel);
@@ -67,8 +68,9 @@ public class MenuInstaller : MonoBehaviour
         new ButtonsController(buttonsViewModel,homeViewModel,scoreViewModel,settingsViewModel, rankingManagerUseCase);
         new HomeController(homeViewModel, changeNameViewModel, changeSceneUseCase, getUserFromRepositoryUseCase);
         new ScoreController(scoreViewModel);
+        new SettingsController(settingsViewModel, loginPanelViewModel, registerPanelViewModel);
         new ChangeNameController(changeNameViewModel, udpateUserDataUseCase);
         new LoginPanelController(loginPanelViewModel);
-        new RegisterPanelController(registerPanelViewModel);
+        new RegisterPanelController(registerPanelViewModel, registerUserUseCase);
     }
 }

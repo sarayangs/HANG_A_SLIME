@@ -29,5 +29,15 @@ public class SettingsView : View
                     gameObject.GetComponent<RectTransform>().DOLocalMoveX(-transform.parent.gameObject.GetComponent<RectTransform>().rect.width, 0.5f).OnComplete(() => { gameObject.SetActive(isVisible); });
                 }
             }).AddTo(_disposables);
+        
+        _loginButton.onClick.AddListener(() =>
+        {
+            _viewModel.LoginButtonPressed.Execute();
+        });
+        
+        _registerButton.onClick.AddListener(() =>
+        {
+            _viewModel.RegisterButtonPressed.Execute();
+        });
     }
 }

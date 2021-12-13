@@ -24,7 +24,7 @@ public class LoadUserDataUseCase : ILoadUserData
         if (existUser)
         {
             Debug.Log($"user exists: {userId}");
-            var userData = await _databaseService.Load<User>("users", userId);
+            var userData = await _databaseService.Load<UserDto>("users", userId);
             _accesUserData.SetLocalUser(new UserEntity(userData.Id, userData.Name));
 
             return;

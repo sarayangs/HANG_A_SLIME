@@ -11,7 +11,7 @@ public class FirebaseAuthService : IAuthenticationService
     public string UserId { get; set; }
     public FirebaseAuthService()
     {
-        _auth =  Firebase.Auth.FirebaseAuth.DefaultInstance;
+        _auth =  FirebaseAuth.DefaultInstance;
     }
     public async Task<string> Login()
     {
@@ -19,6 +19,11 @@ public class FirebaseAuthService : IAuthenticationService
 
         if (checkDependencies == DependencyStatus.Available)
         {
+            if (_auth.CurrentUser != null)
+            {
+                UserId = _auth.CurrentUser.UserId;
+                return UserId;
+            }
             var user = await _auth.SignInAnonymouslyAsync();
         
             if (user != null)
@@ -33,24 +38,26 @@ public class FirebaseAuthService : IAuthenticationService
        
     }
 
-    /*public void CreateEmailAndPassword(KeyValuePair<string, string> info)
+    public async Task<UserEntity> RegisterUser(KeyValuePair<string, string> info)
     {
-        _auth.CreateUserWithEmailAndPasswordAsync(info.Key, info.Value).ContinueWithOnMainThread(task => {
-            if (task.IsCanceled) {
-                Debug.LogError("CreateUserWithEmailAndPasswordAsync was canceled.");
-                return;
-            }
-            if (task.IsFaulted) {
-                Debug.LogError("CreateUserWithEmailAndPasswordAsync encountered an error: " + task.Exception);
-                return;
-            }
+        FirebaseUser user = null;
+        
+        try
+        {
+            user = await _auth.CreateUserWithEmailAndPasswordAsync(info.Key, info.Value);
+        }
+        catch (Exception x)
+        {
+            Debug.LogError(x);
 
-            // Firebase user has been created.
-            Firebase.Auth.FirebaseUser newUser = task.Result;
-            Debug.LogFormat("Firebase user created successfully: {0} ({1})",
-                newUser.DisplayName, newUser.UserId);
+        }
+        
+        if (user != null) {
+            Debug.Log($"user registered: {info.Key}, {info.Value}");
+            var userEntity = new UserEntity(info.Key, info.Value);
             
-            
-        });
-    }*/
+            return userEntity;
+        }
+        throw new Exception("CreateUserWithEmailAndPasswordAsync error.");
+    }
 }

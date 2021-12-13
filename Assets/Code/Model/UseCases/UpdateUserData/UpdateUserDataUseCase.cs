@@ -19,7 +19,7 @@ public class UpdateUserDataUseCase : IUpdateUserData
     {
         string userId = _authService.UserId;
         
-        var newUser = new User(userId, newName);
+        var newUser = new UserDto(userId, newName);
         var newUserEntity = new UserEntity(userId, newName);
         
         _databaseService.Save(newUser, "users", userId);

@@ -24,7 +24,7 @@ public class InitNewUserUseCase : IUserInitializer
         var userEntity = new UserEntity(userId, randomName.Name);
         _accessUserData.SetLocalUser(userEntity);
 
-        var user = new User(userId, randomName.Name);
+        var user = new UserDto(userId, randomName.Name);
         Debug.Log($"New user: {userId}");
         await _databaseService.Save(user, "users", userId);
     }

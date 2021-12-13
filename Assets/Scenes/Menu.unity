@@ -5952,7 +5952,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4db01cf8385b49c7a3284e10d167fee2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _loginButton: {fileID: 216472670}
+  _registerButton: {fileID: 216472670}
   _email: {fileID: 432621442}
   _password: {fileID: 1885973554}
 --- !u!1 &1583674796
@@ -7278,10 +7278,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14a09a9a4232aa949b2170739d043f28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _loginButton: {fileID: 0}
-  _registerButton: {fileID: 0}
-  _notificationsToggle: {fileID: 0}
-  _audioToggle: {fileID: 0}
+  _loginButton: {fileID: 1762129005}
+  _registerButton: {fileID: 1547905411}
+  _notificationsToggle: {fileID: 521734468}
+  _audioToggle: {fileID: 568139101}
 --- !u!1 &2070562494
 GameObject:
   m_ObjectHideFlags: 0

@@ -6,7 +6,7 @@ using UniRx;
 
 public class RegisterPanelView : View
 {
-    [SerializeField] private Button _loginButton;
+    [SerializeField] private Button _registerButton;
     [SerializeField] private TMP_InputField _email;
     [SerializeField] private TMP_InputField _password;
 
@@ -20,7 +20,7 @@ public class RegisterPanelView : View
             gameObject.SetActive(isVisible);
         }).AddTo(_disposables);
         
-        _loginButton.onClick.AddListener(() =>
+        _registerButton.onClick.AddListener(() =>
         {
             _viewModel.RegisterButtonPressed.Execute(new KeyValuePair<string, string>(_email.text, _password.text));
         });

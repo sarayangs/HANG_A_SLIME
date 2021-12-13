@@ -1,7 +1,7 @@
 ﻿using Firebase.Firestore;
 
 [FirestoreData]
-public class User : IUserData
+public class UserDto : IUserData
 {
     [FirestoreDocumentId]
     public string Id { get; set; }
@@ -10,11 +10,11 @@ public class User : IUserData
 
     public int Score;
 
-    public User()
+    public UserDto()
     {
     }
 
-    public User(string id, string name)
+    public UserDto(string id, string name)
     {
         Id = id;
         Name = name;
