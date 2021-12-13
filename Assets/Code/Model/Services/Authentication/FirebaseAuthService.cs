@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using Firebase;
 using Firebase.Auth;
 using UnityEngine;
 
@@ -14,14 +15,22 @@ public class FirebaseAuthService : IAuthenticationService
     }
     public async Task<string> Login()
     {
-        var user = await _auth.SignInAnonymouslyAsync();
-        
-        if (user != null)
+        var checkDependencies = await Firebase.FirebaseApp.CheckDependenciesAsync();
+
+        if (checkDependencies == DependencyStatus.Available)
         {
-            UserId = user.UserId;
-            return UserId;
+            var user = await _auth.SignInAnonymouslyAsync();
+        
+            if (user != null)
+            {
+                UserId = user.UserId;
+                return UserId;
+            }
+            throw new Exception("SignInAnonymouslyAsync error.");
         }
-        throw new Exception("SignInAnonymouslyAsync error.");
+ 
+        throw new Exception("Dependency error");
+       
     }
 
     /*public void CreateEmailAndPassword(KeyValuePair<string, string> info)
