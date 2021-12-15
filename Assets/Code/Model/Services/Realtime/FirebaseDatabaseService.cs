@@ -3,7 +3,7 @@ using Firebase.Database;
 using Firebase.Extensions;
 using UnityEngine;
 
-public class FirebaseDatabaseService
+public class FirebaseDatabaseService : IRealtimeDatabase
 {
         private DatabaseReference databaseReference;
 

@@ -26,6 +26,6 @@ public class HomeController
             _changeNameViewModel.IsVisible.Value = true;
         });
         
-        _getUserFromRepositoryUseCase.GetUser();
+        _getUserFromRepositoryUseCase.GetUserName();
     }
 }

@@ -5,9 +5,9 @@ using System.Collections.Generic;
 [Serializable]
 public class UsersDtos
 {
-    public List<UserDto> RegisteredUsers;
+    public List<RegisteredUser> RegisteredUsers;
 
-    public UsersDtos(List<UserDto> registeredUsers)
+    public UsersDtos(List<RegisteredUser> registeredUsers)
     {
         RegisteredUsers = registeredUsers;
     }  

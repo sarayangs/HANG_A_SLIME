@@ -1,4 +1,5 @@
 ﻿public interface IGetUserFromRepository
 {
-        void GetUser();
+        void GetUserName();
+        void GetUserSettings();
 }

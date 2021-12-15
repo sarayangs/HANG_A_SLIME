@@ -38,7 +38,7 @@ public class FirebaseAuthService : IAuthenticationService
        
     }
 
-    public async Task<UserEntity> RegisterUser(KeyValuePair<string, string> info)
+    public async Task<RegisteredUser> RegisterUser(KeyValuePair<string, string> info)
     {
         FirebaseUser user = null;
         
@@ -46,22 +46,40 @@ public class FirebaseAuthService : IAuthenticationService
         {
             user = await _auth.CreateUserWithEmailAndPasswordAsync(info.Key, info.Value);
         }
-        catch (Exception x)
+        catch (Exception error)
         {
-            Debug.LogError(x);
-
+            Debug.LogError(error);
         }
         
         if (user != null) {
             Debug.Log($"user registered: {info.Key}, {info.Value}");
             
-            var userEntity = new UserEntity(UserId, string.Empty);
-            
-            userEntity.Email = info.Key;
-            userEntity.Password = info.Value;
-            
+            var userEntity = new RegisteredUser(user.UserId, user.DisplayName, info.Key, info.Value);
             return userEntity;
         }
         throw new Exception("CreateUserWithEmailAndPasswordAsync error.");
+    }
+
+    public async Task<RegisteredUser> SignIn(KeyValuePair<string, string> info)
+    {
+
+        FirebaseUser user = null;
+
+        try
+        {
+            user = await _auth.SignInWithEmailAndPasswordAsync(info.Key, info.Value);
+        }
+        catch (Exception error)
+        {
+            Debug.Log(error);
+        }
+
+        if (user != null)
+        {
+            var registeredUser = new RegisteredUser(user.UserId, user.DisplayName, user.Email, info.Value);
+            return registeredUser;
+        }
+
+        return null;
     }
 }

@@ -1,15 +1,15 @@
 ﻿public class LoginPanelPresenter
 {
         private readonly LoginPanelViewModel _viewModel;
-
-        public LoginPanelPresenter(LoginPanelViewModel viewModel)
+        private readonly IEventDispatcherService _eventDispatcherService;
+        public LoginPanelPresenter(LoginPanelViewModel viewModel,  IEventDispatcherService eventDispatcherService)
         {
                 _viewModel = viewModel;
+                _eventDispatcherService = eventDispatcherService;
                 
-                var eventDispatcher = ServiceLocator.Instance.GetService<IEventDispatcherService>();
-                eventDispatcher.Subscribe<UserDto>((data) =>
+                _eventDispatcherService.Subscribe<bool>((data) =>
                 {
-                        _viewModel.IsVisible.Value = false;
+                        _viewModel.IsVisible.Value = data;
                 });
                 
         }

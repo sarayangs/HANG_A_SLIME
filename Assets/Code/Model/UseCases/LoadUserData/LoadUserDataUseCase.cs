@@ -5,17 +5,23 @@ using UnityEngine;
 public class LoadUserDataUseCase : ILoadUserData
 {
     private readonly IUserInitializer _userInitializer;
-    private readonly IAccessUserData _userRepository;
     private readonly IDatabaseService _databaseService;
     private readonly IAuthenticationService _authService;
+    
+    private readonly IAccessUserData _userRepository;
+    private readonly IRegisteredUsersRepository _registeredUsers;
 
 
-    public LoadUserDataUseCase(IUserInitializer userInitializer, IAccessUserData userRepository, IDatabaseService databaseService, IAuthenticationService authService)
+    public LoadUserDataUseCase(IUserInitializer userInitializer, IAccessUserData userRepository, 
+        IRegisteredUsersRepository registeredUsers, IDatabaseService databaseService, IAuthenticationService authService)
     {
         _userInitializer = userInitializer;
-        _userRepository = userRepository;
         _databaseService = databaseService;
         _authService = authService;
+        
+        _userRepository = userRepository;
+        _registeredUsers = registeredUsers;
+
     }
 
     public async Task LoadUserData()
@@ -25,24 +31,28 @@ public class LoadUserDataUseCase : ILoadUserData
 
         if (existUser)
         {
-            IReadOnlyList<UserEntity> registeredUsers = _userRepository.GetAll();
+            var userData = await _databaseService.Load<UserDto>("users", userId);
+           IReadOnlyList<RegisteredUser> registeredUsers = _registeredUsers.GetAll();
 
-            if (registeredUsers != null)
+           if (registeredUsers != null)
             {
                 foreach (var user in registeredUsers)
                 {
                     if (user.UserId == userId)
                     {
                         Debug.Log($"Registered user: {user.Email}");
-                        _userRepository.SetLocalUser(user);
+                        
+                        var registeredUser = new UserEntity(user.UserId, user.Name, userData.Notifications, userData.Audio);
+                        
+                        _userRepository.SetLocalUser(registeredUser);
                         return;
                     }
                 }
             }
 
             Debug.Log($"Anonymous user exists: {userId}");
-            var userData = await _databaseService.Load<UserDto>("users", userId);
-            _userRepository.SetLocalUser(new UserEntity(userData.Id, userData.Name));
+            
+            _userRepository.SetLocalUser(new UserEntity(userData.Id, userData.Name, userData.Notifications, userData.Audio));
 
             return;
         }

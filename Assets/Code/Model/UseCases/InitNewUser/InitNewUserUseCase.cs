@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class InitNewUserUseCase : IUserInitializer
 {
-    private readonly IDatabaseService _databaseService; //firestore
+    private readonly IDatabaseService _databaseService;
     private readonly IAuthenticationService _authenticationService;
     private readonly IAccessUserData _accessUserData;
     
@@ -21,11 +21,12 @@ public class InitNewUserUseCase : IUserInitializer
         var userId = _authenticationService.UserId;
         var randomName = new RandomName();
         
-        var userEntity = new UserEntity(userId, randomName.Name);
-        _accessUserData.SetLocalUser(userEntity);
-
-        var user = new UserDto(userId, randomName.Name);
+        var userEntity = new UserEntity(userId, randomName.Name, true, true);
+        var user = new UserDto(userId, randomName.Name, userEntity.Notifications, userEntity.Audio);
+        
         Debug.Log($"New user: {userId}");
+        
+        _accessUserData.SetLocalUser(userEntity);
         await _databaseService.Save(user, "users", userId);
     }
 }

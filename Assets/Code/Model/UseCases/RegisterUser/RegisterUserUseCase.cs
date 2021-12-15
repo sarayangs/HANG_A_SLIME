@@ -5,27 +5,26 @@ using UnityEngine;
 public class RegisterUserUseCase :IRegisterUser
 {
     private readonly IAuthenticationService _authenticationService;
-    private readonly IAccessUserData _userRepository;
+    private readonly IRegisteredUsersRepository _registeredUsersRepository;
+    private readonly IAccessUserData _accessUserData;
     private readonly IEventDispatcherService _eventDispatcherService;
-    
-    private List<UserEntity> _users;
 
-    public RegisterUserUseCase(IAuthenticationService authenticationService, IAccessUserData userRepository, IEventDispatcherService eventDispatcherService)
+    public RegisterUserUseCase(IAuthenticationService authenticationService, IAccessUserData accessUserData, IRegisteredUsersRepository registeredUsersRepository, IEventDispatcherService eventDispatcherService)
     {
         _authenticationService = authenticationService;
         _eventDispatcherService = eventDispatcherService;
-        _userRepository = userRepository;
+        _registeredUsersRepository = registeredUsersRepository;
+        _accessUserData = accessUserData;
     }
     
     public async Task Register(KeyValuePair<string, string> emailPassword)
     {
         var user = await _authenticationService.RegisterUser(emailPassword);
-        user.Name = _userRepository.GetLocalUser().Name;
+        user.Name = _accessUserData.GetLocalUser().Name;
         
-        _userRepository.SetLocalUserWithMailAndPass(user);
+        _registeredUsersRepository.AddUserToRepository(user);
         
         _eventDispatcherService.Dispatch<bool>(false);
         
     }
-    
 }

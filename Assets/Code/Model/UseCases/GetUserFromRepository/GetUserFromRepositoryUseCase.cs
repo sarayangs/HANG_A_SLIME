@@ -8,8 +8,13 @@
         _accessUserData = accessUserData; //repository
         _eventDispatcherService = eventDispatcherService;
     }
-    public void GetUser()
+    public void GetUserName()
     {
         _eventDispatcherService.Dispatch<string>(_accessUserData.GetLocalUser().Name);
+    }
+
+    public void GetUserSettings()
+    {
+        _eventDispatcherService.Dispatch<UserEntity>(_accessUserData.GetLocalUser());
     }
 }

@@ -29,6 +29,19 @@ public class SettingsView : View
                     gameObject.GetComponent<RectTransform>().DOLocalMoveX(-transform.parent.gameObject.GetComponent<RectTransform>().rect.width, 0.5f).OnComplete(() => { gameObject.SetActive(isVisible); });
                 }
             }).AddTo(_disposables);
+
+        _viewModel.NotificationsOn.Subscribe(isOn => { _notificationsToggle.isOn = isOn; });
+        _viewModel.AudioOn.Subscribe(isOn => { _audioToggle.isOn = isOn; });
+
+        _notificationsToggle.OnValueChangedAsObservable().Subscribe(isOn =>
+        {
+            _viewModel.OnNotificationChange.Execute(isOn);
+        });
+        
+        _audioToggle.OnValueChangedAsObservable().Subscribe(isOn =>
+        {
+            _viewModel.OnAudioChange.Execute(isOn);
+        });
         
         _loginButton.onClick.AddListener(() =>
         {

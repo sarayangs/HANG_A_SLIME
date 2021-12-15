@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class FirebaseMessagingService
+public class FirebaseMessagingService : IMessagingService
 {
     public void Init()
     {
