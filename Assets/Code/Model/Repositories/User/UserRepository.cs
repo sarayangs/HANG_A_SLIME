@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class AccessUserData : IAccessUserData
 {
-    private readonly string _userKey = "UserKey";
-    
     private UserEntity _userEntity;
     private List<UserEntity> _users;
 

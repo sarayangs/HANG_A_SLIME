@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
 public class RegisteredUsersRepository : IRegisteredUsersRepository
@@ -43,8 +45,10 @@ public class RegisteredUsersRepository : IRegisteredUsersRepository
         
         foreach (var userDto in users.RegisteredUsers)
         {
-            Debug.Log(userDto.UserId);
-            _users.Add(userDto);
+            var registeredUserDecrypted = new RegisteredUser(userDto.UserId, userDto.Name, Decrypt(userDto.Email),
+                Decrypt(userDto.Password));
+            
+            _users.Add(registeredUserDecrypted);
         }
         return _users;
     }
@@ -55,7 +59,10 @@ public class RegisteredUsersRepository : IRegisteredUsersRepository
         
         foreach (var entity in _users)
         {
-            registeredUsers.Add(entity);
+            var encryptedUser = new RegisteredUser(entity.UserId, entity.Name, Encrypt(entity.Email),
+                Encrypt(entity.Password));
+            
+            registeredUsers.Add(encryptedUser);
         }
 
         var json = JsonUtility.ToJson(new UsersDtos(registeredUsers));
@@ -63,4 +70,31 @@ public class RegisteredUsersRepository : IRegisteredUsersRepository
         PlayerPrefs.SetString(_userKey, json);
         PlayerPrefs.Save();
     }
+
+    private string Encrypt(string info)
+    {
+        byte[] bytes = ASCIIEncoding.ASCII.GetBytes(info);  
+        string encrypted = Convert.ToBase64String(bytes);  
+        return encrypted;
+    }
+
+    private string Decrypt(string info)
+    {
+        byte[] bytes;  
+        string decrypted;  
+        
+        try  
+        {  
+            bytes = Convert.FromBase64String(info);  
+            decrypted = ASCIIEncoding.ASCII.GetString(bytes);  
+        }  
+        catch (FormatException error)   
+        {  
+            Debug.LogError(error);
+            decrypted = "";  
+        }  
+        
+        return decrypted;  
+    }
+
 }
