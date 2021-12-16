@@ -1,6 +1,6 @@
 using UniRx;
 
-public class ButtonsController
+public class ButtonsController : Controller
 {
     public readonly ButtonsViewModel _buttonViewModel;
     private readonly IRankingManager _rankingManagerUseCase;
@@ -13,17 +13,17 @@ public class ButtonsController
 
         _buttonViewModel.HomeButtonPressed
             .Subscribe(
-            (_) =>
-            {
-                homeViewModel.IsVisible.Value = true;
-                scoreViewModel.IsVisible.Value = false;
-                settingsViewModel.IsVisible.Value = false;
+                (_) =>
+                {
+                    homeViewModel.IsVisible.Value = true;
+                    scoreViewModel.IsVisible.Value = false;
+                    settingsViewModel.IsVisible.Value = false;
 
-                _buttonViewModel.HomeIsPressed.Value = true;
-                _buttonViewModel.ScoreIsPressed.Value = false;
-                _buttonViewModel.SettingsIsPressed.Value = false;
+                    _buttonViewModel.HomeIsPressed.Value = true;
+                    _buttonViewModel.ScoreIsPressed.Value = false;
+                    _buttonViewModel.SettingsIsPressed.Value = false;
 
-            });
+                }).AddTo(_disposables);
 
         _buttonViewModel.ScoreButtonPressed
             .Subscribe(
@@ -39,7 +39,7 @@ public class ButtonsController
                 
                 _rankingManagerUseCase.GetAllData();
 
-            });
+            }).AddTo(_disposables);
 
         _buttonViewModel.SettingsButtonPressed
             .Subscribe(
@@ -52,6 +52,6 @@ public class ButtonsController
                 _buttonViewModel.HomeIsPressed.Value = false;
                 _buttonViewModel.ScoreIsPressed.Value = false;
                 _buttonViewModel.SettingsIsPressed.Value = true;
-            });
+            }).AddTo(_disposables);
     }
 }

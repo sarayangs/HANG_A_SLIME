@@ -1,7 +1,7 @@
 using UniRx;
 using UnityEngine;
 
-public class ChangeNameController
+public class ChangeNameController : Controller
 {
     private readonly  ChangeNameViewModel _viewModel;
     private readonly IUpdateUserData _updateUserDataUseCase;
@@ -14,6 +14,6 @@ public class ChangeNameController
         _viewModel.SaveButtonPressed.Subscribe((name) =>
         {
             _updateUserDataUseCase.UpdateName(name);
-        });
+        }).AddTo(_disposables);
     }
 }

@@ -17,7 +17,7 @@ public class ChangeNameView : View
         {
             gameObject.SetActive(isVisible);
         }).AddTo(_disposables);
-        
+
         _saveButton.onClick.AddListener(() =>
         {
             _viewModel.SaveButtonPressed.Execute(_newName.text);

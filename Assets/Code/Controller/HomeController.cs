@@ -1,6 +1,6 @@
 using UniRx;
 
-public class HomeController
+public class HomeController: Controller
 {
     private readonly HomeViewModel _viewModel;
     private readonly ChangeNameViewModel _changeNameViewModel;
@@ -19,12 +19,12 @@ public class HomeController
             .Subscribe((_) =>
             {
                 _changeSceneUseCase.ChangeSceneTo("Play");
-            });
+            }).AddTo(_disposables);
 
         _viewModel.ChangeNameButtonPressed.Subscribe((_) =>
         {
             _changeNameViewModel.IsVisible.Value = true;
-        });
+        }).AddTo(_disposables);
         
         _getUserFromRepositoryUseCase.GetUserName();
     }

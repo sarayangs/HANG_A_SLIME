@@ -1,7 +1,7 @@
 using UniRx;
 using UnityEngine;
 
-public class SettingsController 
+public class SettingsController : Controller
 {
     private SettingsViewModel _viewModel;
     private LoginPanelViewModel _loginPanelViewModel;
@@ -24,12 +24,12 @@ public class SettingsController
         _viewModel.LoginButtonPressed.Subscribe((_) =>
         {
             _loginPanelViewModel.IsVisible.Value = true;
-        });
+        }).AddTo(_disposables);
         
         _viewModel.RegisterButtonPressed.Subscribe((_) =>
         {
             _registerPanelViewModel.IsVisible.Value = true;
-        });
+        }).AddTo(_disposables);
         
         _viewModel.OnNotificationChange.Subscribe((notificationsOn) =>
         {
@@ -37,14 +37,15 @@ public class SettingsController
                 _messagingManagerUseCase.Activate();
             else
                 _messagingManagerUseCase.Deactivate();
-        });
+        }).AddTo(_disposables);
+        
         _viewModel.OnAudioChange.Subscribe((audioOn) =>
         {
             if (audioOn)
                 _audioManagerUseCase.Activate();
             else
                 _audioManagerUseCase.Deactivate();
-        });
+        }).AddTo(_disposables);
         
         _getUserFromRepositoryUseCase.GetUserSettings();
     }

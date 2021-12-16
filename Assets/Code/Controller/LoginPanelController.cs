@@ -1,5 +1,5 @@
 ﻿using UniRx;
-public class LoginPanelController
+public class LoginPanelController : Controller
 {
         private readonly LoginPanelViewModel _viewModel;
         private readonly ISignInUser _signInUserUseCase;
@@ -11,6 +11,6 @@ public class LoginPanelController
                 _viewModel.LoginButtonPressed.Subscribe(emailPass =>
                 {
                         _signInUserUseCase.SignIn(emailPass);
-                });
+                }).AddTo(_disposables);
         }
 }

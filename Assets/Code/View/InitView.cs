@@ -12,11 +12,11 @@ public class InitView : View
         {
             if(hasToLogNewUser)
                 _viewModel.LoginNewUser.Execute();
-        });
+        }).AddTo(_disposables);
         
         _viewModel.UserExists.Subscribe((_) => 
         {
             _viewModel.LoginExistingUser.Execute();
-        });
+        }).AddTo(_disposables);
     }
 }

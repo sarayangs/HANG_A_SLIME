@@ -1,9 +1,6 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
-using System.Xml.Serialization;
-using Firebase.Auth;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
 
 public class MenuInstaller : MonoBehaviour
 {
@@ -16,6 +13,9 @@ public class MenuInstaller : MonoBehaviour
     [SerializeField] private ChangeNameView _changeNameView;
     [SerializeField] private LoginPanelView _loginPanelView;
     [SerializeField] private RegisterPanelView _registerPanelView;
+    
+    private readonly List<IDisposable> _disposables = new List<IDisposable>();
+
 
 
     private void Awake()
@@ -46,6 +46,7 @@ public class MenuInstaller : MonoBehaviour
         //GET SERVICES FROM SERVICE LOCATOR-------------------------------------------------------------
         var firebaseAuth = ServiceLocator.Instance.GetService<FirebaseAuthService>();
         var firebaseFirestore = ServiceLocator.Instance.GetService<FirebaseFirestoreService>();
+        var firebaseDatabase = ServiceLocator.Instance.GetService<FirebaseDatabaseService>();
         var sceneHandler = ServiceLocator.Instance.GetService<UnitySceneHandler>();
         var accessUserData = ServiceLocator.Instance.GetService<AccessUserData>();
         var registeredUsersRepository = ServiceLocator.Instance.GetService<RegisteredUsersRepository>();
@@ -55,7 +56,7 @@ public class MenuInstaller : MonoBehaviour
         var changeSceneUseCase = new ChangeSceneUseCase(sceneHandler);
         var getUserFromRepositoryUseCase = new GetUserFromRepositoryUseCase(accessUserData, eventDispatcherService);
         var udpateUserDataUseCase = new UpdateUserDataUseCase(firebaseFirestore, eventDispatcherService, accessUserData, registeredUsersRepository);
-        var rankingManagerUseCase = new RankingManagerUseCase();
+        var rankingManagerUseCase = new RankingManagerUseCase(firebaseDatabase);
         var registerUserUseCase = new RegisterUserUseCase(firebaseAuth, accessUserData, registeredUsersRepository, eventDispatcherService);
         var signInuserUseCase = new SignInUserUseCase(firebaseAuth, eventDispatcherService, accessUserData,
             registeredUsersRepository);
@@ -63,11 +64,11 @@ public class MenuInstaller : MonoBehaviour
         var messagingManagerUseCase = new MessagingManagerUseCase(firebaseFirestore, accessUserData);
 
         //PRESENTERS-------------------------------------------------------------------------------------
-        new HomePresenter(homeViewModel);
-        new ScorePresenter(scoreViewModel);
-        new ChangeNamePresenter(changeNameViewModel);
+        new HomePresenter(homeViewModel, eventDispatcherService);
+        new ScorePresenter(scoreViewModel, eventDispatcherService);
+        new ChangeNamePresenter(changeNameViewModel, eventDispatcherService);
         new LoginPanelPresenter(loginPanelViewModel, eventDispatcherService);
-        new RegisterPanelPresenter(registerPanelViewModel);
+        new RegisterPanelPresenter(registerPanelViewModel, eventDispatcherService);
         new SettingsPresenter(settingsViewModel, eventDispatcherService);
 
         //CONTROLLERS-------------------------------------------------------------------------------------
@@ -78,6 +79,12 @@ public class MenuInstaller : MonoBehaviour
         new ChangeNameController(changeNameViewModel, udpateUserDataUseCase);
         new LoginPanelController(loginPanelViewModel, signInuserUseCase);
         new RegisterPanelController(registerPanelViewModel, registerUserUseCase);
-        
+    }
+    private void OnDestroy()
+    {
+        foreach (var disposable in _disposables)
+        {
+            disposable.Dispose();
+        }
     }
 }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ScoreController
+public class ScoreController : Controller
 {
     private readonly ScoreViewModel _viewModel;
 

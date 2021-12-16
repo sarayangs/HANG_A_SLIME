@@ -5,7 +5,7 @@
 
     public GetUserFromRepositoryUseCase(IAccessUserData accessUserData, IEventDispatcherService eventDispatcherService)
     {
-        _accessUserData = accessUserData; //repository
+        _accessUserData = accessUserData;
         _eventDispatcherService = eventDispatcherService;
     }
     public void GetUserName()

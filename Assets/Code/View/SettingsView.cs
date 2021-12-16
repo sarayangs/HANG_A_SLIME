@@ -36,13 +36,13 @@ public class SettingsView : View
         _notificationsToggle.OnValueChangedAsObservable().Subscribe(isOn =>
         {
             _viewModel.OnNotificationChange.Execute(isOn);
-        });
+        }).AddTo(_disposables);
         
         _audioToggle.OnValueChangedAsObservable().Subscribe(isOn =>
         {
             _viewModel.OnAudioChange.Execute(isOn);
-        });
-        
+        }).AddTo(_disposables);
+
         _loginButton.onClick.AddListener(() =>
         {
             _viewModel.LoginButtonPressed.Execute();
