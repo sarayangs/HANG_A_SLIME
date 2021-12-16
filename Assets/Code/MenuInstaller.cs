@@ -47,6 +47,7 @@ public class MenuInstaller : MonoBehaviour
         var firebaseAuth = ServiceLocator.Instance.GetService<FirebaseAuthService>();
         var firebaseFirestore = ServiceLocator.Instance.GetService<FirebaseFirestoreService>();
         var firebaseDatabase = ServiceLocator.Instance.GetService<FirebaseDatabaseService>();
+        var firebaseMessaging = ServiceLocator.Instance.GetService<FirebaseMessagingService>();
         var sceneHandler = ServiceLocator.Instance.GetService<UnitySceneHandler>();
         var accessUserData = ServiceLocator.Instance.GetService<AccessUserData>();
         var registeredUsersRepository = ServiceLocator.Instance.GetService<RegisteredUsersRepository>();
@@ -61,7 +62,7 @@ public class MenuInstaller : MonoBehaviour
         var signInuserUseCase = new SignInUserUseCase(firebaseAuth, eventDispatcherService, accessUserData,
             registeredUsersRepository);
         var audioManagerUseCase = new AudioManagerUseCase(firebaseFirestore, accessUserData);
-        var messagingManagerUseCase = new MessagingManagerUseCase(firebaseFirestore, accessUserData);
+        var messagingManagerUseCase = new MessagingManagerUseCase(firebaseFirestore, accessUserData, firebaseMessaging);
 
         //PRESENTERS-------------------------------------------------------------------------------------
         new HomePresenter(homeViewModel, eventDispatcherService);

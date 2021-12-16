@@ -2,11 +2,13 @@
 {
     private readonly IDatabaseService _databaseService;
     private readonly IAccessUserData _accessUserData;
-
-    public MessagingManagerUseCase(IDatabaseService databaseService, IAccessUserData accessUserData)
+    private readonly IMessagingService _messagingService;
+    
+    public MessagingManagerUseCase(IDatabaseService databaseService, IAccessUserData accessUserData, IMessagingService messagingService)
     {
         _databaseService = databaseService;
         _accessUserData = accessUserData;
+        _messagingService = messagingService;
     }
     public void Activate()
     {
@@ -17,6 +19,7 @@
         var databaseUser = new UserDto(user.UserId, user.Name, user.Notifications, user.Audio);
         databaseUser.Notifications = true;
         
+        _messagingService.ActivateMessaging();
         _databaseService.Save(databaseUser, "users", user.UserId);
     }
 
@@ -29,6 +32,7 @@
         var databaseUser = new UserDto(user.UserId, user.Name, user.Notifications, user.Audio);
         databaseUser.Notifications = false;
         
+        _messagingService.DeactivateMessaging();
         _databaseService.Save(databaseUser, "users", user.UserId);
     }
 }

@@ -1,5 +1,6 @@
 ﻿public interface IMessagingService
 {
-    void Init();
+    void ActivateMessaging();
+    void DeactivateMessaging();
 
 }

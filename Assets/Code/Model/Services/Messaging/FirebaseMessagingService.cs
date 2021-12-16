@@ -2,14 +2,21 @@
 
 public class FirebaseMessagingService : IMessagingService
 {
-    public void Init()
+    public void ActivateMessaging()
     {
         Firebase.Messaging.FirebaseMessaging.TokenReceived += OnTokenReceived;
         Firebase.Messaging.FirebaseMessaging.MessageReceived += OnMessageReceived;
         
-        Debug.Log("Init messaging");
+        Debug.Log("Activate messaging");
     }
-    
+
+    public void DeactivateMessaging()
+    {
+        Firebase.Messaging.FirebaseMessaging.TokenReceived += null;
+        Firebase.Messaging.FirebaseMessaging.MessageReceived += null;
+        Debug.Log("Deactivate messaging");
+    }
+
     public void OnTokenReceived(object sender, Firebase.Messaging.TokenReceivedEventArgs token) {
         Debug.Log("Received Registration Token: " + token.Token);
     }

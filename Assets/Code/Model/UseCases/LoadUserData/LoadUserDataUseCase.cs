@@ -32,9 +32,10 @@ public class LoadUserDataUseCase : ILoadUserData
         if (existUser)
         {
             var userData = await _databaseService.Load<UserDto>("users", userId);
-           IReadOnlyList<RegisteredUser> registeredUsers = _registeredUsers.GetAll();
 
-           if (registeredUsers != null)
+            IReadOnlyList<RegisteredUser> registeredUsers = _registeredUsers.GetAll();
+
+            if (registeredUsers != null)
             {
                 foreach (var user in registeredUsers)
                 {
@@ -43,8 +44,8 @@ public class LoadUserDataUseCase : ILoadUserData
                         Debug.Log($"Registered user: {user.Email}");
                         
                         var registeredUser = new UserEntity(user.UserId, user.Name, userData.Notifications, userData.Audio);
-                        
                         _userRepository.SetLocalUser(registeredUser);
+                        
                         return;
                     }
                 }
