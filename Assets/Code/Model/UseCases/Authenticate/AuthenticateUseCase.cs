@@ -11,7 +11,6 @@ public class AuthenticateUseCase : IAuthenticator
     {
         _authenticationService = authenticationService;
     }
-    
     public async Task Authenticate()
     {
         var userId = await _authenticationService.Login();

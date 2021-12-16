@@ -16,7 +16,7 @@ public class InitInstaller : MonoBehaviour
         
         var sceneHandler = new UnitySceneHandler();
         var accessUserData = new AccessUserData();
-        var registeredUsersRepository = new RegisteredUsersRepository();
+        var loggedUsersRepository = new LoggedUsersRepository();
         
         var eventDispatcher = new EventDispatcherService();
 
@@ -29,7 +29,7 @@ public class InitInstaller : MonoBehaviour
         
         ServiceLocator.Instance.RegisterService<UnitySceneHandler>(sceneHandler);
         ServiceLocator.Instance.RegisterService<AccessUserData>(accessUserData);
-        ServiceLocator.Instance.RegisterService<RegisteredUsersRepository>(registeredUsersRepository);
+        ServiceLocator.Instance.RegisterService<LoggedUsersRepository>(loggedUsersRepository);
         
         ServiceLocator.Instance.RegisterService<IEventDispatcherService>(eventDispatcher);
 
@@ -38,7 +38,7 @@ public class InitInstaller : MonoBehaviour
         var authenticateUseCase = new AuthenticateUseCase(firebaseAuth);
         var changeSceneUseCase = new ChangeSceneUseCase(sceneHandler);
         var initNewUserUseCase = new InitNewUserUseCase(firebaseFirestore, firebaseAuth, accessUserData);
-        var loadUserDataUseCase = new LoadUserDataUseCase(initNewUserUseCase, accessUserData, registeredUsersRepository, firebaseFirestore, firebaseAuth);
+        var loadUserDataUseCase = new LoadUserDataUseCase(initNewUserUseCase, accessUserData, loggedUsersRepository, firebaseFirestore, firebaseAuth);
         
         //USECASE
         _loadInitDataUseCase = new LoadInitDataUseCase(changeSceneUseCase, authenticateUseCase, loadUserDataUseCase);

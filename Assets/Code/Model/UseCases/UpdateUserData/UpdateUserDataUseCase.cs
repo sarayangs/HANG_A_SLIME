@@ -5,15 +5,15 @@ public class UpdateUserDataUseCase : IUpdateUserData
     private readonly IDatabaseService _databaseService;
     private readonly IEventDispatcherService _eventDispatcherService;
     private readonly IAccessUserData _accessUserData;
-    private readonly IRegisteredUsersRepository _registeredUsersRepository;
+    private readonly ILoggedUsersRepository _loggedUsersRepository;
 
     public UpdateUserDataUseCase(IDatabaseService databaseService, IEventDispatcherService eventDispatcherService, IAccessUserData accessUserData,
-        IRegisteredUsersRepository registeredUsersRepository)
+        ILoggedUsersRepository loggedUsersRepository)
     {
         _databaseService = databaseService;
         _eventDispatcherService = eventDispatcherService;
         _accessUserData = accessUserData;
-        _registeredUsersRepository = registeredUsersRepository;
+        _loggedUsersRepository = loggedUsersRepository;
     }
     
     public void UpdateName(string newName)
@@ -26,7 +26,7 @@ public class UpdateUserDataUseCase : IUpdateUserData
         
         _databaseService.Save(newUser, "users", user.UserId);
         _accessUserData.SetLocalUser(newUserEntity);
-        _registeredUsersRepository.UpdateUser(registeredUser);
+        _loggedUsersRepository.UpdateUser(registeredUser);
         
         _eventDispatcherService.Dispatch<string>(newUser.Name);
     }

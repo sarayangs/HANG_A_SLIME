@@ -2,4 +2,5 @@
 {
         void GetUserName();
         void GetUserSettings();
+        void GetUserType();
 }

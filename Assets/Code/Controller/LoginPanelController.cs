@@ -3,6 +3,7 @@ public class LoginPanelController : Controller
 {
         private readonly LoginPanelViewModel _viewModel;
         private readonly ISignInUser _signInUserUseCase;
+        
         public LoginPanelController(LoginPanelViewModel viewModel, ISignInUser signInUserUseCase)
         {
                 _viewModel = viewModel;

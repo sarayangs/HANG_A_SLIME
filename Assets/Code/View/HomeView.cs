@@ -22,11 +22,11 @@ public class HomeView : View
                 {
                     gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector3(transform.parent.gameObject.GetComponent<RectTransform>().rect.width, 0, 0);
                     gameObject.SetActive(isVisible);
-                    gameObject.GetComponent<RectTransform>().DOLocalMoveX(0, 0.5f);
+                    gameObject.GetComponent<RectTransform>().DOLocalMoveX(0, 0.3f);
                 }
                 else
                 {
-                    gameObject.GetComponent<RectTransform>().DOLocalMoveX(-transform.parent.gameObject.GetComponent<RectTransform>().rect.width, 0.5f).OnComplete(() => { gameObject.SetActive(isVisible); });
+                    gameObject.GetComponent<RectTransform>().DOLocalMoveX(-transform.parent.gameObject.GetComponent<RectTransform>().rect.width, 0.3f).OnComplete(() => { gameObject.SetActive(isVisible); });
                 }
             }).AddTo(_disposables);
         

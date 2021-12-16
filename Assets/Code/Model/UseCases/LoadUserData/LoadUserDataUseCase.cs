@@ -9,18 +9,18 @@ public class LoadUserDataUseCase : ILoadUserData
     private readonly IAuthenticationService _authService;
     
     private readonly IAccessUserData _userRepository;
-    private readonly IRegisteredUsersRepository _registeredUsers;
+    private readonly ILoggedUsersRepository _loggedUsers;
 
 
     public LoadUserDataUseCase(IUserInitializer userInitializer, IAccessUserData userRepository, 
-        IRegisteredUsersRepository registeredUsers, IDatabaseService databaseService, IAuthenticationService authService)
+        ILoggedUsersRepository loggedUsers, IDatabaseService databaseService, IAuthenticationService authService)
     {
         _userInitializer = userInitializer;
         _databaseService = databaseService;
         _authService = authService;
         
         _userRepository = userRepository;
-        _registeredUsers = registeredUsers;
+        _loggedUsers = loggedUsers;
 
     }
 
@@ -33,7 +33,7 @@ public class LoadUserDataUseCase : ILoadUserData
         {
             var userData = await _databaseService.Load<UserDto>("users", userId);
 
-            IReadOnlyList<RegisteredUser> registeredUsers = _registeredUsers.GetAll();
+            IReadOnlyList<RegisteredUser> registeredUsers = _loggedUsers.GetAll();
 
             if (registeredUsers != null)
             {
@@ -51,7 +51,7 @@ public class LoadUserDataUseCase : ILoadUserData
                 }
             }
 
-            Debug.Log($"Anonymous user exists: {userId}");
+            Debug.Log($"User exists: {userId}");
             
             _userRepository.SetLocalUser(new UserEntity(userData.Id, userData.Name, userData.Notifications, userData.Audio));
 

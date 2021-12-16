@@ -3,19 +3,28 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
-public class RegisteredUsersRepository : IRegisteredUsersRepository
+public class LoggedUsersRepository : ILoggedUsersRepository
 {
     private readonly string _userKey = "UserKey";
     
     private List<RegisteredUser> _users;
     
-    public RegisteredUsersRepository()
+    public LoggedUsersRepository()
     {
         _users = new List<RegisteredUser>();
     }
 
     public void AddUserToRepository(RegisteredUser userEntity)
     {
+        foreach (var user in _users)
+        {
+            if (userEntity.UserId == user.UserId)
+            {
+                return;
+            }
+        }
+        
+        Debug.Log(_users.Count);
         _users.Add(userEntity);
         SaveUsersOnPlayerPrefs();
     }
@@ -35,7 +44,6 @@ public class RegisteredUsersRepository : IRegisteredUsersRepository
 
     public IReadOnlyList<RegisteredUser> GetAll()
     {
-        //PlayerPrefs.DeleteKey(_userKey);
         var defaultValue = new UsersDtos(new List<RegisteredUser>());
         var usersJson = PlayerPrefs.GetString(_userKey, JsonUtility.ToJson(defaultValue));
         var users = JsonUtility.FromJson<UsersDtos>(usersJson);
@@ -93,7 +101,6 @@ public class RegisteredUsersRepository : IRegisteredUsersRepository
             Debug.LogError(error);
             decrypted = "";  
         }  
-        
         return decrypted;  
     }
 

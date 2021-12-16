@@ -5,7 +5,7 @@ public class ScorePresenter : Presenter
         private readonly ScoreViewModel _viewModel;
         private readonly IEventDispatcherService _eventDispatcherService;
 
-        public ScorePresenter(ScoreViewModel viewModel, IEventDispatcherService eventDispatcherService)
+        public ScorePresenter(ScoreViewModel viewModel,  IEventDispatcherService eventDispatcherService)
         {
                 _viewModel = viewModel;
                 _eventDispatcherService = eventDispatcherService;

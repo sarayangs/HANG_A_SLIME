@@ -2,7 +2,7 @@ using UniRx;
 
 public class ButtonsController : Controller
 {
-    public readonly ButtonsViewModel _buttonViewModel;
+    private readonly ButtonsViewModel _buttonViewModel;
     private readonly IRankingManager _rankingManagerUseCase;
 
     public ButtonsController(ButtonsViewModel buttonsViewModel, HomeViewModel homeViewModel, ScoreViewModel scoreViewModel, SettingsViewModel settingsViewModel, 

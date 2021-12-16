@@ -7,21 +7,23 @@ using UnityEngine;
 
 public class FirebaseAuthService : IAuthenticationService
 {
-    private readonly Firebase.Auth.FirebaseAuth _auth;
+    private readonly FirebaseAuth _auth;
     public string UserId { get; set; }
+    
     public FirebaseAuthService()
     {
         _auth =  FirebaseAuth.DefaultInstance;
     }
     public async Task<string> Login()
     {
-        var checkDependencies = await Firebase.FirebaseApp.CheckDependenciesAsync();
+        var checkDependencies = await FirebaseApp.CheckDependenciesAsync();
 
         if (checkDependencies == DependencyStatus.Available)
         {
             if (_auth.CurrentUser != null)
             {
                 UserId = _auth.CurrentUser.UserId;
+                
                 return UserId;
             }
             var user = await _auth.SignInAnonymouslyAsync();
@@ -76,10 +78,15 @@ public class FirebaseAuthService : IAuthenticationService
 
         if (user != null)
         {
-            var registeredUser = new RegisteredUser(user.UserId, user.DisplayName, user.Email, info.Value);
-            return registeredUser;
+            var loggedUser = new RegisteredUser(user.UserId, user.DisplayName, user.Email, info.Value);
+            return loggedUser;
         }
 
         return null;
+    }
+
+    public void Logout()
+    {
+        _auth.SignOut();
     }
 }

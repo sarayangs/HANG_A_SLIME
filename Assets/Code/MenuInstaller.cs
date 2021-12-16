@@ -50,33 +50,35 @@ public class MenuInstaller : MonoBehaviour
         var firebaseMessaging = ServiceLocator.Instance.GetService<FirebaseMessagingService>();
         var sceneHandler = ServiceLocator.Instance.GetService<UnitySceneHandler>();
         var accessUserData = ServiceLocator.Instance.GetService<AccessUserData>();
-        var registeredUsersRepository = ServiceLocator.Instance.GetService<RegisteredUsersRepository>();
+        var loggedUsersRepository = ServiceLocator.Instance.GetService<LoggedUsersRepository>();
         var eventDispatcherService = ServiceLocator.Instance.GetService<IEventDispatcherService>();
 
         //USE CASES-------------------------------------------------------------------------------------
         var changeSceneUseCase = new ChangeSceneUseCase(sceneHandler);
-        var getUserFromRepositoryUseCase = new GetUserFromRepositoryUseCase(accessUserData, eventDispatcherService);
-        var udpateUserDataUseCase = new UpdateUserDataUseCase(firebaseFirestore, eventDispatcherService, accessUserData, registeredUsersRepository);
+        var getUserFromRepositoryUseCase = new GetUserFromRepositoryUseCase(accessUserData, loggedUsersRepository, eventDispatcherService);
+        var udpateUserDataUseCase = new UpdateUserDataUseCase(firebaseFirestore, eventDispatcherService, accessUserData, loggedUsersRepository);
         var rankingManagerUseCase = new RankingManagerUseCase(firebaseDatabase);
-        var registerUserUseCase = new RegisterUserUseCase(firebaseAuth, accessUserData, registeredUsersRepository, eventDispatcherService);
+        var registerUserUseCase = new RegisterUserUseCase(firebaseAuth, accessUserData, eventDispatcherService, firebaseFirestore, loggedUsersRepository);
         var signInuserUseCase = new SignInUserUseCase(firebaseAuth, eventDispatcherService, accessUserData,
-            registeredUsersRepository);
+            loggedUsersRepository, firebaseFirestore);
         var audioManagerUseCase = new AudioManagerUseCase(firebaseFirestore, accessUserData);
         var messagingManagerUseCase = new MessagingManagerUseCase(firebaseFirestore, accessUserData, firebaseMessaging);
+        var logoutUserUseCase = new LogoutUserUseCase(firebaseAuth, eventDispatcherService);
 
         //PRESENTERS-------------------------------------------------------------------------------------
         new HomePresenter(homeViewModel, eventDispatcherService);
         new ScorePresenter(scoreViewModel, eventDispatcherService);
         new ChangeNamePresenter(changeNameViewModel, eventDispatcherService);
-        new LoginPanelPresenter(loginPanelViewModel, eventDispatcherService);
-        new RegisterPanelPresenter(registerPanelViewModel, eventDispatcherService);
+        new LoginPanelPresenter(loginPanelViewModel, settingsViewModel, eventDispatcherService);
+        new RegisterPanelPresenter(registerPanelViewModel, settingsViewModel, eventDispatcherService);
         new SettingsPresenter(settingsViewModel, eventDispatcherService);
 
         //CONTROLLERS-------------------------------------------------------------------------------------
         new ButtonsController(buttonsViewModel,homeViewModel,scoreViewModel,settingsViewModel, rankingManagerUseCase);
         new HomeController(homeViewModel, changeNameViewModel, changeSceneUseCase, getUserFromRepositoryUseCase);
         new ScoreController(scoreViewModel);
-        new SettingsController(settingsViewModel, loginPanelViewModel, registerPanelViewModel, audioManagerUseCase, messagingManagerUseCase, getUserFromRepositoryUseCase);
+        new SettingsController(settingsViewModel, loginPanelViewModel, registerPanelViewModel, audioManagerUseCase, messagingManagerUseCase, 
+            getUserFromRepositoryUseCase, logoutUserUseCase);
         new ChangeNameController(changeNameViewModel, udpateUserDataUseCase);
         new LoginPanelController(loginPanelViewModel, signInuserUseCase);
         new RegisterPanelController(registerPanelViewModel, registerUserUseCase);
