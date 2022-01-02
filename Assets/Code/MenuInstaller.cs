@@ -56,7 +56,7 @@ public class MenuInstaller : MonoBehaviour
         //USE CASES-------------------------------------------------------------------------------------
         var changeSceneUseCase = new ChangeSceneUseCase(sceneHandler);
         var getUserFromRepositoryUseCase = new GetUserFromRepositoryUseCase(accessUserData, loggedUsersRepository, eventDispatcherService);
-        var udpateUserDataUseCase = new UpdateUserDataUseCase(firebaseFirestore, eventDispatcherService, accessUserData, loggedUsersRepository);
+        var udpateUserDataUseCase = new UpdateUserDataUseCase(firebaseFirestore, firebaseDatabase, eventDispatcherService, accessUserData, loggedUsersRepository);
         var rankingManagerUseCase = new RankingManagerUseCase(firebaseDatabase);
         var registerUserUseCase = new RegisterUserUseCase(firebaseAuth, accessUserData, eventDispatcherService, firebaseFirestore, loggedUsersRepository);
         var signInuserUseCase = new SignInUserUseCase(firebaseAuth, eventDispatcherService, accessUserData,

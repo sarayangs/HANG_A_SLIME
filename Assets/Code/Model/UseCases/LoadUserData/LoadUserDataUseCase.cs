@@ -43,7 +43,7 @@ public class LoadUserDataUseCase : ILoadUserData
                     {
                         Debug.Log($"Registered user: {user.Email}");
                         
-                        var registeredUser = new UserEntity(user.UserId, user.Name, userData.Notifications, userData.Audio);
+                        var registeredUser = new UserEntity(user.UserId, user.Name, userData.Notifications, userData.Audio, userData.Score);
                         _userRepository.SetLocalUser(registeredUser);
                         
                         return;
@@ -53,7 +53,7 @@ public class LoadUserDataUseCase : ILoadUserData
 
             Debug.Log($"User exists: {userId}");
             
-            _userRepository.SetLocalUser(new UserEntity(userData.Id, userData.Name, userData.Notifications, userData.Audio));
+            _userRepository.SetLocalUser(new UserEntity(userData.Id, userData.Name, userData.Notifications, userData.Audio, userData.Score));
 
             return;
         }

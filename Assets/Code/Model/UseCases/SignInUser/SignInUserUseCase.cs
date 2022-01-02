@@ -25,7 +25,7 @@ public class SignInUserUseCase : ISignInUser
         var user = await _authenticationService.SignIn(emailPassword);
         
         var newUser = await _databaseService.Load<UserDto>("users", user.UserId);
-        var userEntity = new UserEntity(newUser.Id, newUser.Name, newUser.Notifications, newUser.Audio);
+        var userEntity = new UserEntity(newUser.Id, newUser.Name, newUser.Notifications, newUser.Audio, newUser.Score);
         
         //Debug.Log(user.UserId+  user.Name + user.Email +user.Password);
         

@@ -13,6 +13,7 @@ public class InitInstaller : MonoBehaviour
         var firebaseFirestore = new FirebaseFirestoreService();
         var firebaseDatabase = new FirebaseDatabaseService();
         var firebaseMessaging = new FirebaseMessagingService();
+        var firebaseRealtime = new FirebaseDatabaseService();
         
         var sceneHandler = new UnitySceneHandler();
         var accessUserData = new AccessUserData();
@@ -37,7 +38,7 @@ public class InitInstaller : MonoBehaviour
         
         var authenticateUseCase = new AuthenticateUseCase(firebaseAuth);
         var changeSceneUseCase = new ChangeSceneUseCase(sceneHandler);
-        var initNewUserUseCase = new InitNewUserUseCase(firebaseFirestore, firebaseAuth, accessUserData);
+        var initNewUserUseCase = new InitNewUserUseCase(firebaseFirestore, firebaseRealtime, firebaseAuth, accessUserData);
         var loadUserDataUseCase = new LoadUserDataUseCase(initNewUserUseCase, accessUserData, loggedUsersRepository, firebaseFirestore, firebaseAuth);
         
         //USECASE

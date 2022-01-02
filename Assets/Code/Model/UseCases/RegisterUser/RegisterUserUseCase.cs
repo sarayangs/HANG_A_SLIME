@@ -25,7 +25,7 @@ public class RegisterUserUseCase :IRegisterUser
         var user = await _authenticationService.RegisterUser(emailPassword);
         
         var currentUser = _accessUserData.GetLocalUser();
-        var userEntity = new UserEntity(user.UserId, currentUser.Name, currentUser.Notifications, currentUser.Audio);        
+        var userEntity = new UserEntity(user.UserId, currentUser.Name, currentUser.Notifications, currentUser.Audio, currentUser.Score);        
         var databaseUser = new UserDto(user.UserId, currentUser.Name, currentUser.Notifications, currentUser.Audio);
         
         await _databaseService.Save(databaseUser, "users", user.UserId);

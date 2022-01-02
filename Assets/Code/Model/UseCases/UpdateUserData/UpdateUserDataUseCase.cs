@@ -3,14 +3,16 @@
 public class UpdateUserDataUseCase : IUpdateUserData
 {
     private readonly IDatabaseService _databaseService;
+    private readonly IRealtimeDatabase _realtimeDatabase;
     private readonly IEventDispatcherService _eventDispatcherService;
     private readonly IAccessUserData _accessUserData;
     private readonly ILoggedUsersRepository _loggedUsersRepository;
 
-    public UpdateUserDataUseCase(IDatabaseService databaseService, IEventDispatcherService eventDispatcherService, IAccessUserData accessUserData,
+    public UpdateUserDataUseCase(IDatabaseService databaseService, IRealtimeDatabase realtimeDatabase, IEventDispatcherService eventDispatcherService, IAccessUserData accessUserData,
         ILoggedUsersRepository loggedUsersRepository)
     {
         _databaseService = databaseService;
+        _realtimeDatabase = realtimeDatabase;
         _eventDispatcherService = eventDispatcherService;
         _accessUserData = accessUserData;
         _loggedUsersRepository = loggedUsersRepository;
@@ -21,13 +23,13 @@ public class UpdateUserDataUseCase : IUpdateUserData
         var user = _accessUserData.GetLocalUser();
         
         var newUser = new UserDto(user.UserId, newName, user.Notifications, user.Audio);
-        var newUserEntity = new UserEntity(user.UserId, newName, user.Notifications, user.Audio);
+        var newUserEntity = new UserEntity(user.UserId, newName, user.Notifications, user.Audio, user.Score);
         var registeredUser = new RegisteredUser(user.UserId, newName, string.Empty, string.Empty);
         
         _databaseService.Save(newUser, "users", user.UserId);
         _accessUserData.SetLocalUser(newUserEntity);
         _loggedUsersRepository.UpdateUser(registeredUser);
-        
+        _realtimeDatabase.AddData(newUser.Score, newUser.Name);
         _eventDispatcherService.Dispatch<string>(newUser.Name);
     }
 }
