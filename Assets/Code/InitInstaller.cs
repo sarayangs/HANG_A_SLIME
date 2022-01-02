@@ -14,6 +14,7 @@ public class InitInstaller : MonoBehaviour
         var firebaseDatabase = new FirebaseDatabaseService();
         var firebaseMessaging = new FirebaseMessagingService();
         var firebaseRealtime = new FirebaseDatabaseService();
+        var firebaseAnalytics = new FirebaseAnalyticsService();
         
         var sceneHandler = new UnitySceneHandler();
         var accessUserData = new AccessUserData();
@@ -27,6 +28,8 @@ public class InitInstaller : MonoBehaviour
         ServiceLocator.Instance.RegisterService<FirebaseFirestoreService>(firebaseFirestore);
         ServiceLocator.Instance.RegisterService<FirebaseDatabaseService>(firebaseDatabase);
         ServiceLocator.Instance.RegisterService<FirebaseMessagingService>(firebaseMessaging);
+        ServiceLocator.Instance.RegisterService<FirebaseAnalyticsService>(firebaseAnalytics);
+        
         
         ServiceLocator.Instance.RegisterService<UnitySceneHandler>(sceneHandler);
         ServiceLocator.Instance.RegisterService<AccessUserData>(accessUserData);
@@ -37,7 +40,7 @@ public class InitInstaller : MonoBehaviour
         //firebaseMessaging.Init();
         
         var authenticateUseCase = new AuthenticateUseCase(firebaseAuth);
-        var changeSceneUseCase = new ChangeSceneUseCase(sceneHandler);
+        var changeSceneUseCase = new ChangeSceneUseCase(sceneHandler, firebaseAnalytics);
         var initNewUserUseCase = new InitNewUserUseCase(firebaseFirestore, firebaseRealtime, firebaseAuth, accessUserData);
         var loadUserDataUseCase = new LoadUserDataUseCase(initNewUserUseCase, accessUserData, loggedUsersRepository, firebaseFirestore, firebaseAuth);
         

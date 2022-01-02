@@ -3,4 +3,5 @@
 public interface ISceneHandler
 {
    Task ChangeSceneTo(string name);
+   Task PlayScene();
 }

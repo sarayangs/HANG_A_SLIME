@@ -18,7 +18,7 @@ public class HomeController: Controller
         _viewModel.PlayButtonPressed
             .Subscribe((_) =>
             {
-                _changeSceneUseCase.ChangeSceneTo("Play");
+                _changeSceneUseCase.PlayScene();
             }).AddTo(_disposables);
 
         _viewModel.ChangeNameButtonPressed.Subscribe((_) =>
