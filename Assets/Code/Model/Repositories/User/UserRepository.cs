@@ -19,6 +19,4 @@ public class AccessUserData : IAccessUserData
     {
         _userEntity = userEntity;
     }
-
-  
 }
