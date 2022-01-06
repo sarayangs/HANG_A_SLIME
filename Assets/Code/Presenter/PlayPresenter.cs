@@ -1,4 +1,6 @@
 ﻿
+using UnityEngine;
+
 public class PlayPresenter : Presenter
 {
     private readonly PlayViewModel _viewModel;
@@ -11,6 +13,8 @@ public class PlayPresenter : Presenter
 
         _eventDispatcherService.Subscribe<HangmanData>(OnInitGame);
         _eventDispatcherService.Subscribe<ResponseData>(OnKeyPressed);
+        
+        _eventDispatcherService.Subscribe<UserEntity>(OnUserData);
     }
     public override void Dispose()
     {
@@ -27,9 +31,16 @@ public class PlayPresenter : Presenter
         if (response.Correct)
             _viewModel.CorrectLetters.Value += " " + response.Letter;
         else
+        {
             _viewModel.IncorrectLetters.Value +=  " " + response.Letter;
-        
+        }
         _viewModel.HangmanText.Value = AddSpacesBetweenLetters(response.Hangman);
+    }
+
+    private void OnUserData(UserEntity userData)
+    {
+        _viewModel.Health.Value = "Health: " + userData.Health;
+        _viewModel.Score.Value = "Score: " + userData.Score;
     }
 
     private static string AddSpacesBetweenLetters(string word)

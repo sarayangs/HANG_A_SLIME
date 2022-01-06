@@ -16,11 +16,14 @@ public class PlayInstaller : MonoBehaviour
 
         var restClientAdapter = new RestClientAdapter();
         var tokenRepository = new TokenRepository();
+        
+        var userRepository = ServiceLocator.Instance.GetService<AccessUserData>();
         var eventDispatcherService = ServiceLocator.Instance.GetService<IEventDispatcherService>();
 
         //USE CASES---------------------------------------------------------
-        var guessLetterUseCase = new GuessLetterUseCase(restClientAdapter, tokenRepository, eventDispatcherService);
-        var newGameRequesterUseCase = new NewGameRequestUseCase(restClientAdapter, tokenRepository, eventDispatcherService);
+        var healthManager = new HealthManager(userRepository, eventDispatcherService);
+        var guessLetterUseCase = new GuessLetterUseCase(restClientAdapter, tokenRepository, eventDispatcherService, healthManager);
+        var newGameRequesterUseCase = new NewGameRequestUseCase(restClientAdapter, tokenRepository, eventDispatcherService, userRepository);
         var initGameUseCase = new InitGameUseCase(newGameRequesterUseCase);
         
         //PRESENTERS--------------------------------------------------------

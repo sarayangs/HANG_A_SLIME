@@ -10,5 +10,6 @@
     public async void Start()
     {
         await _newGameRequesterUseCase.StartGame();
+        _newGameRequesterUseCase.SetUserData();
     }
 }

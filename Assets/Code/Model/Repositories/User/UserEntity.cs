@@ -10,6 +10,8 @@ public class UserEntity : IUserData
     
     public int Score { get; set; }
 
+    public int Health { get; set; }
+
     public UserEntity(string userid, string name, bool notifications, bool audio, int score)
     {
         UserId = userid;

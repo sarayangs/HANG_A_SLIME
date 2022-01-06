@@ -3,4 +3,5 @@
 public interface INewGameRequester
 {
     Task StartGame();
+    void SetUserData();
 }

@@ -6,12 +6,15 @@ public class NewGameRequestUseCase : INewGameRequester
 {
     private readonly RestClientAdapter _restClientAdapter;
     private readonly TokenRepository _tokenRepository;
+    private readonly IAccessUserData _userRepository;
     private readonly IEventDispatcherService _eventDispatcherService;
 
-    public NewGameRequestUseCase(RestClientAdapter restClientAdapter, TokenRepository tokenRepository, IEventDispatcherService eventDispatcherService)
+    public NewGameRequestUseCase(RestClientAdapter restClientAdapter, TokenRepository tokenRepository, IEventDispatcherService eventDispatcherService,
+        IAccessUserData userRepository)
     {
         _restClientAdapter = restClientAdapter;
         _tokenRepository = tokenRepository;
+        _userRepository = userRepository;
         _eventDispatcherService = eventDispatcherService;
     }
 
@@ -22,5 +25,10 @@ public class NewGameRequestUseCase : INewGameRequester
         
         _tokenRepository.SetToken(response.token);
         _eventDispatcherService.Dispatch<HangmanData>(new HangmanData(response.hangman));
+    }
+
+    public void SetUserData()
+    {
+        _eventDispatcherService.Dispatch<UserEntity>(_userRepository.GetLocalUser());  
     }
 }

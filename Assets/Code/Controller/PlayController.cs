@@ -3,6 +3,7 @@
 public class PlayController : Controller
 {
     private readonly PlayViewModel _viewModel;
+    
     private readonly IGameInitializer _initGameUseCase;
     private readonly ILetterGuesser _guessLetterUseCase;
 
