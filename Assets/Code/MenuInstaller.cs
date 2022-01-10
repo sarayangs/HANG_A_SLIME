@@ -16,8 +16,6 @@ public class MenuInstaller : MonoBehaviour
     
     private readonly List<IDisposable> _disposables = new List<IDisposable>();
 
-
-
     private void Awake()
     {
         //VIEWMODELS AND VIEW SETUPS-------------------------------------------------------------
