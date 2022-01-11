@@ -29,7 +29,8 @@ public class InitNewUserUseCase : IUserInitializer
         Debug.Log($"New user: {userId}");
         
         _accessUserData.SetLocalUser(userEntity);
-        _realtimeDatabase.AddData(0, user.Name);
+        var entry = new ScoreEntry(userId, 0, randomName.Name);
+        _realtimeDatabase.AddData(entry);
 
         await _databaseService.Save(user, "users", userId);
 

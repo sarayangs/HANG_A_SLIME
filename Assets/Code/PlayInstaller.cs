@@ -39,17 +39,17 @@ public class PlayInstaller : MonoBehaviour
         var sceneHandlerService = ServiceLocator.Instance.GetService<UnitySceneHandler>();
         var firebaseAnalytics = ServiceLocator.Instance.GetService<FirebaseAnalyticsService>();
         var firebaseFirestore = ServiceLocator.Instance.GetService<FirebaseFirestoreService>();
-        var firesbaseRealtime = ServiceLocator.Instance.GetService<FirebaseDatabaseService>();
+        var firebaseRealtime = ServiceLocator.Instance.GetService<FirebaseDatabaseService>();
         
         //USE CASES---------------------------------------------------------
-        var healthManager = new HealthManager(userRepository, eventDispatcherService);
-        var checkResponseUsecase = new CheckResponseUseCase(eventDispatcherService, healthManager);
+        var userStatsManagerUseCase = new UserStatsManagerUseCase(userRepository, eventDispatcherService, firebaseRealtime);
+        var healthManager = new HealthManager(userRepository, eventDispatcherService, userStatsManagerUseCase);
+        var checkResponseUsecase = new CheckResponseUseCase(eventDispatcherService, healthManager, userStatsManagerUseCase);
         var guessLetterUseCase = new GuessLetterUseCase(restClientAdapter, tokenRepository, checkResponseUsecase);
         var newGameRequesterUseCase = new NewGameRequestUseCase(restClientAdapter, tokenRepository, eventDispatcherService, userRepository);
         var initGameUseCase = new InitGameUseCase(newGameRequesterUseCase);
-        var scoreManagerUseCase = new ScoreManagerUseCase(userRepository);
         var changeSceneUseCase = new ChangeSceneUseCase(sceneHandlerService, firebaseAnalytics);
-        var updateUserData = new UpdateUserDataUseCase(firebaseFirestore, firesbaseRealtime, eventDispatcherService,
+        var updateUserData = new UpdateUserDataUseCase(firebaseFirestore, firebaseRealtime, eventDispatcherService,
             userRepository, loggedUsersRepository);
             
         //PRESENTERS--------------------------------------------------------

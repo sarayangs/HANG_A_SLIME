@@ -38,7 +38,6 @@ public class ResultPopupView : View
             if (hasWon)
             {
                 _image.sprite = _happyImage;
-                _text.text = "YOU WIN!";
 
                 var homeButtonView = Instantiate(_homeButtonPrefab, _buttonsParent);
                 homeButtonView.Setup(_homeButtonViewModel);
@@ -53,7 +52,6 @@ public class ResultPopupView : View
             if (hasLose)
             {
                 _image.sprite = _sadImage;
-                _text.text = "YOU LOST...";
 
                 var homeButtonView = Instantiate(_homeButtonPrefab, _buttonsParent);
                 homeButtonView.Setup(_homeButtonViewModel);
@@ -64,5 +62,18 @@ public class ResultPopupView : View
         }).AddTo(_disposables);
         
         _viewModel.IsVisible.Subscribe(isVisible => { gameObject.SetActive(isVisible); }).AddTo(_disposables);
+
+        _viewModel.Score.Subscribe(score =>
+        {
+            _score.SetText(score);
+        });        
+        _viewModel.Time.Subscribe(time =>
+        {
+            _time.SetText(time);
+        });
+        _viewModel.Text.Subscribe(text =>
+        {
+            _text.SetText(text);
+        });
     }
 }

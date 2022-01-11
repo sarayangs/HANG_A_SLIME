@@ -13,7 +13,6 @@ public class HomeButtonController : Controller
 
         _viewModel.OnHomeButtonPressed.Subscribe(_ =>
         {
-            Debug.Log("hi");
             _changeSceneUseCase.ChangeSceneTo("Menu");
         }).AddTo(_disposables);
     }

@@ -2,12 +2,14 @@
 {
     private readonly IEventDispatcherService _eventDispatcherService;
     private readonly IHealthManager _healthManager;
+    private readonly IUserStatsManager _userStatsManagerUseCase;
 
     public CheckResponseUseCase(IEventDispatcherService eventDispatcherService,
-        IHealthManager healthManager)
+        IHealthManager healthManager, IUserStatsManager userStatsManagerUseCase)
     {
         _eventDispatcherService = eventDispatcherService;
         _healthManager = healthManager;
+        _userStatsManagerUseCase = userStatsManagerUseCase;
     }
     public void CheckWord(GuessLetterResponse response, string letter)
     {
@@ -15,7 +17,7 @@
             _healthManager.SubtractHealth();
         
         if(IsCompleted(response.hangman))
-            _eventDispatcherService.Dispatch<Answer>(new Answer(true));
+            _userStatsManagerUseCase.ManageUserStats(true);
         else
             _eventDispatcherService.Dispatch<ResponseData>(new ResponseData(letter, response.hangman, response.correct));
     }

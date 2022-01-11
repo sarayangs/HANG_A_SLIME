@@ -63,7 +63,6 @@ public class MenuInstaller : MonoBehaviour
         var audioManagerUseCase = new AudioManagerUseCase(firebaseFirestore, accessUserData);
         var messagingManagerUseCase = new MessagingManagerUseCase(firebaseFirestore, accessUserData, firebaseMessaging);
         var logoutUserUseCase = new LogoutUserUseCase(firebaseAuth, eventDispatcherService);
-        var healthManager = new HealthManager(accessUserData, eventDispatcherService);
 
         //PRESENTERS-------------------------------------------------------------------------------------
         new HomePresenter(homeViewModel, eventDispatcherService);
@@ -75,7 +74,7 @@ public class MenuInstaller : MonoBehaviour
 
         //CONTROLLERS-------------------------------------------------------------------------------------
         new ButtonsController(buttonsViewModel,homeViewModel,scoreViewModel,settingsViewModel, rankingManagerUseCase);
-        new HomeController(homeViewModel, changeNameViewModel, changeSceneUseCase, getUserFromRepositoryUseCase, healthManager);
+        new HomeController(homeViewModel, changeNameViewModel, changeSceneUseCase, getUserFromRepositoryUseCase);
         new ScoreController(scoreViewModel);
         new SettingsController(settingsViewModel, loginPanelViewModel, registerPanelViewModel, audioManagerUseCase, messagingManagerUseCase, 
             getUserFromRepositoryUseCase, logoutUserUseCase);

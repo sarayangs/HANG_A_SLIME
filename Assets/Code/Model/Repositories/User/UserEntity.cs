@@ -22,5 +22,6 @@ public class UserEntity : IUserData
         Audio = audio;
         Score = score;
         CorrectWords = 0;
+        Health = 9;
     }
 }

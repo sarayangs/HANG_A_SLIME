@@ -7,21 +7,17 @@ public class HomeController: Controller
     
     private readonly ISceneHandler _changeSceneUseCase;
     private readonly IGetUserFromRepository _getUserFromRepositoryUseCase;
-    private readonly IHealthManager _healthManager;
 
-    public HomeController(HomeViewModel viewModel,ChangeNameViewModel changeNameViewModel, ISceneHandler changeSceneUsecase, IGetUserFromRepository getUserFromRepositoryUseCase,
-        IHealthManager healthManager)
+    public HomeController(HomeViewModel viewModel,ChangeNameViewModel changeNameViewModel, ISceneHandler changeSceneUsecase, IGetUserFromRepository getUserFromRepositoryUseCase)
     {
         _viewModel = viewModel;
         _changeNameViewModel = changeNameViewModel;
         _changeSceneUseCase = changeSceneUsecase;
         _getUserFromRepositoryUseCase = getUserFromRepositoryUseCase;
-        _healthManager = healthManager;
 
         _viewModel.PlayButtonPressed
             .Subscribe((_) =>
             {
-                _healthManager.InitHealth();
                 _changeSceneUseCase.PlayScene();
             }).AddTo(_disposables);
 
