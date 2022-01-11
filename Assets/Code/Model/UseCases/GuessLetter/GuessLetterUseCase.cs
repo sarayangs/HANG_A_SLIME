@@ -28,6 +28,7 @@
         _tokenRepository.SetToken(response.token);
         if(!response.correct)
             _healthManager.SubtractHealth();
+        
         _eventDispatcherService.Dispatch<ResponseData>(new ResponseData(letter, response.hangman, response.correct));
     }
 }

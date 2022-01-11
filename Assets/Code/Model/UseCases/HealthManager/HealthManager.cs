@@ -27,6 +27,10 @@
     {
         var user = _userRepository.GetLocalUser();
         user.Health--;
+        if (user.Health <= 0)
+        {
+            _eventDispatcherService.Dispatch<Answer>(new Answer(false));
+        }
         SetNewUser(user);
     }
 
@@ -34,7 +38,6 @@
     {
         _userRepository.SetLocalUser(user);
         _eventDispatcherService.Dispatch<UserEntity>(user);
-
     }
 
 }

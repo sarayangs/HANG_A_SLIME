@@ -32,4 +32,14 @@ public class UpdateUserDataUseCase : IUpdateUserData
         _realtimeDatabase.AddData(newUser.Score, newUser.Name);
         _eventDispatcherService.Dispatch<string>(newUser.Name);
     }
+
+    public void ResetUser()
+    {
+        var user = _accessUserData.GetLocalUser();
+        user.Health = 0;
+        user.Score = 0;
+        user.CorrectWords = 0;
+        _accessUserData.SetLocalUser(user);
+    }
+
 }

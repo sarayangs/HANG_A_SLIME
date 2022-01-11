@@ -6,30 +6,52 @@ using UniRx;
 
 public class ResultPopupView : View
 {
-        [SerializeField] private Image _image;
-        [SerializeField] private TextMeshProUGUI _score;
-        [SerializeField] private TextMeshProUGUI _time;
-        [SerializeField] private RectTransform _buttonsParent;
+    [SerializeField] private Image _image;
+    [SerializeField] private TextMeshProUGUI _score;
+    [SerializeField] private TextMeshProUGUI _time;
+    [SerializeField] private RectTransform _buttonsParent;
 
-        [SerializeField] private GameObject _homeButtonPrefab;
-        [SerializeField] private GameObject _retryButtonPrefab;
-        [SerializeField] private GameObject _nextWordButtonPrefab;
-        [SerializeField] private Sprite _sadImage;
-        [SerializeField] private Sprite _happyImage;
+    [SerializeField] private HomeButtonView _homeButtonPrefab;
+    [SerializeField] private RetryButtonView _retryButtonPrefab;
+    [SerializeField] private NextWordButtonView _nextWordButtonPrefab;
+    [SerializeField] private Sprite _sadImage;
+    [SerializeField] private Sprite _happyImage;
+
+    private ResultPopupViewModel _viewModel;
+
+    private HomeButtonViewModel _homeButtonViewModel;
+    private RetryButtonViewModel _retryButtonViewModel;
+    private NextWordButtonViewModel _nextWordButtonViewModel;
+
+    public void Setup(ResultPopupViewModel resultViewModel, HomeButtonViewModel homeButtonViewModel, RetryButtonViewModel retryButtonViewModel,
+        NextWordButtonViewModel nextWordButtonViewModel)
+    {
+        _viewModel = resultViewModel;
+        _homeButtonViewModel = homeButtonViewModel;
+        _retryButtonViewModel = retryButtonViewModel;
+        _nextWordButtonViewModel = nextWordButtonViewModel;
         
-        private ResultPopupViewModel _viewModel;
-
-        public void Setup(ResultPopupViewModel resultViewModel)
+        _viewModel.Win.Subscribe(hasWon =>
         {
-                _viewModel = resultViewModel;
+            var homeButtonView = Instantiate(_homeButtonPrefab, _buttonsParent);
+            homeButtonView.Setup(_homeButtonViewModel);
 
-                _viewModel.Win.Subscribe(hasWon =>
-                {
-                        if(hasWon)
-                        {
-                                _image.sprite = _happyImage;
-                                
-                        }
-                }).AddTo(_disposables);
-        }
+            if (hasWon)
+            {
+                _image.sprite = _happyImage;
+
+                var nextButtonView = Instantiate(_nextWordButtonPrefab, _buttonsParent);
+                nextButtonView.Setup(_nextWordButtonViewModel);
+            }
+            else
+            {
+                _image.sprite = _sadImage;
+
+                var retryButtonView = Instantiate(_retryButtonPrefab, _buttonsParent);
+                retryButtonView.Setup(_retryButtonViewModel);
+            }
+        }).AddTo(_disposables);
+
+        _viewModel.IsVisible.Subscribe(isVisible => { gameObject.SetActive(isVisible); }).AddTo(_disposables);
+    }
 }

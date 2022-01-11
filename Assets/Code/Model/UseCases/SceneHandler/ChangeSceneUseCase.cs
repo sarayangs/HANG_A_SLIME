@@ -6,7 +6,7 @@ public class ChangeSceneUseCase : ISceneHandler
     private readonly ISceneHandlerService _sceneHandlerService;
     private readonly IAnalyticsService _analyticsService;
 
-    private int _level = 0;
+    private int _level = 1;
     
     public ChangeSceneUseCase(ISceneHandlerService sceneHandlerService, IAnalyticsService analyticsService)
     {
@@ -21,6 +21,15 @@ public class ChangeSceneUseCase : ISceneHandler
 
     public async Task PlayScene()
     {
+        _analyticsService.StartLevelEvent(_level);
+        _level++;
+        
+        await _sceneHandlerService.LoadScene("Play");
+    }
+
+    public async Task RetryPlay()
+    {
+        _level = 1;
         _analyticsService.StartLevelEvent(_level);
         _level++;
         
