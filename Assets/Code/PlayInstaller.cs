@@ -43,7 +43,8 @@ public class PlayInstaller : MonoBehaviour
         
         //USE CASES---------------------------------------------------------
         var healthManager = new HealthManager(userRepository, eventDispatcherService);
-        var guessLetterUseCase = new GuessLetterUseCase(restClientAdapter, tokenRepository, eventDispatcherService, healthManager);
+        var checkResponseUsecase = new CheckResponseUseCase(eventDispatcherService, healthManager);
+        var guessLetterUseCase = new GuessLetterUseCase(restClientAdapter, tokenRepository, checkResponseUsecase);
         var newGameRequesterUseCase = new NewGameRequestUseCase(restClientAdapter, tokenRepository, eventDispatcherService, userRepository);
         var initGameUseCase = new InitGameUseCase(newGameRequesterUseCase);
         var scoreManagerUseCase = new ScoreManagerUseCase(userRepository);

@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.Threading.Tasks;
 using UniRx;
+using UnityEngine;
 
 public class NewGameRequestUseCase : INewGameRequester
 {
@@ -24,11 +25,25 @@ public class NewGameRequestUseCase : INewGameRequester
         var response = await _restClientAdapter.Post<NewGameRequest, NewGameResponse>(EndPoints.NewGame, request);
         
         _tokenRepository.SetToken(response.token);
+        //TEMP!!!
+        GetSolution();
+
         _eventDispatcherService.Dispatch<HangmanData>(new HangmanData(response.hangman));
     }
 
     public void SetUserData()
     {
         _eventDispatcherService.Dispatch<UserEntity>(_userRepository.GetLocalUser());  
+    }
+    //TEMP!!!
+    private async void GetSolution()
+    {
+        var request = new GetSolutionRequest { token = _tokenRepository.GetToken() };
+        var response =
+            await _restClientAdapter.Get<GetSolutionRequest, GetSolutionResponse>(EndPoints.GetSolution,
+                request);
+
+        _tokenRepository.SetToken(response.token);
+        Debug.Log(response.solution);
     }
 }

@@ -1,17 +1,16 @@
-﻿public class GuessLetterUseCase : ILetterGuesser
+﻿using UnityEngine;
+
+public class GuessLetterUseCase : ILetterGuesser
 {
     private readonly RestClientAdapter _restClientAdapter;
     private readonly TokenRepository _tokenRepository;
-    private readonly IEventDispatcherService _eventDispatcherService;
-    private readonly IHealthManager _healthManager;
-    
-    public GuessLetterUseCase(RestClientAdapter restClientAdapter, TokenRepository tokenRepository, IEventDispatcherService eventDispatcherService,
-        IHealthManager healthManager)
+    private readonly ICheckResponse _checkResponseUseCase;
+
+    public GuessLetterUseCase(RestClientAdapter restClientAdapter, TokenRepository tokenRepository, ICheckResponse checkResponseUseCase)
     {
         _restClientAdapter = restClientAdapter;
         _tokenRepository = tokenRepository;
-        _eventDispatcherService = eventDispatcherService;
-        _healthManager = healthManager;
+        _checkResponseUseCase = checkResponseUseCase;
     }
     
     public async void GuessLetter(string letter)
@@ -26,9 +25,9 @@
                 );
     
         _tokenRepository.SetToken(response.token);
-        if(!response.correct)
-            _healthManager.SubtractHealth();
-        
-        _eventDispatcherService.Dispatch<ResponseData>(new ResponseData(letter, response.hangman, response.correct));
+        _checkResponseUseCase.CheckWord(response, letter);
+      
     }
+    
+    
 }

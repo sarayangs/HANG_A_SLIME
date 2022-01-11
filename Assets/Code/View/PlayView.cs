@@ -24,7 +24,6 @@ public class PlayView : View
     public void SetUp(PlayViewModel viewModel)
     {
         _hangmanIndex = 0;
-        
         _viewModel = viewModel;
 
         foreach (var key in _keyboard)
@@ -70,6 +69,9 @@ public class PlayView : View
 
     private void InstantiateHangman()
     {
+        if (_hangmanIndex >= 9)
+            _hangmanIndex = 0;
+        
         Instantiate(_hangmanPrefabs[_hangmanIndex], _hangmanTransform);
         _hangmanIndex++;
     }

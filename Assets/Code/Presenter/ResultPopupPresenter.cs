@@ -14,6 +14,9 @@
     private void OnFinishedWord(Answer data)
     {
         _viewModel.IsVisible.Value = true;
-        _viewModel.Win.Value = data.Correct;
+        if(data.Correct)
+            _viewModel.Win.Value = true;
+        else
+            _viewModel.Lose.Value = true;
     }
 }

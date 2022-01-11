@@ -36,7 +36,7 @@ public class UpdateUserDataUseCase : IUpdateUserData
     public void ResetUser()
     {
         var user = _accessUserData.GetLocalUser();
-        user.Health = 0;
+        user.Health = 9;
         user.Score = 0;
         user.CorrectWords = 0;
         _accessUserData.SetLocalUser(user);
