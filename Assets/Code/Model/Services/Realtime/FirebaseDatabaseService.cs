@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using Firebase.Auth;
 using Firebase.Database;
 using Firebase.Extensions;
 using UnityEngine;
@@ -86,5 +86,37 @@ public class FirebaseDatabaseService : IRealtimeDatabase
                     }
                 }
             });
+    }
+
+    public async Task<List<ScoreEntry>> GetScoreList()
+    {
+        var dataSnapshot = await FirebaseDatabase.DefaultInstance
+            .GetReference("scores")
+            .GetValueAsync();
+
+        var users = new List<ScoreEntry>();
+        foreach (var data in dataSnapshot.Children)
+        {
+            var user = new ScoreEntry(null, 0, null);
+
+            foreach (var child in data.Children)
+            {
+                if (child.Key == "Name")
+                    user.Name = child.Value.ToString();
+                else if (child.Key == "Score")
+                {
+                    var score = child.Value.ToString();
+                    user.Score = Int32.Parse(score);
+                }
+                else if (child.Key == "Time")
+                {
+                    var time = child.Value.ToString();
+                    user.Time = Int32.Parse(time);
+                }
+            }
+            users.Add(user);
+        }
+
+        return users;
     }
 }

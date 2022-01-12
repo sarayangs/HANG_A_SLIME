@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 public interface IRealtimeDatabase 
 {
@@ -6,4 +7,5 @@ public interface IRealtimeDatabase
      Task<string> GetData(string userId);
      void UpdateData(ScoreEntry entry);
      void GetScores();
+     Task<List<ScoreEntry>> GetScoreList();
 }
