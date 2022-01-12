@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Firebase.Auth;
 using Firebase.Database;
 using Firebase.Extensions;
 using UnityEngine;
@@ -44,10 +45,9 @@ public class FirebaseDatabaseService : IRealtimeDatabase
 
     public void UpdateData(ScoreEntry entry)
     {
-        Debug.Log(entry.Score);
-        Dictionary<string, object> update = new Dictionary<string, object>()
+        IDictionary<string, object> update = new Dictionary<string, object>
         {
-            {$"/scores/{entry.Id}/Score", entry.Score}
+            {$"scores/{entry.Id}/Score", entry.Score}
         };
         databaseReference.UpdateChildrenAsync(update).ContinueWithOnMainThread(task =>
         {
