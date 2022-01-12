@@ -48,7 +48,7 @@ public class PlayInstaller : MonoBehaviour
         var guessLetterUseCase = new GuessLetterUseCase(restClientAdapter, tokenRepository, checkResponseUsecase);
         var newGameRequesterUseCase = new NewGameRequestUseCase(restClientAdapter, tokenRepository, eventDispatcherService, userRepository);
         var initGameUseCase = new InitGameUseCase(newGameRequesterUseCase);
-        var changeSceneUseCase = new ChangeSceneUseCase(sceneHandlerService, firebaseAnalytics);
+        var changeSceneUseCase = new ChangeSceneUseCase(sceneHandlerService, firebaseAnalytics, userRepository);
         var updateUserData = new UpdateUserDataUseCase(firebaseFirestore, firebaseRealtime, eventDispatcherService,
             userRepository, loggedUsersRepository);
             

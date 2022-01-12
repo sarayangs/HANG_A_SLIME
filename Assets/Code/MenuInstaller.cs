@@ -53,7 +53,7 @@ public class MenuInstaller : MonoBehaviour
         var eventDispatcherService = ServiceLocator.Instance.GetService<IEventDispatcherService>();
 
         //USE CASES-------------------------------------------------------------------------------------
-        var changeSceneUseCase = new ChangeSceneUseCase(sceneHandler, firebaseAnalytics);
+        var changeSceneUseCase = new ChangeSceneUseCase(sceneHandler, firebaseAnalytics, accessUserData);
         var getUserFromRepositoryUseCase = new GetUserFromRepositoryUseCase(accessUserData, loggedUsersRepository, eventDispatcherService);
         var udpateUserDataUseCase = new UpdateUserDataUseCase(firebaseFirestore, firebaseDatabase, eventDispatcherService, accessUserData, loggedUsersRepository);
         var rankingManagerUseCase = new RankingManagerUseCase(firebaseDatabase, eventDispatcherService);

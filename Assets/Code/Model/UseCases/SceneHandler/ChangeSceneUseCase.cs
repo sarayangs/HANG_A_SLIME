@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Threading.Tasks;
+using UnityEngine;
 
 public class ChangeSceneUseCase : ISceneHandler
 {
     private readonly ISceneHandlerService _sceneHandlerService;
     private readonly IAnalyticsService _analyticsService;
+    private readonly IAccessUserData _userRepository;
 
-    private int _level = 1;
-    
-    public ChangeSceneUseCase(ISceneHandlerService sceneHandlerService, IAnalyticsService analyticsService)
+    public ChangeSceneUseCase(ISceneHandlerService sceneHandlerService, IAnalyticsService analyticsService, IAccessUserData userRepository)
     {
         _sceneHandlerService = sceneHandlerService;
         _analyticsService = analyticsService;
+        _userRepository = userRepository;
     }
     public async Task ChangeSceneTo(string scene)
     {
@@ -21,18 +22,13 @@ public class ChangeSceneUseCase : ISceneHandler
 
     public async Task PlayScene()
     {
-        _analyticsService.StartLevelEvent(_level);
-        _level++;
-        
+        _analyticsService.StartLevelEvent(_userRepository.GetLocalUser().CorrectWords + 1);
         await _sceneHandlerService.LoadScene("Play");
     }
 
     public async Task RetryPlay()
     {
-        _level = 1;
-        _analyticsService.StartLevelEvent(_level);
-        _level++;
-        
+        _analyticsService.StartLevelEvent(_userRepository.GetLocalUser().CorrectWords + 1);
         await _sceneHandlerService.LoadScene("Play");
     }
 }

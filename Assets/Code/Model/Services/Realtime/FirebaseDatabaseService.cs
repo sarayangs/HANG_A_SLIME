@@ -116,7 +116,6 @@ public class FirebaseDatabaseService : IRealtimeDatabase
             }
             users.Add(user);
         }
-
         return users;
     }
 }
