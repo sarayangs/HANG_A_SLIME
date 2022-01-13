@@ -85,7 +85,7 @@ public class PlayView : View
             _sequence = DOTween.Sequence();
             _sequence.Insert(0f, _healthText.transform.DOShakePosition(1f, 10f, 50, 30, true));
             _sequence.Insert(0f, _healthText.DOColor(Color.red, 0.2f));
-            _sequence.Insert(1f, _healthText.DOColor(Color.black, 0.2f));
+            _sequence.Insert(1f, _healthText.DOColor(Color.white, 0.2f));
             _sequence.Insert(0f, _incorrectLettersText.transform.DOShakePosition(1f, 10f, 50, 30, true));
             _sequence.SetAutoKill(false);
         }
