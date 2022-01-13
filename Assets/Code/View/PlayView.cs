@@ -13,6 +13,7 @@ public class PlayView : View
     [SerializeField] private TextMeshProUGUI _scoreText;
     [SerializeField] private TextMeshProUGUI _healthText;
     [SerializeField] private RectTransform _hangmanTransform;
+    [SerializeField] private Button _pauseButton;
 
     [SerializeField] private List<Button> _keyboard;
     [SerializeField] private List<GameObject> _hangmanPrefabs;
@@ -35,6 +36,7 @@ public class PlayView : View
                 key.enabled = false;
             });
         }
+        _pauseButton.onClick.AddListener(() => { _viewModel.OnPauseButtonPressed.Execute();});
 
         _viewModel.HangmanText.Subscribe(text =>
         {

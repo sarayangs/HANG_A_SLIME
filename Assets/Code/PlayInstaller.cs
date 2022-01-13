@@ -10,8 +10,10 @@ public class PlayInstaller : MonoBehaviour
     [SerializeField] private HomeButtonView _homeButtonView;
     [SerializeField] private RetryButtonView _retryButtonView;
     [SerializeField] private NextWordButtonView _nextWordButtonView;
+    [SerializeField] private PauseView _pauseView;
     
     private readonly List<IDisposable> _disposables = new List<IDisposable>();
+    private IGameInitializer _initGameUseCase;
 
     private void Awake()
     {
@@ -29,6 +31,9 @@ public class PlayInstaller : MonoBehaviour
         
         var resultPopupViewModel = new ResultPopupViewModel();
         _resultPopupView.Setup(resultPopupViewModel, homeButtonViewModel, retryButtonViewModel, nextWordButtonViewModel);
+        
+        var pauseViewModel = new PauseViewModel();
+        _pauseView.Setup(pauseViewModel, homeButtonViewModel, retryButtonViewModel);
 
         var restClientAdapter = new RestClientAdapter();
         var tokenRepository = new TokenRepository();
@@ -42,28 +47,36 @@ public class PlayInstaller : MonoBehaviour
         var firebaseRealtime = ServiceLocator.Instance.GetService<FirebaseDatabaseService>();
         
         //USE CASES---------------------------------------------------------
-        var userStatsManagerUseCase = new UserStatsManagerUseCase(userRepository, eventDispatcherService, firebaseRealtime);
+        var timeManagerUseCase = new TimeManagerUseCase();
+        var userStatsManagerUseCase = new UserStatsManagerUseCase(userRepository, eventDispatcherService, firebaseRealtime, timeManagerUseCase);
         var healthManager = new HealthManager(userRepository, eventDispatcherService, userStatsManagerUseCase);
         var checkResponseUsecase = new CheckResponseUseCase(eventDispatcherService, healthManager, userStatsManagerUseCase);
         var guessLetterUseCase = new GuessLetterUseCase(restClientAdapter, tokenRepository, checkResponseUsecase);
         var newGameRequesterUseCase = new NewGameRequestUseCase(restClientAdapter, tokenRepository, eventDispatcherService, userRepository);
-        var initGameUseCase = new InitGameUseCase(newGameRequesterUseCase);
         var changeSceneUseCase = new ChangeSceneUseCase(sceneHandlerService, firebaseAnalytics, userRepository);
         var updateUserData = new UpdateUserDataUseCase(firebaseFirestore, firebaseRealtime, eventDispatcherService,
             userRepository, loggedUsersRepository);
+        
+        _initGameUseCase = new InitGameUseCase(newGameRequesterUseCase, timeManagerUseCase);
+
             
         //PRESENTERS--------------------------------------------------------
         new PlayPresenter(playViewModel, eventDispatcherService);
         new ResultPopupPresenter(resultPopupViewModel, eventDispatcherService);
         
         //CONTROLLERS------------------------------------------------------
-        new PlayController(playViewModel, initGameUseCase, guessLetterUseCase);
+        new PlayController(playViewModel, pauseViewModel, guessLetterUseCase);
         new HomeButtonController(homeButtonViewModel, changeSceneUseCase);
         new RetryButtonController(retryButtonViewModel, updateUserData, changeSceneUseCase);
         new NextWordButtonController(nextWordButtonViewModel, changeSceneUseCase);
 
     }
-    
+
+    private void Start()
+    {
+        _initGameUseCase.Start();
+    }
+
     private void OnDestroy()
     {
         foreach (var disposable in _disposables)

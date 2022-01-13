@@ -1,23 +1,27 @@
-﻿using UniRx;
+﻿using System.ComponentModel;
+using UniRx;
 
 public class PlayController : Controller
 {
     private readonly PlayViewModel _viewModel;
+    private readonly PauseViewModel _pauseViewModel;
     
-    private readonly IGameInitializer _initGameUseCase;
     private readonly ILetterGuesser _guessLetterUseCase;
 
-    public PlayController(PlayViewModel viewModel, IGameInitializer initGameUseCase, ILetterGuesser guessLetterUseCase)
+    public PlayController(PlayViewModel viewModel, PauseViewModel pauseViewModel, ILetterGuesser guessLetterUseCase)
     {
         _viewModel = viewModel;
-        _initGameUseCase = initGameUseCase;
+        _pauseViewModel = pauseViewModel;
         _guessLetterUseCase = guessLetterUseCase;
+        
+        _viewModel.OnPauseButtonPressed.Subscribe((_) =>
+        {
+            _pauseViewModel.IsVisible.Value = true;
+        }).AddTo(_disposables);
         
         _viewModel.KeyPressed.Subscribe((letter) =>
         {
             _guessLetterUseCase.GuessLetter(letter);
         });
-
-        _initGameUseCase.Start();
     }
 }

@@ -2,9 +2,9 @@
 {
     public bool Correct;
     public int Score;
-    public int Time;
+    public string Time;
 
-    public Answer(bool isCorrect, int score, int time)
+    public Answer(bool isCorrect, int score, string time)
     {
         Correct = isCorrect;
         Score = score;

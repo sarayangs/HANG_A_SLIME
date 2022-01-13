@@ -63,7 +63,7 @@ public class MenuInstaller : MonoBehaviour
         var audioManagerUseCase = new AudioManagerUseCase(firebaseFirestore, accessUserData);
         var messagingManagerUseCase = new MessagingManagerUseCase(firebaseFirestore, accessUserData, firebaseMessaging);
         var logoutUserUseCase = new LogoutUserUseCase(firebaseAuth, eventDispatcherService);
-
+        
         //PRESENTERS-------------------------------------------------------------------------------------
         new HomePresenter(homeViewModel, eventDispatcherService);
         new ScorePresenter(scoreViewModel, eventDispatcherService);

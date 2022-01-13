@@ -47,7 +47,8 @@ public class FirebaseDatabaseService : IRealtimeDatabase
     {
         IDictionary<string, object> update = new Dictionary<string, object>
         {
-            {$"scores/{entry.Id}/Score", entry.Score}
+            {$"scores/{entry.Id}/Score", entry.Score},
+            {$"scores/{entry.Id}/Time", entry.Time}
         };
         databaseReference.UpdateChildrenAsync(update).ContinueWithOnMainThread(task =>
         {
@@ -111,7 +112,7 @@ public class FirebaseDatabaseService : IRealtimeDatabase
                 else if (child.Key == "Time")
                 {
                     var time = child.Value.ToString();
-                    user.Time = Int32.Parse(time);
+                    user.Time = time;
                 }
             }
             users.Add(user);

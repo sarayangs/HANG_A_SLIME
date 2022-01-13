@@ -7,7 +7,7 @@ public class ScoreEntry
     [SerializeField] public int Score;
     [SerializeField] public string Id;
     [SerializeField] public string Name;
-    [SerializeField] public int Time;
+    [SerializeField] public string Time;
 
 
     public ScoreEntry(string id, int score, string name)
@@ -15,6 +15,6 @@ public class ScoreEntry
         Id = id;
         Score = score;
         Name = name;
-        Time = 0;
+        Time = "0";
     }
 }
