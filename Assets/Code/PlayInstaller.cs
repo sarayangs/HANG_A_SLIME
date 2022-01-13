@@ -47,7 +47,7 @@ public class PlayInstaller : MonoBehaviour
         var firebaseRealtime = ServiceLocator.Instance.GetService<FirebaseDatabaseService>();
         
         //USE CASES---------------------------------------------------------
-        var timeManagerUseCase = new TimeManagerUseCase();
+        var timeManagerUseCase = new TimeManagerUseCase(eventDispatcherService);
         var userStatsManagerUseCase = new UserStatsManagerUseCase(userRepository, eventDispatcherService, firebaseRealtime, timeManagerUseCase);
         var healthManager = new HealthManager(userRepository, eventDispatcherService, userStatsManagerUseCase);
         var checkResponseUsecase = new CheckResponseUseCase(eventDispatcherService, healthManager, userStatsManagerUseCase);
@@ -63,9 +63,11 @@ public class PlayInstaller : MonoBehaviour
         //PRESENTERS--------------------------------------------------------
         new PlayPresenter(playViewModel, eventDispatcherService);
         new ResultPopupPresenter(resultPopupViewModel, eventDispatcherService);
+        new PausePresenter(pauseViewModel, eventDispatcherService);
         
         //CONTROLLERS------------------------------------------------------
-        new PlayController(playViewModel, pauseViewModel, guessLetterUseCase);
+        new PlayController(playViewModel, pauseViewModel, guessLetterUseCase, timeManagerUseCase);
+        new PauseController(pauseViewModel, timeManagerUseCase);
         new HomeButtonController(homeButtonViewModel, changeSceneUseCase);
         new RetryButtonController(retryButtonViewModel, updateUserData, changeSceneUseCase);
         new NextWordButtonController(nextWordButtonViewModel, changeSceneUseCase);
