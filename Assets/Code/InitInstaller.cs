@@ -40,7 +40,7 @@ public class InitInstaller : MonoBehaviour
         //firebaseMessaging.Init();
         
         var authenticateUseCase = new AuthenticateUseCase(firebaseAuth);
-        var changeSceneUseCase = new ChangeSceneUseCase(sceneHandler, firebaseAnalytics);
+        var changeSceneUseCase = new ChangeSceneUseCase(sceneHandler, firebaseAnalytics, accessUserData);
         var initNewUserUseCase = new InitNewUserUseCase(firebaseFirestore, firebaseRealtime, firebaseAuth, accessUserData);
         var loadUserDataUseCase = new LoadUserDataUseCase(initNewUserUseCase, accessUserData, loggedUsersRepository, firebaseFirestore, firebaseAuth);
         

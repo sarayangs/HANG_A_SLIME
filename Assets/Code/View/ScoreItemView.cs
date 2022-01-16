@@ -34,7 +34,7 @@ public class ScoreItemView : View
         
         _scoreItemViewModel.Time.Subscribe(time =>
         {
-            _time.SetText(time + "m");  
+            _time.SetText(time);  
         }).AddTo(_disposables);
     }
 

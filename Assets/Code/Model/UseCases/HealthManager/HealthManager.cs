@@ -2,11 +2,13 @@
 {
     private readonly IAccessUserData _userRepository;
     private readonly IEventDispatcherService _eventDispatcherService;
+    private readonly IUserStatsManager _userStatsManagerUseCase;
 
-    public HealthManager(IAccessUserData userRepository, IEventDispatcherService eventDispatcherService)
+    public HealthManager(IAccessUserData userRepository, IEventDispatcherService eventDispatcherService, IUserStatsManager userStatsManagerUseCase)
     {
         _userRepository = userRepository;
         _eventDispatcherService = eventDispatcherService;
+        _userStatsManagerUseCase = userStatsManagerUseCase;
     }
 
     public void InitHealth()
@@ -27,6 +29,12 @@
     {
         var user = _userRepository.GetLocalUser();
         user.Health--;
+        
+        if (user.Health <= 0)
+        {
+            _userStatsManagerUseCase.ManageUserStats(false);
+        }
+        
         SetNewUser(user);
     }
 
@@ -34,7 +42,6 @@
     {
         _userRepository.SetLocalUser(user);
         _eventDispatcherService.Dispatch<UserEntity>(user);
-
     }
 
 }

@@ -16,8 +16,6 @@ public class MenuInstaller : MonoBehaviour
     
     private readonly List<IDisposable> _disposables = new List<IDisposable>();
 
-
-
     private void Awake()
     {
         //VIEWMODELS AND VIEW SETUPS-------------------------------------------------------------
@@ -55,18 +53,17 @@ public class MenuInstaller : MonoBehaviour
         var eventDispatcherService = ServiceLocator.Instance.GetService<IEventDispatcherService>();
 
         //USE CASES-------------------------------------------------------------------------------------
-        var changeSceneUseCase = new ChangeSceneUseCase(sceneHandler, firebaseAnalytics);
+        var changeSceneUseCase = new ChangeSceneUseCase(sceneHandler, firebaseAnalytics, accessUserData);
         var getUserFromRepositoryUseCase = new GetUserFromRepositoryUseCase(accessUserData, loggedUsersRepository, eventDispatcherService);
         var udpateUserDataUseCase = new UpdateUserDataUseCase(firebaseFirestore, firebaseDatabase, eventDispatcherService, accessUserData, loggedUsersRepository);
-        var rankingManagerUseCase = new RankingManagerUseCase(firebaseDatabase);
+        var rankingManagerUseCase = new RankingManagerUseCase(firebaseDatabase, eventDispatcherService);
         var registerUserUseCase = new RegisterUserUseCase(firebaseAuth, accessUserData, eventDispatcherService, firebaseFirestore, loggedUsersRepository);
         var signInuserUseCase = new SignInUserUseCase(firebaseAuth, eventDispatcherService, accessUserData,
             loggedUsersRepository, firebaseFirestore);
         var audioManagerUseCase = new AudioManagerUseCase(firebaseFirestore, accessUserData);
         var messagingManagerUseCase = new MessagingManagerUseCase(firebaseFirestore, accessUserData, firebaseMessaging);
         var logoutUserUseCase = new LogoutUserUseCase(firebaseAuth, eventDispatcherService);
-        var healthManager = new HealthManager(accessUserData, eventDispatcherService);
-
+        
         //PRESENTERS-------------------------------------------------------------------------------------
         new HomePresenter(homeViewModel, eventDispatcherService);
         new ScorePresenter(scoreViewModel, eventDispatcherService);
@@ -77,7 +74,7 @@ public class MenuInstaller : MonoBehaviour
 
         //CONTROLLERS-------------------------------------------------------------------------------------
         new ButtonsController(buttonsViewModel,homeViewModel,scoreViewModel,settingsViewModel, rankingManagerUseCase);
-        new HomeController(homeViewModel, changeNameViewModel, changeSceneUseCase, getUserFromRepositoryUseCase, healthManager);
+        new HomeController(homeViewModel, changeNameViewModel, changeSceneUseCase, getUserFromRepositoryUseCase);
         new ScoreController(scoreViewModel);
         new SettingsController(settingsViewModel, loginPanelViewModel, registerPanelViewModel, audioManagerUseCase, messagingManagerUseCase, 
             getUserFromRepositoryUseCase, logoutUserUseCase);

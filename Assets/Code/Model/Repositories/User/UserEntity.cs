@@ -11,6 +11,10 @@ public class UserEntity : IUserData
     public int Score { get; set; }
 
     public int Health { get; set; }
+    
+    public int CorrectWords { get; set; }
+    
+    public float Time { get; set; }
 
     public UserEntity(string userid, string name, bool notifications, bool audio, int score)
     {
@@ -19,5 +23,8 @@ public class UserEntity : IUserData
         Notifications = notifications;
         Audio = audio;
         Score = score;
+        CorrectWords = 0;
+        Health = 9;
+        Time = 0;
     }
 }

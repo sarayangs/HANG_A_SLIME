@@ -13,6 +13,7 @@ public class PlayView : View
     [SerializeField] private TextMeshProUGUI _scoreText;
     [SerializeField] private TextMeshProUGUI _healthText;
     [SerializeField] private RectTransform _hangmanTransform;
+    [SerializeField] private Button _pauseButton;
 
     [SerializeField] private List<Button> _keyboard;
     [SerializeField] private List<GameObject> _hangmanPrefabs;
@@ -24,7 +25,6 @@ public class PlayView : View
     public void SetUp(PlayViewModel viewModel)
     {
         _hangmanIndex = 0;
-        
         _viewModel = viewModel;
 
         foreach (var key in _keyboard)
@@ -36,6 +36,7 @@ public class PlayView : View
                 key.enabled = false;
             });
         }
+        _pauseButton.onClick.AddListener(() => { _viewModel.OnPauseButtonPressed.Execute();});
 
         _viewModel.HangmanText.Subscribe(text =>
         {
@@ -70,6 +71,9 @@ public class PlayView : View
 
     private void InstantiateHangman()
     {
+        if (_hangmanIndex >= 9)
+            _hangmanIndex = 0;
+        
         Instantiate(_hangmanPrefabs[_hangmanIndex], _hangmanTransform);
         _hangmanIndex++;
     }
@@ -81,7 +85,7 @@ public class PlayView : View
             _sequence = DOTween.Sequence();
             _sequence.Insert(0f, _healthText.transform.DOShakePosition(1f, 10f, 50, 30, true));
             _sequence.Insert(0f, _healthText.DOColor(Color.red, 0.2f));
-            _sequence.Insert(1f, _healthText.DOColor(Color.black, 0.2f));
+            _sequence.Insert(1f, _healthText.DOColor(Color.white, 0.2f));
             _sequence.Insert(0f, _incorrectLettersText.transform.DOShakePosition(1f, 10f, 50, 30, true));
             _sequence.SetAutoKill(false);
         }

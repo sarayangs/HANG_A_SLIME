@@ -29,7 +29,17 @@ public class UpdateUserDataUseCase : IUpdateUserData
         _databaseService.Save(newUser, "users", user.UserId);
         _accessUserData.SetLocalUser(newUserEntity);
         _loggedUsersRepository.UpdateUser(registeredUser);
-        _realtimeDatabase.AddData(newUser.Score, newUser.Name);
+        _realtimeDatabase.AddData(new ScoreEntry(newUser.Id, user.Score, newName));
         _eventDispatcherService.Dispatch<string>(newUser.Name);
     }
+
+    public void ResetUser()
+    {
+        var user = _accessUserData.GetLocalUser();
+        user.Health = 9;
+        user.Score = 0;
+        user.CorrectWords = 0;
+        _accessUserData.SetLocalUser(user);
+    }
+
 }

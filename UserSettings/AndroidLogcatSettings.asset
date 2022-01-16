@@ -1,9 +1,9 @@
 {
     "m_SelectedDeviceId": "VQTBB19121150553",
     "m_SelectedPackage": {
-        "deviceId": "",
-        "name": "",
-        "processId": 0,
+        "deviceId": "VQTBB19121150553",
+        "name": "com.grabusquiyang.hangaslime",
+        "processId": 14480,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -12,6 +12,12 @@
             "deviceId": "VQTBB19121150553",
             "name": "com.android.settings",
             "processId": 1538,
+            "exited": false
+        },
+        {
+            "deviceId": "VQTBB19121150553",
+            "name": "com.grabusquiyang.hangaslime",
+            "processId": 14480,
             "exited": false
         }
     ],
