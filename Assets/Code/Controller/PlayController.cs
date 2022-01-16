@@ -23,6 +23,9 @@ public class PlayController : Controller
             _timeManagerUseCase.StopTimer();
         }).AddTo(_disposables);
 
-        _viewModel.KeyPressed.Subscribe((letter) => { _guessLetterUseCase.GuessLetter(letter); });
+        _viewModel.KeyPressed.Subscribe((letter) =>
+        {
+            _guessLetterUseCase.GuessLetter(letter);
+        });
     }
 }

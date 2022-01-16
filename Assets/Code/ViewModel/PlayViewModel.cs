@@ -10,6 +10,7 @@ public class PlayViewModel
     public readonly ReactiveProperty<string> CorrectLetters;
     public readonly ReactiveProperty<string> Health;
     public readonly ReactiveProperty<string> Score;
+    public readonly ReactiveProperty<int> OnIncorrectLetter;
 
     public PlayViewModel()
     {
@@ -20,6 +21,7 @@ public class PlayViewModel
         CorrectLetters = new ReactiveProperty<string>(string.Empty);
         Health = new ReactiveProperty<string>();
         Score = new ReactiveProperty<string>();
+        OnIncorrectLetter = new ReactiveProperty<int>();
     }
 
 }

@@ -1,10 +1,13 @@
-﻿public class HealthManager : IHealthManager
+﻿using UnityEngine;
+
+public class HealthManager : IHealthManager
 {
     private readonly IAccessUserData _userRepository;
     private readonly IEventDispatcherService _eventDispatcherService;
     private readonly IUserStatsManager _userStatsManagerUseCase;
 
-    public HealthManager(IAccessUserData userRepository, IEventDispatcherService eventDispatcherService, IUserStatsManager userStatsManagerUseCase)
+    public HealthManager(IAccessUserData userRepository, IEventDispatcherService eventDispatcherService,
+        IUserStatsManager userStatsManagerUseCase)
     {
         _userRepository = userRepository;
         _eventDispatcherService = eventDispatcherService;
@@ -29,12 +32,25 @@
     {
         var user = _userRepository.GetLocalUser();
         user.Health--;
-        
+
         if (user.Health <= 0)
         {
+            if (user.GotAnotherChance)
+            {
+                AddHealth();
+            }
+            else
+            {
+                _eventDispatcherService.Dispatch<InstantiateHangmanEvent>(new InstantiateHangmanEvent(true, user.Health));
+            }
+
             _userStatsManagerUseCase.ManageUserStats(false);
         }
-        
+        else
+        {
+            _eventDispatcherService.Dispatch<InstantiateHangmanEvent>(new InstantiateHangmanEvent(true, user.Health));
+        }
+
         SetNewUser(user);
     }
 
@@ -43,5 +59,4 @@
         _userRepository.SetLocalUser(user);
         _eventDispatcherService.Dispatch<UserEntity>(user);
     }
-
 }

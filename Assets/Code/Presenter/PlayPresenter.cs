@@ -13,6 +13,7 @@ public class PlayPresenter : Presenter
 
         _eventDispatcherService.Subscribe<HangmanData>(OnInitGame);
         _eventDispatcherService.Subscribe<ResponseData>(OnKeyPressed);
+        _eventDispatcherService.Subscribe<InstantiateHangmanEvent>(OnInstantiateHangmanEvent);
         
         _eventDispatcherService.Subscribe<UserEntity>(OnUserData);
     }
@@ -41,6 +42,11 @@ public class PlayPresenter : Presenter
     {
         _viewModel.Health.Value = "Health: " + userData.Health;
         _viewModel.Score.Value = "Score: " + userData.Score;
+    }
+
+    private void OnInstantiateHangmanEvent(InstantiateHangmanEvent data)
+    {
+        _viewModel.OnIncorrectLetter.Value = data.Health;
     }
 
     private static string AddSpacesBetweenLetters(string word)

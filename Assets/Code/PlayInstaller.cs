@@ -45,10 +45,12 @@ public class PlayInstaller : MonoBehaviour
         var firebaseAnalytics = ServiceLocator.Instance.GetService<FirebaseAnalyticsService>();
         var firebaseFirestore = ServiceLocator.Instance.GetService<FirebaseFirestoreService>();
         var firebaseRealtime = ServiceLocator.Instance.GetService<FirebaseDatabaseService>();
+        var googleAdmob = ServiceLocator.Instance.GetService<GoogleAdmobService>();
         
         //USE CASES---------------------------------------------------------
+        var admobInitializer = new AdmobInitializer(googleAdmob, userRepository);
         var timeManagerUseCase = new TimeManagerUseCase(eventDispatcherService);
-        var userStatsManagerUseCase = new UserStatsManagerUseCase(userRepository, eventDispatcherService, firebaseRealtime, timeManagerUseCase);
+        var userStatsManagerUseCase = new UserStatsManagerUseCase(userRepository, eventDispatcherService, firebaseRealtime, timeManagerUseCase, admobInitializer);
         var healthManager = new HealthManager(userRepository, eventDispatcherService, userStatsManagerUseCase);
         var checkResponseUsecase = new CheckResponseUseCase(eventDispatcherService, healthManager, userStatsManagerUseCase);
         var guessLetterUseCase = new GuessLetterUseCase(restClientAdapter, tokenRepository, checkResponseUsecase);

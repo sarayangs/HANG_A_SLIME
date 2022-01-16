@@ -15,6 +15,7 @@ public class InitInstaller : MonoBehaviour
         var firebaseMessaging = new FirebaseMessagingService();
         var firebaseRealtime = new FirebaseDatabaseService();
         var firebaseAnalytics = new FirebaseAnalyticsService();
+        var googleAdmob = new GoogleAdmobService();
         
         var sceneHandler = new UnitySceneHandler();
         var accessUserData = new AccessUserData();
@@ -29,23 +30,22 @@ public class InitInstaller : MonoBehaviour
         ServiceLocator.Instance.RegisterService<FirebaseDatabaseService>(firebaseDatabase);
         ServiceLocator.Instance.RegisterService<FirebaseMessagingService>(firebaseMessaging);
         ServiceLocator.Instance.RegisterService<FirebaseAnalyticsService>(firebaseAnalytics);
-        
+        ServiceLocator.Instance.RegisterService<GoogleAdmobService>(googleAdmob);
         
         ServiceLocator.Instance.RegisterService<UnitySceneHandler>(sceneHandler);
         ServiceLocator.Instance.RegisterService<AccessUserData>(accessUserData);
         ServiceLocator.Instance.RegisterService<LoggedUsersRepository>(loggedUsersRepository);
         
         ServiceLocator.Instance.RegisterService<IEventDispatcherService>(eventDispatcher);
-
-        //firebaseMessaging.Init();
         
         var authenticateUseCase = new AuthenticateUseCase(firebaseAuth);
         var changeSceneUseCase = new ChangeSceneUseCase(sceneHandler, firebaseAnalytics, accessUserData);
         var initNewUserUseCase = new InitNewUserUseCase(firebaseFirestore, firebaseRealtime, firebaseAuth, accessUserData);
         var loadUserDataUseCase = new LoadUserDataUseCase(initNewUserUseCase, accessUserData, loggedUsersRepository, firebaseFirestore, firebaseAuth);
+        var admobInitializerUseCase = new AdmobInitializer(googleAdmob, accessUserData);
         
         //USECASE
-        _loadInitDataUseCase = new LoadInitDataUseCase(changeSceneUseCase, authenticateUseCase, loadUserDataUseCase);
+        _loadInitDataUseCase = new LoadInitDataUseCase(changeSceneUseCase, authenticateUseCase, loadUserDataUseCase, admobInitializerUseCase);
     }
 
     private void Start()

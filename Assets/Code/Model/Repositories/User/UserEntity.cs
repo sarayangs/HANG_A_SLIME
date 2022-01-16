@@ -16,6 +16,8 @@ public class UserEntity : IUserData
     
     public float Time { get; set; }
 
+    public bool GotAnotherChance { get; set; }
+
     public UserEntity(string userid, string name, bool notifications, bool audio, int score)
     {
         UserId = userid;
@@ -26,5 +28,6 @@ public class UserEntity : IUserData
         CorrectWords = 0;
         Health = 9;
         Time = 0;
+        GotAnotherChance = true;
     }
 }

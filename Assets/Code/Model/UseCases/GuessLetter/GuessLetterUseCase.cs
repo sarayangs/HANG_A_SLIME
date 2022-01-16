@@ -28,6 +28,4 @@ public class GuessLetterUseCase : ILetterGuesser
         _checkResponseUseCase.CheckWord(response, letter);
       
     }
-    
-    
 }

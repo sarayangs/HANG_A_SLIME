@@ -6,7 +6,7 @@ using UniRx;
 using DG.Tweening;
 
 public class PlayView : View
-{ 
+{
     [SerializeField] private TextMeshProUGUI _hangmanText;
     [SerializeField] private TextMeshProUGUI _correctLettersText;
     [SerializeField] private TextMeshProUGUI _incorrectLettersText;
@@ -17,7 +17,7 @@ public class PlayView : View
 
     [SerializeField] private List<Button> _keyboard;
     [SerializeField] private List<GameObject> _hangmanPrefabs;
-        
+
     private PlayViewModel _viewModel;
     private int _hangmanIndex;
     private Sequence _sequence;
@@ -32,48 +32,41 @@ public class PlayView : View
             key.onClick.AddListener(() =>
             {
                 _viewModel.KeyPressed.Execute(key.GetComponentInChildren<TMP_Text>().text);
-                key.GetComponent<Image>().DOColor(new Color(0.5f, 0.5f ,0.5f), 0.2f);
+                key.GetComponent<Image>().DOColor(new Color(0.5f, 0.5f, 0.5f), 0.2f);
                 key.enabled = false;
             });
         }
-        _pauseButton.onClick.AddListener(() => { _viewModel.OnPauseButtonPressed.Execute();});
 
-        _viewModel.HangmanText.Subscribe(text =>
-        {
-            _hangmanText.SetText(text);
-        });
+        _pauseButton.onClick.AddListener(() => { _viewModel.OnPauseButtonPressed.Execute(); });
 
-        _viewModel.CorrectLetters.Subscribe(text =>
-        {
-            _correctLettersText.SetText(text);
-        });
-        
+        _viewModel.HangmanText.Subscribe(text => { _hangmanText.SetText(text); });
+
+        _viewModel.CorrectLetters.Subscribe(text => { _correctLettersText.SetText(text); });
+
         _viewModel.IncorrectLetters.Subscribe(text =>
         {
-            if (text != string.Empty)
+            _incorrectLettersText.SetText(text);
+        });
+
+        _viewModel.OnIncorrectLetter.Subscribe(instantiate =>
+        {
+            if(instantiate != 0)
             {
                 InstantiateHangman();
                 PlaySequence();
             }
-            _incorrectLettersText.SetText(text);
         });
-        
-       _viewModel.Score.Subscribe(score =>
-       {
-           _scoreText.SetText(score);
-       });
-       
-       _viewModel.Health.Subscribe(health =>
-       {
-           _healthText.SetText(health);
-       });
+
+        _viewModel.Score.Subscribe(score => { _scoreText.SetText(score); });
+
+        _viewModel.Health.Subscribe(health => { _healthText.SetText(health); });
     }
 
     private void InstantiateHangman()
     {
         if (_hangmanIndex >= 9)
             _hangmanIndex = 0;
-        
+
         Instantiate(_hangmanPrefabs[_hangmanIndex], _hangmanTransform);
         _hangmanIndex++;
     }
