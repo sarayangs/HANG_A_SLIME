@@ -39,6 +39,7 @@ public class UpdateUserDataUseCase : IUpdateUserData
         user.Health = 9;
         user.Score = 0;
         user.CorrectWords = 0;
+        user.GotAnotherChance = true;
         _accessUserData.SetLocalUser(user);
     }
 

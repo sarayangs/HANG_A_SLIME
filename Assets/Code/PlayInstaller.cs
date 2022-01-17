@@ -70,7 +70,7 @@ public class PlayInstaller : MonoBehaviour
         //CONTROLLERS------------------------------------------------------
         new PlayController(playViewModel, pauseViewModel, guessLetterUseCase, timeManagerUseCase);
         new PauseController(pauseViewModel, timeManagerUseCase);
-        new HomeButtonController(homeButtonViewModel, changeSceneUseCase);
+        new HomeButtonController(homeButtonViewModel, updateUserData, changeSceneUseCase);
         new RetryButtonController(retryButtonViewModel, updateUserData, changeSceneUseCase);
         new NextWordButtonController(nextWordButtonViewModel, changeSceneUseCase);
 
