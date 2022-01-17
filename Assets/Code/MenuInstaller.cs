@@ -13,8 +13,10 @@ public class MenuInstaller : MonoBehaviour
     [SerializeField] private ChangeNameView _changeNameView;
     [SerializeField] private LoginPanelView _loginPanelView;
     [SerializeField] private RegisterPanelView _registerPanelView;
-    
+
     private readonly List<IDisposable> _disposables = new List<IDisposable>();
+
+    private MenuInitializer _menuInitializer;
 
     private void Awake()
     {
@@ -40,7 +42,7 @@ public class MenuInstaller : MonoBehaviour
         var registerPanelViewModel = new RegisterPanelViewModel();
         _registerPanelView.Setup(registerPanelViewModel);
 
-        
+
         //GET SERVICES FROM SERVICE LOCATOR-------------------------------------------------------------
         var firebaseAuth = ServiceLocator.Instance.GetService<FirebaseAuthService>();
         var firebaseFirestore = ServiceLocator.Instance.GetService<FirebaseFirestoreService>();
@@ -54,16 +56,21 @@ public class MenuInstaller : MonoBehaviour
 
         //USE CASES-------------------------------------------------------------------------------------
         var changeSceneUseCase = new ChangeSceneUseCase(sceneHandler, firebaseAnalytics, accessUserData);
-        var getUserFromRepositoryUseCase = new GetUserFromRepositoryUseCase(accessUserData, loggedUsersRepository, eventDispatcherService);
-        var udpateUserDataUseCase = new UpdateUserDataUseCase(firebaseFirestore, firebaseDatabase, eventDispatcherService, accessUserData, loggedUsersRepository);
+        var getUserFromRepositoryUseCase =
+            new GetUserFromRepositoryUseCase(accessUserData, loggedUsersRepository, eventDispatcherService);
+        var udpateUserDataUseCase = new UpdateUserDataUseCase(firebaseFirestore, firebaseDatabase,
+            eventDispatcherService, accessUserData, loggedUsersRepository);
         var rankingManagerUseCase = new RankingManagerUseCase(firebaseDatabase, eventDispatcherService);
-        var registerUserUseCase = new RegisterUserUseCase(firebaseAuth, accessUserData, eventDispatcherService, firebaseFirestore, loggedUsersRepository);
+        var registerUserUseCase = new RegisterUserUseCase(firebaseAuth, accessUserData, eventDispatcherService,
+            firebaseFirestore, loggedUsersRepository);
         var signInuserUseCase = new SignInUserUseCase(firebaseAuth, eventDispatcherService, accessUserData,
             loggedUsersRepository, firebaseFirestore);
         var audioManagerUseCase = new AudioManagerUseCase(firebaseFirestore, accessUserData);
         var messagingManagerUseCase = new MessagingManagerUseCase(firebaseFirestore, accessUserData, firebaseMessaging);
         var logoutUserUseCase = new LogoutUserUseCase(firebaseAuth, eventDispatcherService);
-        
+
+        _menuInitializer = new MenuInitializer(getUserFromRepositoryUseCase);
+
         //PRESENTERS-------------------------------------------------------------------------------------
         new HomePresenter(homeViewModel, eventDispatcherService);
         new ScorePresenter(scoreViewModel, eventDispatcherService);
@@ -73,15 +80,23 @@ public class MenuInstaller : MonoBehaviour
         new SettingsPresenter(settingsViewModel, eventDispatcherService);
 
         //CONTROLLERS-------------------------------------------------------------------------------------
-        new ButtonsController(buttonsViewModel,homeViewModel,scoreViewModel,settingsViewModel, rankingManagerUseCase);
-        new HomeController(homeViewModel, changeNameViewModel, changeSceneUseCase, getUserFromRepositoryUseCase);
+        new ButtonsController(buttonsViewModel, homeViewModel, scoreViewModel, settingsViewModel,
+            rankingManagerUseCase);
+        new HomeController(homeViewModel, changeNameViewModel, changeSceneUseCase);
         new ScoreController(scoreViewModel);
-        new SettingsController(settingsViewModel, loginPanelViewModel, registerPanelViewModel, audioManagerUseCase, messagingManagerUseCase, 
-            getUserFromRepositoryUseCase, logoutUserUseCase);
+        new SettingsController(settingsViewModel, loginPanelViewModel, registerPanelViewModel, audioManagerUseCase,
+            messagingManagerUseCase,
+            logoutUserUseCase);
         new ChangeNameController(changeNameViewModel, udpateUserDataUseCase);
         new LoginPanelController(loginPanelViewModel, signInuserUseCase);
         new RegisterPanelController(registerPanelViewModel, registerUserUseCase);
     }
+
+    private void Start()
+    {
+        _menuInitializer.Init();
+    }
+
     private void OnDestroy()
     {
         foreach (var disposable in _disposables)

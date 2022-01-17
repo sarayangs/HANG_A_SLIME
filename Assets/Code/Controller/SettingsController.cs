@@ -9,18 +9,16 @@ public class SettingsController : Controller
     
     private readonly IAudioManager _audioManagerUseCase;
     private readonly IMessagingManager _messagingManagerUseCase;
-    private readonly IGetUserFromRepository _getUserFromRepositoryUseCase;
     private readonly ILogoutUser _logoutUserUseCase;
 
     public SettingsController(SettingsViewModel viewModel,LoginPanelViewModel loginPanelViewModel, RegisterPanelViewModel registerPanelViewModel,
-        IAudioManager audioManagerUseCase, IMessagingManager messagingManagerUseCase, IGetUserFromRepository getUserFromRepository, ILogoutUser logoutUserUseCase)
+        IAudioManager audioManagerUseCase, IMessagingManager messagingManagerUseCase, ILogoutUser logoutUserUseCase)
     {
         _viewModel = viewModel;
         _loginPanelViewModel = loginPanelViewModel;
         _registerPanelViewModel = registerPanelViewModel;
         _audioManagerUseCase = audioManagerUseCase;
         _messagingManagerUseCase = messagingManagerUseCase;
-        _getUserFromRepositoryUseCase = getUserFromRepository;
         _logoutUserUseCase = logoutUserUseCase;
 
         _viewModel.LoginButtonPressed.Subscribe((_) =>
@@ -53,8 +51,5 @@ public class SettingsController : Controller
             else
                 _audioManagerUseCase.Deactivate();
         }).AddTo(_disposables);
-        
-        _getUserFromRepositoryUseCase.GetUserSettings();
-        _getUserFromRepositoryUseCase.GetUserType();
     }
 }
