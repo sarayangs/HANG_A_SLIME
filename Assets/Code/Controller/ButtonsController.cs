@@ -4,12 +4,14 @@ public class ButtonsController : Controller
 {
     private readonly ButtonsViewModel _buttonViewModel;
     private readonly IRankingManager _rankingManagerUseCase;
+    private readonly ISoundHandler _soundUseCase;
 
     public ButtonsController(ButtonsViewModel buttonsViewModel, HomeViewModel homeViewModel, ScoreViewModel scoreViewModel, SettingsViewModel settingsViewModel, 
-        IRankingManager rankingManagerUseCase)
+        IRankingManager rankingManagerUseCase, ISoundHandler soundUseCase)
     {
         _buttonViewModel = buttonsViewModel;
         _rankingManagerUseCase = rankingManagerUseCase;
+        _soundUseCase = soundUseCase;
 
         _buttonViewModel.HomeButtonPressed
             .Subscribe(
@@ -22,6 +24,8 @@ public class ButtonsController : Controller
                     _buttonViewModel.HomeIsPressed.Value = true;
                     _buttonViewModel.ScoreIsPressed.Value = false;
                     _buttonViewModel.SettingsIsPressed.Value = false;
+                    
+                    _soundUseCase.Play("swipe");
 
                 }).AddTo(_disposables);
 
@@ -37,6 +41,8 @@ public class ButtonsController : Controller
                 _buttonViewModel.ScoreIsPressed.Value = true;
                 _buttonViewModel.SettingsIsPressed.Value = false;
                 
+                _soundUseCase.Play("swipe");
+
                 _rankingManagerUseCase.GetAllData();
 
             }).AddTo(_disposables);
@@ -52,6 +58,8 @@ public class ButtonsController : Controller
                 _buttonViewModel.HomeIsPressed.Value = false;
                 _buttonViewModel.ScoreIsPressed.Value = false;
                 _buttonViewModel.SettingsIsPressed.Value = true;
+                _soundUseCase.Play("swipe");
+
             }).AddTo(_disposables);
     }
 }

@@ -65,11 +65,12 @@ public class MenuInstaller : MonoBehaviour
             firebaseFirestore, loggedUsersRepository);
         var signInuserUseCase = new SignInUserUseCase(firebaseAuth, eventDispatcherService, accessUserData,
             loggedUsersRepository, firebaseFirestore);
+        var soundHandlerUseCase = new SoundHandlerUseCase();
         var audioManagerUseCase = new AudioManagerUseCase(firebaseFirestore, accessUserData);
         var messagingManagerUseCase = new MessagingManagerUseCase(firebaseFirestore, accessUserData, firebaseMessaging);
         var logoutUserUseCase = new LogoutUserUseCase(firebaseAuth, eventDispatcherService);
 
-        _menuInitializer = new MenuInitializer(getUserFromRepositoryUseCase);
+        _menuInitializer = new MenuInitializer(getUserFromRepositoryUseCase, soundHandlerUseCase);
 
         //PRESENTERS-------------------------------------------------------------------------------------
         new HomePresenter(homeViewModel, eventDispatcherService);
@@ -81,15 +82,14 @@ public class MenuInstaller : MonoBehaviour
 
         //CONTROLLERS-------------------------------------------------------------------------------------
         new ButtonsController(buttonsViewModel, homeViewModel, scoreViewModel, settingsViewModel,
-            rankingManagerUseCase);
-        new HomeController(homeViewModel, changeNameViewModel, changeSceneUseCase);
+            rankingManagerUseCase, soundHandlerUseCase);
+        new HomeController(homeViewModel, changeNameViewModel, changeSceneUseCase, soundHandlerUseCase);
         new ScoreController(scoreViewModel);
         new SettingsController(settingsViewModel, loginPanelViewModel, registerPanelViewModel, audioManagerUseCase,
-            messagingManagerUseCase,
-            logoutUserUseCase);
-        new ChangeNameController(changeNameViewModel, udpateUserDataUseCase);
-        new LoginPanelController(loginPanelViewModel, signInuserUseCase);
-        new RegisterPanelController(registerPanelViewModel, registerUserUseCase);
+            messagingManagerUseCase, logoutUserUseCase, soundHandlerUseCase);
+        new ChangeNameController(changeNameViewModel, udpateUserDataUseCase, soundHandlerUseCase);
+        new LoginPanelController(loginPanelViewModel, signInuserUseCase, soundHandlerUseCase);
+        new RegisterPanelController(registerPanelViewModel, registerUserUseCase, soundHandlerUseCase);
     }
 
     private void Start()

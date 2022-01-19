@@ -58,6 +58,7 @@ public class PlayInstaller : MonoBehaviour
         var changeSceneUseCase = new ChangeSceneUseCase(sceneHandlerService, firebaseAnalytics, userRepository);
         var updateUserData = new UpdateUserDataUseCase(firebaseFirestore, firebaseRealtime, eventDispatcherService,
             userRepository, loggedUsersRepository);
+        var soundHandlerUseCase = new SoundHandlerUseCase();
         
         _initGameUseCase = new InitGameUseCase(newGameRequesterUseCase, timeManagerUseCase);
 
@@ -68,8 +69,8 @@ public class PlayInstaller : MonoBehaviour
         new PausePresenter(pauseViewModel, eventDispatcherService);
         
         //CONTROLLERS------------------------------------------------------
-        new PlayController(playViewModel, pauseViewModel, guessLetterUseCase, timeManagerUseCase);
-        new PauseController(pauseViewModel, timeManagerUseCase);
+        new PlayController(playViewModel, pauseViewModel, guessLetterUseCase, timeManagerUseCase, soundHandlerUseCase);
+        new PauseController(pauseViewModel, timeManagerUseCase, soundHandlerUseCase);
         new HomeButtonController(homeButtonViewModel, updateUserData, changeSceneUseCase);
         new RetryButtonController(retryButtonViewModel, updateUserData, changeSceneUseCase);
         new NextWordButtonController(nextWordButtonViewModel, changeSceneUseCase);

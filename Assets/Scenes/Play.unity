@@ -3132,6 +3132,8 @@ MonoBehaviour:
   - {fileID: 1020543813840722366, guid: a84e4a0507a6a4f408c123613e299246, type: 3}
   - {fileID: 6121675502410524391, guid: 67e3c51cc488e4e479922a8eae51df8f, type: 3}
   - {fileID: 5020381643044499946, guid: 643a1daf0dc788c45964817157d060e8, type: 3}
+  _incorrectSound: {fileID: 8300000, guid: dbab1fe155544a547a58bfaba48ed6a4, type: 3}
+  _correctSound: {fileID: 8300000, guid: 81ebc83c14286654a8c7d226fece4d73, type: 3}
 --- !u!1 &676096438
 GameObject:
   m_ObjectHideFlags: 0
