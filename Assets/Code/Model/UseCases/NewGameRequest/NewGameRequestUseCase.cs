@@ -21,8 +21,7 @@ public class NewGameRequestUseCase : INewGameRequester
 
     public async Task StartGame()
     {
-        var request = new NewGameRequest();
-        var response = await _restClientAdapter.Post<NewGameRequest, NewGameResponse>(EndPoints.NewGame, request);
+        var response = await _restClientAdapter.StartGame<NewGameResponse>(EndPoints.NewGame);
         
         _tokenRepository.SetToken(response.token);
         //TEMP!!!
@@ -38,10 +37,9 @@ public class NewGameRequestUseCase : INewGameRequester
     //TEMP!!!
     private async void GetSolution()
     {
-        var request = new GetSolutionRequest { token = _tokenRepository.GetToken() };
         var response =
-            await _restClientAdapter.Get<GetSolutionRequest, GetSolutionResponse>(EndPoints.GetSolution,
-                request);
+            await _restClientAdapter.GetSolution<GetSolutionResponse>(EndPoints.GetSolution,
+                _tokenRepository.GetToken());
 
         _tokenRepository.SetToken(response.token);
         Debug.Log(response.solution);

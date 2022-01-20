@@ -13,37 +13,33 @@ public class RestClientAdapter
         _client = new HttpClient();
     }
 
-    public async Task<TResponse> Post<TRequest, TResponse>(string url, TRequest request)
-        where TRequest : Request where TResponse : Response
+    public async Task<TResponse> StartGame<TResponse>(string url)
+        where TResponse : Response
     {
         const string jsonMediaType = "application/json";
-        var data = new StringContent(JsonUtility.ToJson(request), Encoding.UTF8, jsonMediaType);
-        var response = await _client.PostAsync(url, data);
+        var response = await _client.PostAsync(url, null);
+        var contents = await response.Content.ReadAsStringAsync();
+
+        return JsonUtility.FromJson<TResponse>(contents);
+    }
+    
+    public async Task<TResponse> GetSolution<TResponse>(string url, string token)
+        where TResponse : Response
+    {
+        var uri = new Uri($"{url}?token={token}");
+
+        var response = await _client.GetAsync(uri);
         var contents = await response.Content.ReadAsStringAsync();
 
         return JsonUtility.FromJson<TResponse>(contents);
     }
 
-    public async Task<TResponse> Get<TRequest, TResponse>(string url, TRequest request)
-        where TRequest : Request where TResponse : Response
+    public async Task<TResponse> GuessLetter<TResponse>(string url, string token, string letter)
+        where TResponse : Response
     {
-        var uri = new Uri(url);
-        var finalUri = uri.ExtendQuery(request);
+        var uri = new Uri($"{url}?token={token}&letter={letter}");
 
-        var response = await _client.GetAsync(finalUri);
-        var contents = await response.Content.ReadAsStringAsync();
-
-        return JsonUtility.FromJson<TResponse>(contents);
-    }
-
-    // This is not full REST but the API we are using need to send the parameters on the url
-    public async Task<TResponse> PutWithParametersOnUrl<TRequest, TResponse>(string url, TRequest request)
-        where TRequest : Request where TResponse : Response
-    {
-        var uri = new Uri(url);
-        var finalUri = uri.ExtendQuery(request);
-            
-        var response = await _client.PutAsync(finalUri, null);
+        var response = await _client.PutAsync(uri, null);
         var contents = await response.Content.ReadAsStringAsync();
 
         return JsonUtility.FromJson<TResponse>(contents);

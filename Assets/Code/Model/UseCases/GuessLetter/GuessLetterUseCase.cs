@@ -15,13 +15,12 @@ public class GuessLetterUseCase : ILetterGuesser
     
     public async void GuessLetter(string letter)
     {
-        var request = new GuessLetterRequest { letter = letter, token = _tokenRepository.GetToken() };
+        //var request = new GuessLetterRequest { letter = letter, token = _tokenRepository.GetToken() };
         var response = await
             _restClientAdapter
-                .PutWithParametersOnUrl<GuessLetterRequest, GuessLetterResponse>
+                .GuessLetter<GuessLetterResponse>
                 (
-                    EndPoints.GuessLetter,
-                    request
+                    EndPoints.GuessLetter, _tokenRepository.GetToken(), letter
                 );
     
         _tokenRepository.SetToken(response.token);
