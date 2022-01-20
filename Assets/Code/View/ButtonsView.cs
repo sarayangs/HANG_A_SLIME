@@ -32,25 +32,32 @@ public class ButtonsView : View
         
         _buttonsViewModel.HomeIsPressed.Subscribe((isPressed) =>
         {
-           DOColorOnButtons(_homeButton, isPressed);
+            OnButtonPressed(_homeButton, isPressed);
         }).AddTo(_disposables);
         
         _buttonsViewModel.ScoreIsPressed.Subscribe((isPressed) =>
         {
-            DOColorOnButtons(_scoreButton, isPressed);
+            OnButtonPressed(_scoreButton, isPressed);
         }).AddTo(_disposables);
         
         _buttonsViewModel.SettingsIsPressed.Subscribe((isPressed) =>
         {
-            DOColorOnButtons(_settingsButton, isPressed);
+            OnButtonPressed(_settingsButton, isPressed);
         }).AddTo(_disposables);
     }
 
-    private void DOColorOnButtons(Button button, bool isPressed)
+    private void OnButtonPressed(Button button, bool isPressed)
     {
-        if(isPressed)
+        if (isPressed)
+        {
             button.GetComponent<Image>().DOColor(new Color(0.5f, 0.5f ,0.5f), 0.2f);
-        else 
+            button.GetComponent<Button>().enabled = false;
+        }
+        else
+        {
             button.GetComponent<Image>().DOColor(new Color(1, 1, 1), 0.2f);
+            button.GetComponent<Button>().enabled = true;
+        }
+
     }
 }

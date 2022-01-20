@@ -42,7 +42,7 @@ public class ButtonsController : Controller
                 _buttonViewModel.SettingsIsPressed.Value = false;
                 
                 _soundUseCase.Play("swipe");
-
+                
                 _rankingManagerUseCase.GetAllData();
 
             }).AddTo(_disposables);

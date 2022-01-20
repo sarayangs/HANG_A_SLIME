@@ -49,7 +49,7 @@ public class PlayInstaller : MonoBehaviour
         
         //USE CASES---------------------------------------------------------
         var soundHandlerUseCase = new SoundHandlerUseCase();
-        var admobInitializer = new AdmobInitializer(googleAdmob, userRepository);
+        var admobInitializer = new AdmobInitializer(googleAdmob, userRepository, firebaseAnalytics);
         var timeManagerUseCase = new TimeManagerUseCase(eventDispatcherService);
         var userStatsManagerUseCase = new UserStatsManagerUseCase(userRepository, eventDispatcherService, firebaseRealtime, 
             timeManagerUseCase, admobInitializer, soundHandlerUseCase);

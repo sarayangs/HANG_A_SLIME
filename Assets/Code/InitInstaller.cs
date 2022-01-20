@@ -42,7 +42,7 @@ public class InitInstaller : MonoBehaviour
         var changeSceneUseCase = new ChangeSceneUseCase(sceneHandler, firebaseAnalytics, accessUserData);
         var initNewUserUseCase = new InitNewUserUseCase(firebaseFirestore, firebaseRealtime, firebaseAuth, accessUserData);
         var loadUserDataUseCase = new LoadUserDataUseCase(initNewUserUseCase, accessUserData, loggedUsersRepository, firebaseFirestore, firebaseAuth);
-        var admobInitializerUseCase = new AdmobInitializer(googleAdmob, accessUserData);
+        var admobInitializerUseCase = new AdmobInitializer(googleAdmob, accessUserData, firebaseAnalytics);
         
         //USECASE
         _loadInitDataUseCase = new LoadInitDataUseCase(changeSceneUseCase, authenticateUseCase, loadUserDataUseCase, admobInitializerUseCase);

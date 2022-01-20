@@ -2,11 +2,13 @@
 {
     private readonly IAdmobService _admobService;
     private readonly IAccessUserData _userRepository;
+    private readonly IAnalyticsService _firebaseAnalyticsService;
 
-    public AdmobInitializer(IAdmobService admobService, IAccessUserData userRepository)
+    public AdmobInitializer(IAdmobService admobService, IAccessUserData userRepository, IAnalyticsService firebaseAnalyticsService)
     {
         _admobService = admobService;
         _userRepository = userRepository;
+        _firebaseAnalyticsService = firebaseAnalyticsService;
     }
     public void Start()
     {
@@ -15,6 +17,8 @@
 
     public void ShowAd()
     {
+        _firebaseAnalyticsService.ShowAdEvent();
+        
         var user = _userRepository.GetLocalUser();
         user.GotAnotherChance = false;
         _userRepository.SetLocalUser(user);
