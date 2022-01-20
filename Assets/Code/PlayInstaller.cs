@@ -48,17 +48,18 @@ public class PlayInstaller : MonoBehaviour
         var googleAdmob = ServiceLocator.Instance.GetService<GoogleAdmobService>();
         
         //USE CASES---------------------------------------------------------
+        var soundHandlerUseCase = new SoundHandlerUseCase();
         var admobInitializer = new AdmobInitializer(googleAdmob, userRepository);
         var timeManagerUseCase = new TimeManagerUseCase(eventDispatcherService);
-        var userStatsManagerUseCase = new UserStatsManagerUseCase(userRepository, eventDispatcherService, firebaseRealtime, timeManagerUseCase, admobInitializer);
+        var userStatsManagerUseCase = new UserStatsManagerUseCase(userRepository, eventDispatcherService, firebaseRealtime, 
+            timeManagerUseCase, admobInitializer, soundHandlerUseCase);
         var healthManager = new HealthManager(userRepository, eventDispatcherService, userStatsManagerUseCase);
-        var checkResponseUsecase = new CheckResponseUseCase(eventDispatcherService, healthManager, userStatsManagerUseCase);
+        var checkResponseUsecase = new CheckResponseUseCase(eventDispatcherService, healthManager, userStatsManagerUseCase, soundHandlerUseCase);
         var guessLetterUseCase = new GuessLetterUseCase(restClientAdapter, tokenRepository, checkResponseUsecase);
         var newGameRequesterUseCase = new NewGameRequestUseCase(restClientAdapter, tokenRepository, eventDispatcherService, userRepository);
         var changeSceneUseCase = new ChangeSceneUseCase(sceneHandlerService, firebaseAnalytics, userRepository);
         var updateUserData = new UpdateUserDataUseCase(firebaseFirestore, firebaseRealtime, eventDispatcherService,
             userRepository, loggedUsersRepository);
-        var soundHandlerUseCase = new SoundHandlerUseCase();
         
         _initGameUseCase = new InitGameUseCase(newGameRequesterUseCase, timeManagerUseCase);
 

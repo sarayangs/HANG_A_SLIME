@@ -15,7 +15,6 @@ public class GuessLetterUseCase : ILetterGuesser
     
     public async void GuessLetter(string letter)
     {
-        //var request = new GuessLetterRequest { letter = letter, token = _tokenRepository.GetToken() };
         var response = await
             _restClientAdapter
                 .GuessLetter<GuessLetterResponse>
@@ -25,6 +24,5 @@ public class GuessLetterUseCase : ILetterGuesser
     
         _tokenRepository.SetToken(response.token);
         _checkResponseUseCase.CheckWord(response, letter);
-      
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Web.UI.WebControls;
 using UnityEngine;
 
 public class UserStatsManagerUseCase : IUserStatsManager
@@ -8,23 +9,24 @@ public class UserStatsManagerUseCase : IUserStatsManager
     private readonly IRealtimeDatabase _realtimeDatabase;
     private readonly ITimeManager _timeManagerUseCase;
     private readonly IAdmobInitializer _admobInitializer;
+    private readonly ISoundHandler _soundHandlerUseCase;
 
     private float _timeInSeconds;
 
     public UserStatsManagerUseCase(IAccessUserData userRepository, IEventDispatcherService eventDispatcherService,
         IRealtimeDatabase realtimeDatabase,
-        ITimeManager timeManagerUseCase, IAdmobInitializer admobInitializer)
+        ITimeManager timeManagerUseCase, IAdmobInitializer admobInitializer, ISoundHandler soundHandler)
     {
         _userRepository = userRepository;
         _eventDispatcherService = eventDispatcherService;
         _realtimeDatabase = realtimeDatabase;
         _timeManagerUseCase = timeManagerUseCase;
         _admobInitializer = admobInitializer;
+        _soundHandlerUseCase = soundHandler;
     }
 
     public async void ManageUserStats(bool hasWon)
     {
-        Debug.Log(_userRepository.GetLocalUser().Score);
         _timeManagerUseCase.FinishTimer();
         _timeInSeconds = _timeManagerUseCase.GetTimer();
         TimeSpan time = TimeSpan.FromSeconds(_timeInSeconds);
@@ -33,12 +35,17 @@ public class UserStatsManagerUseCase : IUserStatsManager
 
         if (hasWon)
         {
+            _soundHandlerUseCase.Play("victory");
             AddUserStats();
         }
         else if (!hasWon && _userRepository.GetLocalUser().GotAnotherChance)
         {
             _admobInitializer.ShowAd();
             return;
+        }
+        else
+        {
+            _soundHandlerUseCase.Play("gameover");
         }
 
         user = _userRepository.GetLocalUser();
