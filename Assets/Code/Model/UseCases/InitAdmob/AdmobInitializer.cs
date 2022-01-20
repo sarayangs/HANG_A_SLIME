@@ -17,6 +17,7 @@
 
     public void ShowAd()
     {
+        _firebaseAnalyticsService.NewChanceEvent(true);
         _firebaseAnalyticsService.ShowAdEvent();
         
         var user = _userRepository.GetLocalUser();

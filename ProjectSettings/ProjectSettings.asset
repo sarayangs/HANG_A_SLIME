@@ -239,7 +239,7 @@ PlayerSettings:
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
   AndroidKeystoreName: '{inproject}: Assets/keys/user.keystore'
-  AndroidKeyaliasName: key
+  AndroidKeyaliasName: firebasekey
   AndroidBuildApkPerCpuArchitecture: 0
   AndroidTVCompatibility: 0
   AndroidIsGame: 1
@@ -254,7 +254,7 @@ PlayerSettings:
   androidGamepadSupportLevel: 0
   AndroidMinifyWithR8: 0
   AndroidMinifyRelease: 1
-  AndroidMinifyDebug: 0
+  AndroidMinifyDebug: 1
   AndroidValidateAppBundleSize: 1
   AndroidAppBundleSizeToValidate: 150
   m_BuildTargetIcons: []

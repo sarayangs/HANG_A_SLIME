@@ -16,7 +16,6 @@ public class RestClientAdapter
     public async Task<TResponse> StartGame<TResponse>(string url)
         where TResponse : Response
     {
-        const string jsonMediaType = "application/json";
         var response = await _client.PostAsync(url, null);
         var contents = await response.Content.ReadAsStringAsync();
 

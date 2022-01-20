@@ -14,11 +14,11 @@ public class FirebaseAnalyticsService : IAnalyticsService
 
     public void NewChanceEvent(bool ad)
     {
-        throw new System.NotImplementedException();
+        FirebaseAnalytics.LogEvent("new_chance", new Parameter("view_ad", ad.ToString()));
     }
 
     public void ShowAdEvent()
     {
-        throw new System.NotImplementedException();
+        FirebaseAnalytics.LogEvent("show_ad");
     }
 }
