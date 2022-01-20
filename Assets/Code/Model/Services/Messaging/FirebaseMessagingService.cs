@@ -6,8 +6,6 @@ public class FirebaseMessagingService : IMessagingService
     {
         Firebase.Messaging.FirebaseMessaging.TokenReceived += OnTokenReceived;
         Firebase.Messaging.FirebaseMessaging.MessageReceived += OnMessageReceived;
-        
-        Debug.Log("Activate messaging");
     }
 
     public void DeactivateMessaging()

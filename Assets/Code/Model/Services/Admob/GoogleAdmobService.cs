@@ -15,7 +15,7 @@ public class GoogleAdmobService : IAdmobService
     {
         _rewardedAd = new RewardedAd("ca-app-pub-2775365274345505~2527013887");
 
-        _rewardedAd.OnAdLoaded += HandleRewardedAdLoaded;
+        /*_rewardedAd.OnAdLoaded += HandleRewardedAdLoaded;
         // Called when an ad request failed to load.
         _rewardedAd.OnAdFailedToLoad += HandleRewardedAdFailedToLoad;
         // Called when an ad is shown.
@@ -25,7 +25,7 @@ public class GoogleAdmobService : IAdmobService
         // Called when the user should be rewarded for interacting with the ad.
         _rewardedAd.OnUserEarnedReward += HandleUserEarnedReward;
         // Called when the ad is closed.
-        _rewardedAd.OnAdClosed += HandleRewardedAdClosed;
+        _rewardedAd.OnAdClosed += HandleRewardedAdClosed;*/
 
         AdRequest request = new AdRequest.Builder().Build();
         _rewardedAd.LoadAd(request);

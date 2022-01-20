@@ -16,10 +16,10 @@
         if(!response.correct)
             _healthManager.SubtractHealth();
         
+        _eventDispatcherService.Dispatch<ResponseData>(new ResponseData(letter, response.hangman, response.correct));
+
         if(IsCompleted(response.hangman))
             _userStatsManagerUseCase.ManageUserStats(true);
-        else
-            _eventDispatcherService.Dispatch<ResponseData>(new ResponseData(letter, response.hangman, response.correct));
     }
     
     private bool IsCompleted(string hangman)

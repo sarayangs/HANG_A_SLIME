@@ -24,6 +24,7 @@ public class UserStatsManagerUseCase : IUserStatsManager
 
     public async void ManageUserStats(bool hasWon)
     {
+        Debug.Log(_userRepository.GetLocalUser().Score);
         _timeManagerUseCase.FinishTimer();
         _timeInSeconds = _timeManagerUseCase.GetTimer();
         TimeSpan time = TimeSpan.FromSeconds(_timeInSeconds);
@@ -34,24 +35,23 @@ public class UserStatsManagerUseCase : IUserStatsManager
         {
             AddUserStats();
         }
-        else if(!hasWon && _userRepository.GetLocalUser().GotAnotherChance)
+        else if (!hasWon && _userRepository.GetLocalUser().GotAnotherChance)
         {
             _admobInitializer.ShowAd();
+            return;
         }
-        else
-        {
-            user = _userRepository.GetLocalUser();
-            var savedScore = await _realtimeDatabase.GetData($"scores/{_userRepository.GetLocalUser().UserId}/Score");
-            if (Int32.Parse(savedScore) < user.Score)
-            {
-                var entry = new ScoreEntry(user.UserId, user.Score, user.Name);
-                TimeSpan accumulatedTime = TimeSpan.FromSeconds(user.Time);
-                entry.Time = accumulatedTime.ToString("hh':'mm':'ss");
-                _realtimeDatabase.UpdateData(entry);
-            }
 
-            _eventDispatcherService.Dispatch<Answer>(new Answer(hasWon, user.Score, time.ToString("hh':'mm':'ss")));
+        user = _userRepository.GetLocalUser();
+        var savedScore = await _realtimeDatabase.GetData($"scores/{_userRepository.GetLocalUser().UserId}/Score");
+        if (Int32.Parse(savedScore) < user.Score)
+        {
+            var entry = new ScoreEntry(user.UserId, user.Score, user.Name);
+            TimeSpan accumulatedTime = TimeSpan.FromSeconds(user.Time);
+            entry.Time = accumulatedTime.ToString("hh':'mm':'ss");
+            _realtimeDatabase.UpdateData(entry);
         }
+
+        _eventDispatcherService.Dispatch<Answer>(new Answer(hasWon, user.Score, time.ToString("hh':'mm':'ss")));
     }
 
     private void AddUserStats()
