@@ -5,12 +5,15 @@ public class GetUserFromRepositoryUseCase : IGetUserFromRepository
     private readonly IAccessUserData _accessUserData;
     private readonly ILoggedUsersRepository _loggedUsersRepository;
     private readonly IEventDispatcherService _eventDispatcherService;
+    private readonly ISoundHandler _soundHandlerUseCase;
 
-    public GetUserFromRepositoryUseCase(IAccessUserData accessUserData, ILoggedUsersRepository loggedUsersRepository, IEventDispatcherService eventDispatcherService)
+    public GetUserFromRepositoryUseCase(IAccessUserData accessUserData, ILoggedUsersRepository loggedUsersRepository, IEventDispatcherService eventDispatcherService,
+        ISoundHandler soundHandlerUseCase)
     {
         _accessUserData = accessUserData;
         _loggedUsersRepository = loggedUsersRepository;
         _eventDispatcherService = eventDispatcherService;
+        _soundHandlerUseCase = soundHandlerUseCase;
     }
 
     public void GetUserName()
@@ -20,7 +23,9 @@ public class GetUserFromRepositoryUseCase : IGetUserFromRepository
 
     public void GetUserSettings()
     {
-        _eventDispatcherService.Dispatch<UserEntity>(_accessUserData.GetLocalUser());
+        var user = _accessUserData.GetLocalUser();
+        _soundHandlerUseCase.ToggleAudio(user.Audio);
+        _eventDispatcherService.Dispatch<UserEntity>(user);
     }
 
     public void GetUserType()

@@ -46,7 +46,7 @@ public class SoundManager : MonoBehaviour
 
     public void Toggle(bool toggle)
     {
-        _effects.mute = toggle;
-        _music.mute = toggle;
+        _effects.mute = !toggle;
+        _music.mute = !toggle;
     }
 }

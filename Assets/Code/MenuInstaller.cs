@@ -55,9 +55,10 @@ public class MenuInstaller : MonoBehaviour
         var eventDispatcherService = ServiceLocator.Instance.GetService<IEventDispatcherService>();
 
         //USE CASES-------------------------------------------------------------------------------------
+        var soundHandlerUseCase = new SoundHandlerUseCase();
         var changeSceneUseCase = new ChangeSceneUseCase(sceneHandler, firebaseAnalytics, accessUserData);
         var getUserFromRepositoryUseCase =
-            new GetUserFromRepositoryUseCase(accessUserData, loggedUsersRepository, eventDispatcherService);
+            new GetUserFromRepositoryUseCase(accessUserData, loggedUsersRepository, eventDispatcherService, soundHandlerUseCase);
         var udpateUserDataUseCase = new UpdateUserDataUseCase(firebaseFirestore, firebaseDatabase,
             eventDispatcherService, accessUserData, loggedUsersRepository);
         var rankingManagerUseCase = new RankingManagerUseCase(firebaseDatabase, eventDispatcherService);
@@ -65,7 +66,6 @@ public class MenuInstaller : MonoBehaviour
             firebaseFirestore, loggedUsersRepository);
         var signInuserUseCase = new SignInUserUseCase(firebaseAuth, eventDispatcherService, accessUserData,
             loggedUsersRepository, firebaseFirestore);
-        var soundHandlerUseCase = new SoundHandlerUseCase();
         var audioManagerUseCase = new AudioManagerUseCase(firebaseFirestore, accessUserData);
         var messagingManagerUseCase = new MessagingManagerUseCase(firebaseFirestore, accessUserData, firebaseMessaging);
         var logoutUserUseCase = new LogoutUserUseCase(firebaseAuth, eventDispatcherService);

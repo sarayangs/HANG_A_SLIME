@@ -50,6 +50,7 @@ public class SettingsController : Controller
                 _messagingManagerUseCase.Activate();
             else
                 _messagingManagerUseCase.Deactivate();
+            
 
         }).AddTo(_disposables);
 
@@ -59,6 +60,8 @@ public class SettingsController : Controller
                 _audioManagerUseCase.Activate();
             else
                 _audioManagerUseCase.Deactivate();
+            
+            _soundUseCase.ToggleAudio(audioOn);
             
         }).AddTo(_disposables);
     }
