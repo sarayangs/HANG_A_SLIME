@@ -39,14 +39,14 @@ public class PlayView : View
 
         _pauseButton.onClick.AddListener(() => { _viewModel.OnPauseButtonPressed.Execute(); });
 
-        _viewModel.HangmanText.Subscribe(text => { _hangmanText.SetText(text); });
+        _viewModel.HangmanText.Subscribe(text => { _hangmanText.SetText(text); }).AddTo(_disposables);
 
-        _viewModel.CorrectLetters.Subscribe(text => { _correctLettersText.SetText(text); });
+        _viewModel.CorrectLetters.Subscribe(text => { _correctLettersText.SetText(text); }).AddTo(_disposables);
 
         _viewModel.IncorrectLetters.Subscribe(text =>
         {
             _incorrectLettersText.SetText(text);
-        });
+        }).AddTo(_disposables);
 
         _viewModel.OnIncorrectLetter.Subscribe(instantiate =>
         {
@@ -55,11 +55,11 @@ public class PlayView : View
                 InstantiateHangman();
                 PlaySequence();
             }
-        });
+        }).AddTo(_disposables);
 
-        _viewModel.Score.Subscribe(score => { _scoreText.SetText(score); });
+        _viewModel.Score.Subscribe(score => { _scoreText.SetText(score); }).AddTo(_disposables);
 
-        _viewModel.Health.Subscribe(health => { _healthText.SetText(health); });
+        _viewModel.Health.Subscribe(health => { _healthText.SetText(health); }).AddTo(_disposables);
     }
 
     private void InstantiateHangman()
