@@ -65,14 +65,14 @@ public class ResultPopupView : View
         _viewModel.Score.Subscribe(score =>
         {
             _score.SetText(score);
-        });        
+        }).AddTo(_disposables);        
         _viewModel.Time.Subscribe(time =>
         {
             _time.SetText(time);
-        });
+        }).AddTo(_disposables);
         _viewModel.Text.Subscribe(text =>
         {
             _text.SetText(text);
-        });
+        }).AddTo(_disposables);
     }
 }

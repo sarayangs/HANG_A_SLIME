@@ -16,7 +16,7 @@ public class RetryButtonController : Controller
         {
             _updateUserDataUseCase.ResetUser();
             _changeSceneUseCase.RetryPlay();
-        });
+        }).AddTo(_disposables);
     
     }
 }

@@ -21,6 +21,9 @@ public class PlayPresenter : Presenter
     {
         base.Dispose();
         _eventDispatcherService.Unsubscribe<HangmanData>(OnInitGame);
+        _eventDispatcherService.Unsubscribe<ResponseData>(OnKeyPressed);
+        _eventDispatcherService.Unsubscribe<InstantiateHangmanEvent>(OnInstantiateHangmanEvent);
+        _eventDispatcherService.Unsubscribe<UserEntity>(OnUserData);
     }
     private void OnInitGame(HangmanData data)
     {

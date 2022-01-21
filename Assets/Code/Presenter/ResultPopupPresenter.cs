@@ -12,6 +12,13 @@ public class ResultPopupPresenter : Presenter
 
         _eventDispatcherService.Subscribe<Answer>(OnFinishedWord);
     }
+    
+    public override void Dispose()
+    {
+        base.Dispose();
+        _eventDispatcherService.Unsubscribe<Answer>(OnFinishedWord);
+    }
+
 
     private void OnFinishedWord(Answer data)
     {

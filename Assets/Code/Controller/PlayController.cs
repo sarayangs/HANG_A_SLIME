@@ -29,6 +29,6 @@ public class PlayController : Controller
         _viewModel.KeyPressed.Subscribe((letter) =>
         {
             _guessLetterUseCase.GuessLetter(letter);
-        });
+        }).AddTo(_disposables);
     }
 }

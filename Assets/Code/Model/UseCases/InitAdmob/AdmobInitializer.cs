@@ -15,6 +15,11 @@
         _admobService.Init();
     }
 
+    public void InitAd()
+    {
+        _admobService.StartAd();
+    }
+
     public void ShowAd()
     {
         _firebaseAnalyticsService.NewChanceEvent(true);
@@ -24,6 +29,6 @@
         user.GotAnotherChance = false;
         _userRepository.SetLocalUser(user);
         
-        _admobService.StartAd();
+        _admobService.ShowAd();
     }
 }

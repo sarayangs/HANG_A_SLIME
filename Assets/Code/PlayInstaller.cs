@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Firebase.Database;
+using UniRx;
 using UnityEngine;
 
 public class PlayInstaller : MonoBehaviour
@@ -61,20 +61,21 @@ public class PlayInstaller : MonoBehaviour
         var updateUserData = new UpdateUserDataUseCase(firebaseFirestore, firebaseRealtime, eventDispatcherService,
             userRepository, loggedUsersRepository);
         
-        _initGameUseCase = new InitGameUseCase(newGameRequesterUseCase, timeManagerUseCase);
+        _initGameUseCase = new InitGameUseCase(newGameRequesterUseCase, timeManagerUseCase, admobInitializer);
 
             
         //PRESENTERS--------------------------------------------------------
-        new PlayPresenter(playViewModel, eventDispatcherService);
-        new ResultPopupPresenter(resultPopupViewModel, eventDispatcherService);
-        new PausePresenter(pauseViewModel, eventDispatcherService);
+        new PlayPresenter(playViewModel, eventDispatcherService).AddTo(_disposables);
+        new ResultPopupPresenter(resultPopupViewModel, eventDispatcherService).AddTo(_disposables);
+        new PausePresenter(pauseViewModel, eventDispatcherService).AddTo(_disposables);
         
         //CONTROLLERS------------------------------------------------------
-        new PlayController(playViewModel, pauseViewModel, guessLetterUseCase, timeManagerUseCase, soundHandlerUseCase);
-        new PauseController(pauseViewModel, timeManagerUseCase, soundHandlerUseCase);
-        new HomeButtonController(homeButtonViewModel, updateUserData, changeSceneUseCase);
-        new RetryButtonController(retryButtonViewModel, updateUserData, changeSceneUseCase);
-        new NextWordButtonController(nextWordButtonViewModel, changeSceneUseCase);
+        new PlayController(playViewModel, pauseViewModel, guessLetterUseCase, timeManagerUseCase, soundHandlerUseCase)
+            .AddTo(_disposables);
+        new PauseController(pauseViewModel, timeManagerUseCase, soundHandlerUseCase).AddTo(_disposables);
+        new HomeButtonController(homeButtonViewModel, updateUserData, changeSceneUseCase).AddTo(_disposables);
+        new RetryButtonController(retryButtonViewModel, updateUserData, changeSceneUseCase).AddTo(_disposables);
+        new NextWordButtonController(nextWordButtonViewModel, changeSceneUseCase).AddTo(_disposables);
 
     }
 

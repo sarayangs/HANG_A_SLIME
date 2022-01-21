@@ -3,75 +3,69 @@
     "m_SelectedPackage": {
         "deviceId": "VQTBB19121150553",
         "name": "com.grabusquiyang.hangaslime",
-        "processId": 17200,
+        "processId": 18804,
         "exited": false
     },
     "m_SelectedPriority": 0,
     "m_KnownPackagesForSerialization": [
         {
             "deviceId": "VQTBB19121150553",
-            "name": "com.android.settings",
-            "processId": 1538,
+            "name": "com.grabusquiyang.hangaslime",
+            "processId": 13049,
+            "exited": true
+        },
+        {
+            "deviceId": "VQTBB19121150553",
+            "name": "com.huawei.android.launcher",
+            "processId": 1734,
             "exited": false
         },
         {
             "deviceId": "VQTBB19121150553",
             "name": "com.grabusquiyang.hangaslime",
-            "processId": 14480,
+            "processId": 14175,
+            "exited": true
+        },
+        {
+            "deviceId": "VQTBB19121150553",
+            "name": "com.grabusquiyang.hangaslime",
+            "processId": 14738,
+            "exited": true
+        },
+        {
+            "deviceId": "VQTBB19121150553",
+            "name": "com.grabusquiyang.hangaslime",
+            "processId": 15559,
+            "exited": true
+        },
+        {
+            "deviceId": "VQTBB19121150553",
+            "name": "com.grabusquiyang.hangaslime",
+            "processId": 16116,
+            "exited": true
+        },
+        {
+            "deviceId": "VQTBB19121150553",
+            "name": "com.grabusquiyang.hangaslime",
+            "processId": 16901,
             "exited": false
         },
         {
             "deviceId": "VQTBB19121150553",
             "name": "com.grabusquiyang.hangaslime",
-            "processId": 11815,
+            "processId": 17382,
             "exited": false
         },
         {
             "deviceId": "VQTBB19121150553",
             "name": "com.grabusquiyang.hangaslime",
-            "processId": 12925,
+            "processId": 18008,
             "exited": false
         },
         {
             "deviceId": "VQTBB19121150553",
             "name": "com.grabusquiyang.hangaslime",
-            "processId": 13600,
-            "exited": false
-        },
-        {
-            "deviceId": "VQTBB19121150553",
-            "name": "com.grabusquiyang.hangaslime",
-            "processId": 14108,
-            "exited": false
-        },
-        {
-            "deviceId": "VQTBB19121150553",
-            "name": "com.grabusquiyang.hangaslime",
-            "processId": 14627,
-            "exited": false
-        },
-        {
-            "deviceId": "VQTBB19121150553",
-            "name": "com.grabusquiyang.hangaslime",
-            "processId": 15103,
-            "exited": false
-        },
-        {
-            "deviceId": "VQTBB19121150553",
-            "name": "com.grabusquiyang.hangaslime",
-            "processId": 15826,
-            "exited": false
-        },
-        {
-            "deviceId": "VQTBB19121150553",
-            "name": "com.grabusquiyang.hangaslime",
-            "processId": 16421,
-            "exited": false
-        },
-        {
-            "deviceId": "VQTBB19121150553",
-            "name": "com.grabusquiyang.hangaslime",
-            "processId": 17200,
+            "processId": 18804,
             "exited": false
         }
     ],

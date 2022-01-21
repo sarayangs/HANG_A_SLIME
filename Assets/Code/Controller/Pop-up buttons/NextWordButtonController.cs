@@ -13,7 +13,6 @@ public class NextWordButtonController : Controller
         _viewModel.OnNextWordButtonPressed.Subscribe(_ =>
         {
             _changeSceneUseCase.PlayScene();
-        });
-
+        }).AddTo(_disposables);
     }
 }

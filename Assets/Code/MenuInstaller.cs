@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UniRx;
 using UnityEngine;
 
 public class MenuInstaller : MonoBehaviour
@@ -73,23 +74,23 @@ public class MenuInstaller : MonoBehaviour
         _menuInitializer = new MenuInitializer(getUserFromRepositoryUseCase, soundHandlerUseCase);
 
         //PRESENTERS-------------------------------------------------------------------------------------
-        new HomePresenter(homeViewModel, eventDispatcherService);
-        new ScorePresenter(scoreViewModel, eventDispatcherService);
-        new ChangeNamePresenter(changeNameViewModel, eventDispatcherService);
-        new LoginPanelPresenter(loginPanelViewModel, settingsViewModel, eventDispatcherService);
-        new RegisterPanelPresenter(registerPanelViewModel, settingsViewModel, eventDispatcherService);
-        new SettingsPresenter(settingsViewModel, eventDispatcherService);
+        new HomePresenter(homeViewModel, eventDispatcherService).AddTo(_disposables);
+        new ScorePresenter(scoreViewModel, eventDispatcherService).AddTo(_disposables);
+        new ChangeNamePresenter(changeNameViewModel, eventDispatcherService).AddTo(_disposables);
+        new LoginPanelPresenter(loginPanelViewModel, settingsViewModel, eventDispatcherService).AddTo(_disposables);
+        new RegisterPanelPresenter(registerPanelViewModel, settingsViewModel, eventDispatcherService).AddTo(_disposables);
+        new SettingsPresenter(settingsViewModel, eventDispatcherService).AddTo(_disposables);
 
         //CONTROLLERS-------------------------------------------------------------------------------------
         new ButtonsController(buttonsViewModel, homeViewModel, scoreViewModel, settingsViewModel,
-            rankingManagerUseCase, soundHandlerUseCase);
-        new HomeController(homeViewModel, changeNameViewModel, changeSceneUseCase, soundHandlerUseCase);
-        new ScoreController(scoreViewModel);
+            rankingManagerUseCase, soundHandlerUseCase).AddTo(_disposables);
+        new HomeController(homeViewModel, changeNameViewModel, changeSceneUseCase, soundHandlerUseCase).AddTo(_disposables);
+        new ScoreController(scoreViewModel).AddTo(_disposables);
         new SettingsController(settingsViewModel, loginPanelViewModel, registerPanelViewModel, audioManagerUseCase,
-            messagingManagerUseCase, logoutUserUseCase, soundHandlerUseCase);
-        new ChangeNameController(changeNameViewModel, udpateUserDataUseCase, soundHandlerUseCase);
-        new LoginPanelController(loginPanelViewModel, signInuserUseCase, soundHandlerUseCase);
-        new RegisterPanelController(registerPanelViewModel, registerUserUseCase, soundHandlerUseCase);
+            messagingManagerUseCase, logoutUserUseCase, soundHandlerUseCase).AddTo(_disposables);
+        new ChangeNameController(changeNameViewModel, udpateUserDataUseCase, soundHandlerUseCase).AddTo(_disposables);
+        new LoginPanelController(loginPanelViewModel, signInuserUseCase, soundHandlerUseCase).AddTo(_disposables);
+        new RegisterPanelController(registerPanelViewModel, registerUserUseCase, soundHandlerUseCase).AddTo(_disposables);
     }
 
     private void Start()

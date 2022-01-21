@@ -13,7 +13,7 @@ public class GoogleAdmobService : IAdmobService
 
     public void StartAd()
     {
-        _rewardedAd = new RewardedAd("ca-app-pub-2775365274345505/4273697054");
+        _rewardedAd = new RewardedAd("ca-app-pub-3940256099942544/5224354917");
 
         _rewardedAd.OnAdLoaded += HandleRewardedAdLoaded;
         // Called when an ad request failed to load.
@@ -29,7 +29,10 @@ public class GoogleAdmobService : IAdmobService
 
         AdRequest request = new AdRequest.Builder().Build();
         _rewardedAd.LoadAd(request);
+    }
 
+    public void ShowAd()
+    {
         if (_rewardedAd.IsLoaded())
         {
             _rewardedAd.Show();
@@ -44,7 +47,7 @@ public class GoogleAdmobService : IAdmobService
 
     public void HandleRewardedAdFailedToLoad(object sender, AdFailedToLoadEventArgs args)
     {
-        MonoBehaviour.print(
+        Debug.LogError(
             "HandleRewardedAdFailedToLoad event received with message: "
             + args.LoadAdError);
     }
@@ -56,9 +59,9 @@ public class GoogleAdmobService : IAdmobService
 
     public void HandleRewardedAdFailedToShow(object sender, AdErrorEventArgs args)
     {
-        MonoBehaviour.print(
+        Debug.LogError(
             "HandleRewardedAdFailedToShow event received with message: "
-            + args.Message);
+            + args.AdError);
     }
 
     public void HandleRewardedAdClosed(object sender, EventArgs args)

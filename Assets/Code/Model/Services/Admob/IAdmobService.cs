@@ -2,4 +2,5 @@
 {
     void Init();
     void StartAd();
+    void ShowAd();
 }
